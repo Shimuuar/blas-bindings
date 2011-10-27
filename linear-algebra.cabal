@@ -44,28 +44,28 @@ Library
                         Foreign.LAPACK
                         Foreign.VMath
                         
-                        Numeric.LinearAlgebra
+                        -- Numeric.LinearAlgebra
 
-                        Numeric.LinearAlgebra.Matrix
-                        Numeric.LinearAlgebra.Matrix.Cholesky
-                        Numeric.LinearAlgebra.Matrix.Eigen
-                        Numeric.LinearAlgebra.Matrix.Herm
-                        Numeric.LinearAlgebra.Matrix.ST
-                        Numeric.LinearAlgebra.Matrix.Statistics
-                        Numeric.LinearAlgebra.Matrix.Tri
+                        -- Numeric.LinearAlgebra.Matrix
+                        -- Numeric.LinearAlgebra.Matrix.Cholesky
+                        -- Numeric.LinearAlgebra.Matrix.Eigen
+                        -- Numeric.LinearAlgebra.Matrix.Herm
+                        -- Numeric.LinearAlgebra.Matrix.ST
+                        -- Numeric.LinearAlgebra.Matrix.Statistics
+                        -- Numeric.LinearAlgebra.Matrix.Tri
 
-                        Numeric.LinearAlgebra.Packed                     
-                        Numeric.LinearAlgebra.Packed.Cholesky                        
-                        Numeric.LinearAlgebra.Packed.Herm
-                        Numeric.LinearAlgebra.Packed.ST                   
-                        Numeric.LinearAlgebra.Packed.Statistics
-                        Numeric.LinearAlgebra.Packed.Tri
+                        -- Numeric.LinearAlgebra.Packed                     
+                        -- Numeric.LinearAlgebra.Packed.Cholesky                        
+                        -- Numeric.LinearAlgebra.Packed.Herm
+                        -- Numeric.LinearAlgebra.Packed.ST                   
+                        -- Numeric.LinearAlgebra.Packed.Statistics
+                        -- Numeric.LinearAlgebra.Packed.Tri
 
-                        Numeric.LinearAlgebra.Vector
-                        Numeric.LinearAlgebra.Vector.ST
-                        Numeric.LinearAlgebra.Vector.Statistics
+                        -- Numeric.LinearAlgebra.Vector
+                        -- Numeric.LinearAlgebra.Vector.ST
+                        -- Numeric.LinearAlgebra.Vector.Statistics
                         
-                        Test.QuickCheck.LinearAlgebra
+                        -- Test.QuickCheck.LinearAlgebra
                         
     other-modules:      
                         Foreign.BLAS.Types
@@ -85,13 +85,13 @@ Library
                         Foreign.VMath.Double
                         Foreign.VMath.Zomplex
                         
-                        Numeric.LinearAlgebra.Types
-                        Numeric.LinearAlgebra.Internal
-                        Numeric.LinearAlgebra.Vector.Base
-                        Numeric.LinearAlgebra.Vector.STBase                        
-                        Numeric.LinearAlgebra.Matrix.Base
-                        Numeric.LinearAlgebra.Matrix.STBase
-                        Numeric.LinearAlgebra.Packed.Base
+                        -- Numeric.LinearAlgebra.Types
+                        -- Numeric.LinearAlgebra.Internal
+                        -- Numeric.LinearAlgebra.Vector.Base
+                        -- Numeric.LinearAlgebra.Vector.STBase                        
+                        -- Numeric.LinearAlgebra.Matrix.Base
+                        -- Numeric.LinearAlgebra.Matrix.STBase
+                        -- Numeric.LinearAlgebra.Packed.Base
     
     includes:           cbits/config.h
                         cbits/f77_func-hsc.h
