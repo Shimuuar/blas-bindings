@@ -39,35 +39,10 @@ extra-tmp-files:        config.log config.status autom4te.cache
 
 Library
     hs-source-dirs:     lib
-    exposed-modules:    
-                        Foreign.BLAS
+    exposed-modules:    Foreign.BLAS
                         Foreign.LAPACK
                         
-                        -- Numeric.LinearAlgebra
-
-                        -- Numeric.LinearAlgebra.Matrix
-                        -- Numeric.LinearAlgebra.Matrix.Cholesky
-                        -- Numeric.LinearAlgebra.Matrix.Eigen
-                        -- Numeric.LinearAlgebra.Matrix.Herm
-                        -- Numeric.LinearAlgebra.Matrix.ST
-                        -- Numeric.LinearAlgebra.Matrix.Statistics
-                        -- Numeric.LinearAlgebra.Matrix.Tri
-
-                        -- Numeric.LinearAlgebra.Packed                     
-                        -- Numeric.LinearAlgebra.Packed.Cholesky                        
-                        -- Numeric.LinearAlgebra.Packed.Herm
-                        -- Numeric.LinearAlgebra.Packed.ST                   
-                        -- Numeric.LinearAlgebra.Packed.Statistics
-                        -- Numeric.LinearAlgebra.Packed.Tri
-
-                        -- Numeric.LinearAlgebra.Vector
-                        -- Numeric.LinearAlgebra.Vector.ST
-                        -- Numeric.LinearAlgebra.Vector.Statistics
-                        
-                        -- Test.QuickCheck.LinearAlgebra
-                        
-    other-modules:      
-                        Foreign.BLAS.Types
+    other-modules:      Foreign.BLAS.Types
                         Foreign.BLAS.Level1
                         Foreign.BLAS.Level2
                         Foreign.BLAS.Level3
@@ -78,53 +53,13 @@ Library
                         Foreign.LAPACK.Double
                         Foreign.LAPACK.Zomplex
                         
-                        -- Numeric.LinearAlgebra.Types
-                        -- Numeric.LinearAlgebra.Internal
-                        -- Numeric.LinearAlgebra.Vector.Base
-                        -- Numeric.LinearAlgebra.Vector.STBase                        
-                        -- Numeric.LinearAlgebra.Matrix.Base
-                        -- Numeric.LinearAlgebra.Matrix.STBase
-                        -- Numeric.LinearAlgebra.Packed.Base
     
     includes:           cbits/config.h
     include-dirs:       cbits
 
-    ghc-options:        -Wall -O2 -funbox-strict-fields
+    ghc-options:        -Wall -O2
     
-    extensions:         BangPatterns,
-                        CPP,
-                        DeriveDataTypeable,
-                        FlexibleContexts,
-                        FlexibleInstances,
-                        GeneralizedNewtypeDeriving,
-                        ForeignFunctionInterface, 
-                        Rank2Types
-                         
-    build-depends:      base >= 4 && < 5, ieee754, storable-complex,
-                        vector >= 0.7, QuickCheck >= 2.1.1 && < 3
+    build-depends:      base >= 4 && < 5,
+                        storable-complex
 
--- Executable test-hs-linear-algebra
---     hs-source-dirs:     lib, tests
---     main-is:            Main.hs
---     other-modules:      Vector
---                         STVector,
---                         Matrix,
---                         STMatrix,
---                         Statistics,
---                         Typed
---                         Foreign.BLAS.Double
---                         Foreign.BLAS.Zomplex
---                         Foreign.LAPACK.Double
---                         Foreign.LAPACK.Zomplex
 
---     includes:           cbits/config.h
---                         cbits/f77_func-hsc.h
---                         cbits/vmath.h
---     include-dirs:       cbits
-
---     c-sources:          cbits/vmath-double.c
---                         cbits/vmath-zomplex.c
-
---     build-depends:      QuickCheck >= 2.1 && < 3,
---                         test-framework >= 0.3.1,
---                         test-framework-quickcheck2 >= 0.2.7 && < 0.3
