@@ -42,7 +42,6 @@ Library
     exposed-modules:    
                         Foreign.BLAS
                         Foreign.LAPACK
-                        Foreign.VMath
                         
                         -- Numeric.LinearAlgebra
 
@@ -78,12 +77,6 @@ Library
                         Foreign.LAPACK.Types
                         Foreign.LAPACK.Double
                         Foreign.LAPACK.Zomplex
-                        
-                        Foreign.VMath.VNum
-                        Foreign.VMath.VFractional
-                        Foreign.VMath.VFloating
-                        Foreign.VMath.Double
-                        Foreign.VMath.Zomplex
                         
                         -- Numeric.LinearAlgebra.Types
                         -- Numeric.LinearAlgebra.Internal
