@@ -29,10 +29,8 @@ extra-source-files:     NEWS README TODO configure.ac configure
                         m4/ax_check_lapack.m4
                         linear-algebra.buildinfo.in cbits/config.h.in
                         tests/Makefile.in
-                        
-                        examples/LU.hs
-                        
-                                            
+
+
 extra-tmp-files:        config.log config.status autom4te.cache
                         linear-algebra.buildinfo cbits/config.h
                         tests/Makefile
