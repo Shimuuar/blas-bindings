@@ -87,13 +87,8 @@ Library
                         -- Numeric.LinearAlgebra.Packed.Base
     
     includes:           cbits/config.h
-                        cbits/f77_func-hsc.h
-                        cbits/vmath.h
     include-dirs:       cbits
 
-    c-sources:          cbits/vmath-double.c
-                        cbits/vmath-zomplex.c
-                        
     ghc-options:        -Wall -O2 -funbox-strict-fields
     
     extensions:         BangPatterns,
