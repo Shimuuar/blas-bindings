@@ -1,19 +1,19 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 -----------------------------------------------------------------------------
 -- |
--- Module     : Foreign.LAPACK.Double
+-- Module     : Numeric.LAPACK.Bindings.Double
 -- Copyright  : Copyright (c) 2010, Patrick Perry <patperry@gmail.com>
 -- License    : BSD3
 -- Maintainer : Patrick Perry <patperry@gmail.com>
 -- Stability  : experimental
 --
 
-module Foreign.LAPACK.Double
+module Numeric.LAPACK.Bindings.Double
     where
 
 import Foreign( Ptr )
-import Foreign.BLAS.Types
-import Foreign.LAPACK.Types
+import Numeric.BLAS.Bindings.Types
+import Numeric.LAPACK.Bindings.Types
 
 #include "f77_func-hsc.h"
 

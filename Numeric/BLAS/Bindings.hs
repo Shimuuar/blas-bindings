@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 -- |
--- Module     : Foreign.BLAS
+-- Module     : Numeric.BLAS.Bindings
 -- Copyright  : Copyright (c) 2010, Patrick Perry <patperry@gmail.com>
 -- License    : BSD3
 -- Maintainer : Patrick Perry <patperry@gmail.com>
@@ -9,16 +9,17 @@
 -- BLAS operations.
 --
 
-module Foreign.BLAS (
+module Numeric.BLAS.Bindings (
     -- * BLAS typeclasses
-    module Foreign.BLAS.Level1,
-    module Foreign.BLAS.Level2,
-    module Foreign.BLAS.Level3,
+    module Numeric.BLAS.Bindings.Level1
+  , module Numeric.BLAS.Bindings.Level2
+  , module Numeric.BLAS.Bindings.Level3
     -- * Enums
-    module Foreign.BLAS.Types,    
-    ) where
+  , module Numeric.BLAS.Bindings.Types,
+  ) where
 
-import Foreign.BLAS.Types
-import Foreign.BLAS.Level1
-import Foreign.BLAS.Level2
-import Foreign.BLAS.Level3
+import Numeric.BLAS.Bindings.Level1
+import Numeric.BLAS.Bindings.Level2
+import Numeric.BLAS.Bindings.Level3
+import Numeric.BLAS.Bindings.Types
+

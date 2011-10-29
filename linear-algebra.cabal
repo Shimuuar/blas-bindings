@@ -36,20 +36,19 @@ extra-tmp-files:        config.log config.status autom4te.cache
                         tests/Makefile
 
 Library
-    hs-source-dirs:     lib
-    exposed-modules:    Foreign.BLAS
-                        Foreign.LAPACK
+    exposed-modules:    Numeric.BLAS.Bindings
+                        Numeric.LAPACK.Bindings
                         
-    other-modules:      Foreign.BLAS.Types
-                        Foreign.BLAS.Level1
-                        Foreign.BLAS.Level2
-                        Foreign.BLAS.Level3
-                        Foreign.BLAS.Double
-                        Foreign.BLAS.Zomplex
+    other-modules:      Numeric.BLAS.Bindings.Types
+                        Numeric.BLAS.Bindings.Level1
+                        Numeric.BLAS.Bindings.Level2
+                        Numeric.BLAS.Bindings.Level3
+                        Numeric.BLAS.Bindings.Double
+                        Numeric.BLAS.Bindings.Zomplex
 
-                        Foreign.LAPACK.Types
-                        Foreign.LAPACK.Double
-                        Foreign.LAPACK.Zomplex
+                        Numeric.LAPACK.Bindings.Types
+                        Numeric.LAPACK.Bindings.Double
+                        Numeric.LAPACK.Bindings.Zomplex
                         
     
     includes:           cbits/config.h

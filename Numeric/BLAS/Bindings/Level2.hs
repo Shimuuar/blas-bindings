@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 -----------------------------------------------------------------------------
 -- |
--- Module     : Foreign.BLAS.Level2
+-- Module     : Numeric.BLAS.Bindings.Level2
 -- Copyright  : Copyright (c) 2010, Patrick Perry <patperry@gmail.com>
 -- License    : BSD3
 -- Maintainer : Patrick Perry <patperry@gmail.com>
@@ -10,17 +10,17 @@
 -- Matrix-Vector operations.
 --
 
-module Foreign.BLAS.Level2 (
+module Numeric.BLAS.Bindings.Level2 (
     BLAS2(..),
     ) where
      
 import Data.Complex 
 import Foreign( Ptr, Storable, with )
 
-import Foreign.BLAS.Types
-import Foreign.BLAS.Level1
-import Foreign.BLAS.Double
-import Foreign.BLAS.Zomplex
+import Numeric.BLAS.Bindings.Types
+import Numeric.BLAS.Bindings.Level1
+import Numeric.BLAS.Bindings.Double
+import Numeric.BLAS.Bindings.Zomplex
    
 -- | Types with matrix-vector operations.
 class (BLAS1 a) => BLAS2 a where

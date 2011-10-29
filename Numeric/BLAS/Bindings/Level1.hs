@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 -----------------------------------------------------------------------------
 -- |
--- Module     : Foreign.BLAS.Level1
+-- Module     : Numeric.BLAS.Bindings.Level1
 -- Copyright  : Copyright (c) 2010, Patrick Perry <patperry@gmail.com>
 -- License    : BSD3
 -- Maintainer : Patrick Perry <patperry@gmail.com>
@@ -10,7 +10,7 @@
 -- Vector operations.
 --
 
-module Foreign.BLAS.Level1 (
+module Numeric.BLAS.Bindings.Level1 (
     BLAS1(..),
     ) where
 
@@ -18,8 +18,8 @@ import Foreign( Storable, Ptr, peek, with )
 import Foreign.Storable.Complex()
 import Data.Complex( Complex(..) )
 
-import Foreign.BLAS.Double
-import Foreign.BLAS.Zomplex
+import Numeric.BLAS.Bindings.Double
+import Numeric.BLAS.Bindings.Zomplex
 
 -- | Types with vector-vector operations.
 class (Storable a) => BLAS1 a where

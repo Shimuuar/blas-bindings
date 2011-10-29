@@ -1,14 +1,14 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 -----------------------------------------------------------------------------
 -- |
--- Module     : Foreign.BLAS.Types
+-- Module     : Numeric.BLAS.Bindings.Types
 -- Copyright  : Copyright (c) 2010, Patrick Perry <patperry@gmail.com>
 -- License    : BSD3
 -- Maintainer : Patrick Perry <patperry@gmail.com>
 -- Stability  : experimental
 --
 
-module Foreign.BLAS.Types (
+module Numeric.BLAS.Bindings.Types (
     BLASTrans,
     Trans(..),
     withTrans,

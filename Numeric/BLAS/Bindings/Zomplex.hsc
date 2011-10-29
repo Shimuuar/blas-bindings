@@ -1,19 +1,19 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 -----------------------------------------------------------------------------
 -- |
--- Module     : Foreign.BLAS.Zomplex
+-- Module     : Numeric.BLAS.Bindings.Zomplex
 -- Copyright  : Copyright (c) 2010, Patrick Perry <patperry@gmail.com>
 -- License    : BSD3
 -- Maintainer : Patrick Perry <patperry@gmail.com>
 -- Stability  : experimental
 --
 
-module Foreign.BLAS.Zomplex
+module Numeric.BLAS.Bindings.Zomplex
     where
 
 import Data.Complex( Complex )
 import Foreign
-import Foreign.BLAS.Types
+import Numeric.BLAS.Bindings.Types
 
 #include "config.h"
 #include "f77_func-hsc.h"

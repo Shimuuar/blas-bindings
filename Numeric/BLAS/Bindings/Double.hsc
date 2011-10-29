@@ -1,18 +1,18 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 -----------------------------------------------------------------------------
 -- |
--- Module     : Foreign.BLAS.Double
+-- Module     : Numeric.BLAS.Bindings.Double
 -- Copyright  : Copyright (c) 2010, Patrick Perry <patperry@gmail.com>
 -- License    : BSD3
 -- Maintainer : Patrick Perry <patperry@gmail.com>
 -- Stability  : experimental
 --
 
-module Foreign.BLAS.Double
+module Numeric.BLAS.Bindings.Double
     where
 
 import Foreign
-import Foreign.BLAS.Types
+import Numeric.BLAS.Bindings.Types
 
 #include "config.h"
 #include "f77_func-hsc.h"

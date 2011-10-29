@@ -1,20 +1,20 @@
 {-# LANGUAGE  ForeignFunctionInterface #-}
 -----------------------------------------------------------------------------
 -- |
--- Module     : Foreign.LAPACK.Zomplex
+-- Module     : Numeric.LAPACK.Bindings.Zomplex
 -- Copyright  : Copyright (c) 2010, Patrick Perry <patperry@gmail.com>
 -- License    : BSD3
 -- Maintainer : Patrick Perry <patperry@gmail.com>
 -- Stability  : experimental
 --
 
-module Foreign.LAPACK.Zomplex
+module Numeric.LAPACK.Bindings.Zomplex
     where
 
 import Data.Complex( Complex )
 import Foreign( Ptr )
-import Foreign.BLAS.Types
-import Foreign.LAPACK.Types
+import Numeric.BLAS.Bindings.Types
+import Numeric.LAPACK.Bindings.Types
 
 #include "f77_func-hsc.h"
 

@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 -----------------------------------------------------------------------------
 -- |
--- Module     : Foreign.LAPACK
+-- Module     : Numeric.LAPACK.Bindings
 -- Copyright  : Copyright (c) 2010, Patrick Perry <patperry@gmail.com>
 -- License    : BSD3
 -- Maintainer : Patrick Perry <patperry@gmail.com>
@@ -9,21 +9,21 @@
 --
 -- Types with a Linear Algebra PACKage.
 --
-module Foreign.LAPACK (
+module Numeric.LAPACK.Bindings (
     -- * LAPACK typeclass
     LAPACK(..),
     -- * Enums
-    module Foreign.LAPACK.Types,
+    module Numeric.LAPACK.Bindings.Types,
     ) where
 
 import Control.Monad( forM_, when )
 import Control.Exception( assert )
 import Data.Complex( Complex )
 import Foreign
-import Foreign.BLAS
-import Foreign.LAPACK.Types
-import Foreign.LAPACK.Double
-import Foreign.LAPACK.Zomplex
+import Numeric.BLAS.Bindings
+import Numeric.LAPACK.Bindings.Types
+import Numeric.LAPACK.Bindings.Double
+import Numeric.LAPACK.Bindings.Zomplex
 
 
 -- | Types with LAPACK operations.

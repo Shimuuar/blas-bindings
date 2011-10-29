@@ -1,13 +1,13 @@
 -----------------------------------------------------------------------------
 -- |
--- Module     : Foreign.LAPACK.Types
+-- Module     : Numeric.LAPACK.Bindings.Types
 -- Copyright  : Copyright (c) 2010, Patrick Perry <patperry@gmail.com>
 -- License    : BSD3
 -- Maintainer : Patrick Perry <patperry@gmail.com>
 -- Stability  : experimental
 --
 
-module Foreign.LAPACK.Types (
+module Numeric.LAPACK.Bindings.Types (
     LAEigJob,
     EigJob(..),
     withEigJob,
@@ -21,7 +21,7 @@ module Foreign.LAPACK.Types (
 import Foreign
 import Foreign.C.String
 
-import Foreign.BLAS.Types( LAInt )
+import Numeric.BLAS.Bindings.Types ( LAInt )
 
 newtype LAEigJob = LAEigJob CString
 

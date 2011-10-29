@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 -----------------------------------------------------------------------------
 -- |
--- Module     : Foreign.BLAS.Level3
+-- Module     : Numeric.BLAS.Bindings.Level3
 -- Copyright  : Copyright (c) 2010, Patrick Perry <patperry@gmail.com>
 -- License    : BSD3
 -- Maintainer : Patrick Perry <patperry@gmail.com>
@@ -10,17 +10,17 @@
 -- Matrix-Matrix operations.
 --
 
-module Foreign.BLAS.Level3 (
+module Numeric.BLAS.Bindings.Level3 (
     BLAS3(..),
     ) where
      
 import Data.Complex 
 import Foreign( Ptr, Storable, with )
 
-import Foreign.BLAS.Types
-import Foreign.BLAS.Level2
-import Foreign.BLAS.Double
-import Foreign.BLAS.Zomplex
+import Numeric.BLAS.Bindings.Types
+import Numeric.BLAS.Bindings.Level2
+import Numeric.BLAS.Bindings.Double
+import Numeric.BLAS.Bindings.Zomplex
 
 -- | Types with matrix-matrix operations.        
 class (BLAS2 a) => BLAS3 a where
