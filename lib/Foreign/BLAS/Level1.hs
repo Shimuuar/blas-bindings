@@ -13,30 +13,92 @@
 module Foreign.BLAS.Level1 (
     BLAS1(..),
     ) where
-     
+
 import Foreign( Storable, Ptr, peek, with )
 import Foreign.Storable.Complex()
 import Data.Complex( Complex(..) )
 
-import Foreign.BLAS.Double  
+import Foreign.BLAS.Double
 import Foreign.BLAS.Zomplex
-        
+
 -- | Types with vector-vector operations.
 class (Storable a) => BLAS1 a where
-    copy  :: Int -> Ptr a -> Int -> Ptr a -> Int -> IO ()    
-    swap  :: Int -> Ptr a -> Int -> Ptr a -> Int -> IO ()
-    dotc  :: Int -> Ptr a -> Int -> Ptr a -> Int -> IO a
-    dotu  :: Int -> Ptr a -> Int -> Ptr a -> Int -> IO a    
-    nrm2  :: Int -> Ptr a -> Int -> IO Double
-    asum  :: Int -> Ptr a -> Int -> IO Double
-    iamax :: Int -> Ptr a -> Int -> IO Int
-    
-    scal  :: Int -> a -> Ptr a -> Int -> IO () 
+  -- | Copy vector into another vector. @y <- x@
+  copy :: Int   -- ^ Number of elements in vector
+       -> Ptr a -- ^ Source vector /x/
+       -> Int   -- ^ Index increment between elements of /x/
+       -> Ptr a -- ^ Target vector /y/
+       -> Int   -- ^ Index increment between elements of /x/
+       -> IO ()
 
-    axpy  :: Int -> a -> Ptr a -> Int -> Ptr a -> Int -> IO ()
+  -- | Swap content of two vectors. @y <-> x@
+  swap :: Int   -- ^ Number of elements in vector
+       -> Ptr a -- ^ Source vector /x/
+       -> Int   -- ^ Index increment between elements of /x/
+       -> Ptr a -- ^ Target vector /y/
+       -> Int   -- ^ Index increment between elements of /x/
+       -> IO ()
 
-    rotg  :: Ptr a -> Ptr a -> Ptr a -> Ptr a -> IO ()
-    rot   :: Int -> Ptr a -> Int -> Ptr a -> Int -> Double -> Double -> IO ()
+  -- | Computes the hermitian dot product of vector /a/ and vector /b/. For real-valued vectors is same as dotu
+  dotc :: Int   -- ^ Number of elements in vectors
+       -> Ptr a -- ^ Vector /a/
+       -> Int   -- ^ Stride for /a/
+       -> Ptr a -- ^ Vector /b/
+       -> Int   -- ^ Stride for /b/
+       -> IO a
+
+  -- | Computes the dot product of vector /a/ and vector /b/
+  dotu :: Int   -- ^ Number of elements in vectors
+       -> Ptr a -- ^ Vector /a/
+       -> Int   -- ^ Stride for /a/
+       -> Ptr a -- ^ Vector /b/
+       -> Int   -- ^ Stride for /b/
+       -> IO a
+
+  -- | Computes euqlidean norm of the vector
+  nrm2 :: Int
+       -> Ptr a
+       -> Int
+       -> IO Double
+
+  -- | Compute sums of absolute values of a vector
+  asum  :: Int -> Ptr a -> Int -> IO Double
+
+  -- NOT IN BLAS
+  iamax :: Int -> Ptr a -> Int -> IO Int
+
+  -- | Scale vector
+  scal  :: Int -> a -> Ptr a -> Int -> IO ()
+
+  -- | @y <- alpha * x + y@
+  axpy  :: Int   -- ^ Number of elements in vector
+        -> a     -- ^ /alpha/ coefficient
+        -> Ptr a -- ^ Vector /x/
+        -> Int   -- ^ Stride for /x/
+        -> Ptr a -- ^ Vector /y/
+        -> Int   -- ^ Stride for /y/
+        -> IO ()
+
+  -- | computes the elements of a Givens plane rotation matrix such
+  --   that:
+  --
+  -- > | c  s |   | a |    | r |
+  -- > |-s  c | * | b | =  | 0 |
+  rotg  :: Ptr a -- ^ /a/
+        -> Ptr a -- ^ /b/
+        -> Ptr a -- ^ cosine of angle
+        -> Ptr a -- ^ sine of angle
+        -> IO ()
+
+  -- | Plane rotation subroutine
+  rot   :: Int    -- ^ Number of ordered pairs
+        -> Ptr a  -- ^ Vector of /x/ coordinates
+        -> Int    -- ^ Stride for /x/
+        -> Ptr a  -- ^ Vector of /y/ coordinates
+        -> Int    -- ^ Stride for /y/
+        -> Double -- ^ Cosine of rotation angle
+        -> Double -- ^ Sine of rotation angle
+        -> IO ()
 
 
 withEnum :: (Enum a, Storable a) => Int -> (Ptr a -> IO b) -> IO b
@@ -51,14 +113,14 @@ instance BLAS1 Double where
             dcopy pn px pincx py pincy
     {-# INLINE copy #-}
 
-    swap n px incx py incy = 
+    swap n px incx py incy =
         withEnum n $ \pn ->
         withEnum incx $ \pincx ->
         withEnum incy $ \pincy ->
             dswap pn px pincx py pincy
     {-# INLINE swap #-}
 
-    dotc n px incx py incy = 
+    dotc n px incx py incy =
         withEnum n $ \pn ->
         withEnum incx $ \pincx ->
         withEnum incy $ \pincy ->
@@ -67,35 +129,35 @@ instance BLAS1 Double where
 
     dotu = dotc
     {-# INLINE dotu #-}
-    
-    nrm2 n px incx = 
+
+    nrm2 n px incx =
         withEnum n $ \pn ->
         withEnum incx $ \pincx ->
             dnrm2 pn px pincx
     {-# INLINE nrm2 #-}
 
-    asum n px incx = 
+    asum n px incx =
         withEnum n $ \pn ->
         withEnum incx $ \pincx ->
             dasum pn px pincx
     {-# INLINE asum #-}
 
-    iamax n px incx = 
+    iamax n px incx =
         withEnum n $ \pn ->
         withEnum incx $ \pincx -> do
             i <- idamax pn px pincx
             return $! fromEnum (i - 1)
     {-# INLINE iamax #-}
 
-    axpy n alpha px incx py incy = 
+    axpy n alpha px incx py incy =
         withEnum n $ \pn ->
         with alpha $ \palpha ->
         withEnum incx $ \pincx ->
         withEnum incy $ \pincy ->
             daxpy pn palpha px pincx py pincy
     {-# INLINE axpy #-}
-    
-    scal n alpha px incx = 
+
+    scal n alpha px incx =
         withEnum n $ \pn ->
         with alpha $ \palpha ->
         withEnum incx $ \pincx ->
@@ -104,8 +166,8 @@ instance BLAS1 Double where
 
     rotg = drotg
     {-# INLINE rotg #-}
-    
-    rot n px incx py incy c s = 
+
+    rot n px incx py incy c s =
         withEnum n $ \pn ->
         withEnum incx $ \pincx ->
         withEnum incy $ \pincy ->
@@ -123,13 +185,13 @@ instance BLAS1 (Complex Double) where
             zcopy pn px pincx py pincy
     {-# INLINE copy #-}
 
-    swap n px incx py incy = 
+    swap n px incx py incy =
         withEnum n $ \pn ->
         withEnum incx $ \pincx ->
         withEnum incy $ \pincy ->
             zswap pn px pincx py pincy
     {-# INLINE swap #-}
-    
+
     dotc n px incx py incy =
         withEnum n $ \pn ->
         withEnum incx $ \pincx ->
@@ -148,34 +210,34 @@ instance BLAS1 (Complex Double) where
             peek pdotu
     {-# INLINE dotu #-}
 
-    nrm2 n px incx = 
+    nrm2 n px incx =
         withEnum n $ \pn ->
         withEnum incx $ \pincx ->
             znrm2 pn px pincx
     {-# INLINE nrm2 #-}
 
-    asum n px incx = 
+    asum n px incx =
         withEnum n $ \pn ->
         withEnum incx $ \pincx ->
             zasum pn px pincx
     {-# INLINE asum #-}
 
-    iamax n px incx = 
+    iamax n px incx =
         withEnum n $ \pn ->
         withEnum incx $ \pincx -> do
             i <- izamax pn px pincx
             return $! fromEnum (i - 1)
     {-# INLINE iamax #-}
 
-    axpy n alpha px incx py incy = 
+    axpy n alpha px incx py incy =
         withEnum n $ \pn ->
         with alpha $ \palpha ->
         withEnum incx $ \pincx ->
         withEnum incy $ \pincy ->
             zaxpy pn palpha px pincx py pincy
     {-# INLINE axpy #-}
-    
-    scal n alpha px incx = 
+
+    scal n alpha px incx =
         withEnum n $ \pn ->
         with alpha $ \palpha ->
         withEnum incx $ \pincx ->
@@ -184,8 +246,8 @@ instance BLAS1 (Complex Double) where
 
     rotg = zrotg
     {-# INLINE rotg #-}
-    
-    rot n px incx py incy c s = 
+
+    rot n px incx py incy c s =
         withEnum n $ \pn ->
         withEnum incx $ \pincx ->
         withEnum incy $ \pincy ->
