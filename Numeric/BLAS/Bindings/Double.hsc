@@ -21,61 +21,61 @@ import Numeric.BLAS.Bindings.Types
 ---------------------------- Level 1 Routines -------------------------------
 
 foreign import ccall unsafe #f77_func ddot
-    ddot :: Ptr LAInt
+    ddot :: Ptr CInt
          -> Ptr Double
-         -> Ptr LAInt
+         -> Ptr CInt
          -> Ptr Double
-         -> Ptr LAInt
+         -> Ptr CInt
          -> IO Double
 
 foreign import ccall unsafe #f77_func dnrm2
-    dnrm2  :: Ptr LAInt
+    dnrm2  :: Ptr CInt
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO Double
 
 foreign import ccall unsafe #f77_func dasum
-    dasum  :: Ptr LAInt
+    dasum  :: Ptr CInt
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO Double
 
 foreign import ccall unsafe #f77_func idamax
-    idamax :: Ptr LAInt
+    idamax :: Ptr CInt
            -> Ptr Double
-           -> Ptr LAInt
-           -> IO LAInt
+           -> Ptr CInt
+           -> IO CInt
 
 foreign import ccall unsafe #f77_func dscal
-    dscal  :: Ptr LAInt
+    dscal  :: Ptr CInt
            -> Ptr Double
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func dswap
-    dswap  :: Ptr LAInt
+    dswap  :: Ptr CInt
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func dcopy
-    dcopy  :: Ptr LAInt
+    dcopy  :: Ptr CInt
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func daxpy
-    daxpy  :: Ptr LAInt
+    daxpy  :: Ptr CInt
            -> Ptr Double
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func drotg
@@ -86,11 +86,11 @@ foreign import ccall unsafe #f77_func drotg
            -> IO ()
 
 foreign import ccall unsafe #f77_func drot
-    drot :: Ptr LAInt
+    drot :: Ptr CInt
          -> Ptr Double
-         -> Ptr LAInt
+         -> Ptr CInt
          -> Ptr Double
-         -> Ptr LAInt
+         -> Ptr CInt
          -> Ptr Double
          -> Ptr Double
          -> IO ()
@@ -104,11 +104,11 @@ foreign import ccall unsafe #f77_func drotmg
            -> IO ()
 
 foreign import ccall unsafe #f77_func drotm
-    drotm :: Ptr LAInt
+    drotm :: Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> IO ()
 
@@ -117,190 +117,190 @@ foreign import ccall unsafe #f77_func drotm
 
 foreign import ccall unsafe #f77_func dgemv
     dgemv :: BLASTrans
-          -> Ptr LAInt
-          -> Ptr LAInt
+          -> Ptr CInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func dgbmv
     dgbmv :: BLASTrans
-          -> Ptr LAInt
-          -> Ptr LAInt
-          -> Ptr LAInt
-          -> Ptr LAInt
+          -> Ptr CInt
+          -> Ptr CInt
+          -> Ptr CInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func dtrmv
     dtrmv :: BLASUplo
           -> BLASTrans
           -> BLASDiag
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func dtpmv
     dtpmv :: BLASUplo
           -> BLASTrans
           -> BLASDiag
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func dtpsv
     dtpsv :: BLASUplo
           -> BLASTrans
           -> BLASDiag
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func dtbmv
     dtbmv :: BLASUplo
           -> BLASTrans
           -> BLASDiag
-          -> Ptr LAInt
-          -> Ptr LAInt
+          -> Ptr CInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func dtrsv
     dtrsv :: BLASUplo
           -> BLASTrans
           -> BLASDiag
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func dtbsv
     dtbsv :: BLASUplo
           -> BLASTrans
           -> BLASDiag
-          -> Ptr LAInt
-          -> Ptr LAInt
+          -> Ptr CInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func dsymv
     dsymv :: BLASUplo
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func dsbmv
     dsbmv :: BLASUplo
-          -> Ptr LAInt
-          -> Ptr LAInt
+          -> Ptr CInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func dger
-    dger  :: Ptr LAInt
-          -> Ptr LAInt
+    dger  :: Ptr CInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func dsyr
     dsyr  :: BLASUplo
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func dsyr2
     dsyr2 :: BLASUplo
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func dspmv
     dspmv :: BLASUplo
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func dspr
     dspr  :: BLASUplo
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> IO ()
 
 foreign import ccall unsafe #f77_func dspr2
     dspr2 :: BLASUplo
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> IO ()
 
@@ -310,32 +310,32 @@ foreign import ccall unsafe #f77_func dspr2
 foreign import ccall unsafe #f77_func dgemm
     dgemm  :: BLASTrans
            -> BLASTrans
-           -> Ptr LAInt
-           -> Ptr LAInt
-           -> Ptr LAInt
+           -> Ptr CInt
+           -> Ptr CInt
+           -> Ptr CInt
            -> Ptr Double
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr Double
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func dsymm
     dsymm  :: BLASSide
            -> BLASUplo
-           -> Ptr LAInt
-           -> Ptr LAInt
+           -> Ptr CInt
+           -> Ptr CInt
            -> Ptr Double
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr Double
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func dtrmm
@@ -343,13 +343,13 @@ foreign import ccall unsafe #f77_func dtrmm
            -> BLASUplo
            -> BLASTrans
            -> BLASDiag
-           -> Ptr LAInt
-           -> Ptr LAInt
+           -> Ptr CInt
+           -> Ptr CInt
            -> Ptr Double
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func dtrsm
@@ -357,39 +357,39 @@ foreign import ccall unsafe #f77_func dtrsm
            -> BLASUplo
            -> BLASTrans
            -> BLASDiag
-           -> Ptr LAInt
-           -> Ptr LAInt
+           -> Ptr CInt
+           -> Ptr CInt
            -> Ptr Double
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func dsyrk
     dsyrk  :: BLASUplo
            -> BLASTrans
-           -> Ptr LAInt
-           -> Ptr LAInt
+           -> Ptr CInt
+           -> Ptr CInt
            -> Ptr Double
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr Double
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func dsyr2k
     dsyr2k :: BLASUplo
            -> BLASTrans
-           -> Ptr LAInt
-           -> Ptr LAInt
+           -> Ptr CInt
+           -> Ptr CInt
            -> Ptr Double
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr Double
            -> Ptr Double
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()

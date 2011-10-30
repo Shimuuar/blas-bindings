@@ -44,7 +44,7 @@ class (BLAS3 e) => LAPACK e where
     unmlq :: Side -> Trans -> Int -> Int -> Int -> Ptr e -> Int -> Ptr e -> Ptr e -> Int -> IO ()
 
 
-callWithWork :: (Storable e) => (Ptr e -> Ptr LAInt -> Ptr LAInt -> IO ()) -> IO LAInt
+callWithWork :: (Storable e) => (Ptr e -> Ptr CInt -> Ptr CInt -> IO ()) -> IO CInt
 callWithWork call =
     alloca $ \pquery ->
     with (-1) $ \pnone ->
@@ -57,8 +57,8 @@ callWithWork call =
                 peek pinfo
 
 callWithWorkIWork :: (Storable e)
-    => (Ptr e -> Ptr LAInt -> Ptr LAInt -> Ptr LAInt -> Ptr LAInt -> IO ())
-    -> IO LAInt
+    => (Ptr e -> Ptr CInt -> Ptr CInt -> Ptr CInt -> Ptr CInt -> IO ())
+    -> IO CInt
 callWithWorkIWork call =
     alloca $ \pquery ->
     alloca $ \piquery ->
@@ -75,8 +75,8 @@ callWithWorkIWork call =
                         peek pinfo
 
 callWithWorkRWorkIWork :: (Storable e)
-    => (Ptr e -> Ptr LAInt -> Ptr Double -> Ptr LAInt -> Ptr LAInt -> Ptr LAInt -> Ptr LAInt -> IO ())
-    -> IO LAInt
+    => (Ptr e -> Ptr CInt -> Ptr Double -> Ptr CInt -> Ptr CInt -> Ptr CInt -> Ptr CInt -> IO ())
+    -> IO CInt
 callWithWorkRWorkIWork call =
     alloca $ \pquery ->
     alloca $ \prquery ->

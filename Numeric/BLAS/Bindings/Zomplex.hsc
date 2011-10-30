@@ -23,71 +23,71 @@ import Numeric.BLAS.Bindings.Types
 
 foreign import ccall unsafe #f77_func zdotu
     zdotu :: Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func zdotc
     zdotc :: Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 
 foreign import ccall unsafe #f77_func dznrm2
-    znrm2  :: Ptr LAInt
+    znrm2  :: Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO Double
 
 foreign import ccall unsafe #f77_func dzasum
-    zasum  :: Ptr LAInt
+    zasum  :: Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO Double
 
 foreign import ccall unsafe #f77_func izamax
-    izamax :: Ptr LAInt
+    izamax :: Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
-           -> IO LAInt
+           -> Ptr CInt
+           -> IO CInt
 
 foreign import ccall unsafe #f77_func zscal
-    zscal  :: Ptr LAInt
+    zscal  :: Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func zswap
-    zswap  :: Ptr LAInt
+    zswap  :: Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func zcopy
-    zcopy  :: Ptr LAInt
+    zcopy  :: Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func zaxpy
-    zaxpy  :: Ptr LAInt
+    zaxpy  :: Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func zrotg
@@ -98,11 +98,11 @@ foreign import ccall unsafe #f77_func zrotg
            -> IO ()
 
 foreign import ccall unsafe #f77_func zdrot
-    zdrot :: Ptr LAInt
+    zdrot :: Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr Double
           -> IO ()
@@ -112,202 +112,202 @@ foreign import ccall unsafe #f77_func zdrot
 
 foreign import ccall unsafe #f77_func zgemv
     zgemv :: BLASTrans
-          -> Ptr LAInt
-          -> Ptr LAInt
+          -> Ptr CInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func zgbmv
     zgbmv :: BLASTrans
-          -> Ptr LAInt
-          -> Ptr LAInt
-          -> Ptr LAInt
-          -> Ptr LAInt
+          -> Ptr CInt
+          -> Ptr CInt
+          -> Ptr CInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func ztrmv
     ztrmv :: BLASUplo
           -> BLASTrans
           -> BLASDiag
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func ztpmv
     ztpmv :: BLASUplo
           -> BLASTrans
           -> BLASDiag
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func ztpsv
     ztpsv :: BLASUplo
           -> BLASTrans
           -> BLASDiag
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func ztbmv
     ztbmv :: BLASUplo
           -> BLASTrans
           -> BLASDiag
-          -> Ptr LAInt
-          -> Ptr LAInt
+          -> Ptr CInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func ztrsv
     ztrsv :: BLASUplo
           -> BLASTrans
           -> BLASDiag
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func ztbsv
     ztbsv :: BLASUplo
           -> BLASTrans
           -> BLASDiag
-          -> Ptr LAInt
-          -> Ptr LAInt
+          -> Ptr CInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func zhemv
     zhemv :: BLASUplo
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func zhbmv
     zhbmv :: BLASUplo
-          -> Ptr LAInt
-          -> Ptr LAInt
+          -> Ptr CInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func zgeru
-    zgeru  :: Ptr LAInt
-           -> Ptr LAInt
+    zgeru  :: Ptr CInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func zgerc
-    zgerc  :: Ptr LAInt
-           -> Ptr LAInt
+    zgerc  :: Ptr CInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func zher
     zher  :: BLASUplo
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func zher2
     zher2 :: BLASUplo
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func zhpmv
     zhpmv :: BLASUplo
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> Ptr (Complex Double)
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> IO ()
 
 foreign import ccall unsafe #f77_func zhpr
     zhpr  :: BLASUplo
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr Double
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> IO ()
 
 foreign import ccall unsafe #f77_func zhpr2
     zhpr2 :: BLASUplo
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
-          -> Ptr LAInt
+          -> Ptr CInt
           -> Ptr (Complex Double)
           -> IO ()
 
@@ -317,47 +317,47 @@ foreign import ccall unsafe #f77_func zhpr2
 foreign import ccall unsafe #f77_func zgemm
     zgemm  :: BLASTrans
            -> BLASTrans
-           -> Ptr LAInt
-           -> Ptr LAInt
-           -> Ptr LAInt
+           -> Ptr CInt
+           -> Ptr CInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func zsymm
     zsymm  :: BLASSide
            -> BLASUplo
-           -> Ptr LAInt
-           -> Ptr LAInt
+           -> Ptr CInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func zhemm
     zhemm  :: BLASSide
            -> BLASUplo
-           -> Ptr LAInt
-           -> Ptr LAInt
+           -> Ptr CInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func ztrmm
@@ -365,13 +365,13 @@ foreign import ccall unsafe #f77_func ztrmm
            -> BLASUplo
            -> BLASTrans
            -> BLASDiag
-           -> Ptr LAInt
-           -> Ptr LAInt
+           -> Ptr CInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func ztrsm
@@ -379,67 +379,67 @@ foreign import ccall unsafe #f77_func ztrsm
            -> BLASUplo
            -> BLASTrans
            -> BLASDiag
-           -> Ptr LAInt
-           -> Ptr LAInt
+           -> Ptr CInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func zsyrk
     zsyrk  :: BLASUplo
            -> BLASTrans
-           -> Ptr LAInt
-           -> Ptr LAInt
+           -> Ptr CInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func zsyr2k
     zsyr2k :: BLASUplo
            -> BLASTrans
-           -> Ptr LAInt
-           -> Ptr LAInt
+           -> Ptr CInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func zherk
     zherk  :: BLASUplo
            -> BLASTrans
-           -> Ptr LAInt
-           -> Ptr LAInt
+           -> Ptr CInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()
 
 foreign import ccall unsafe #f77_func zher2k
     zher2k :: BLASUplo
            -> BLASTrans
-           -> Ptr LAInt
-           -> Ptr LAInt
+           -> Ptr CInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> Ptr (Complex Double)
            -> Ptr (Complex Double)
-           -> Ptr LAInt
+           -> Ptr CInt
            -> IO ()

@@ -16,12 +16,14 @@ module Numeric.LAPACK.Bindings.Types (
     EigRange(..),
     withEigRange,
     
+    CInt
     ) where
 
 import Foreign
+import Foreign.C.Types
 import Foreign.C.String
 
-import Numeric.BLAS.Bindings.Types ( LAInt )
+
 
 newtype LAEigJob = LAEigJob CString
 
@@ -50,7 +52,7 @@ data EigRange = AllEigs                       -- ^ All eigenvalues are computed
     deriving (Eq, Show)
              
 withEigRange :: EigRange
-             -> (LAEigRange -> Ptr Double -> Ptr Double -> Ptr LAInt -> Ptr LAInt -> IO a)
+             -> (LAEigRange -> Ptr Double -> Ptr Double -> Ptr CInt -> Ptr CInt -> IO a)
              -> IO a
 withEigRange eigrange f = case eigrange of
     AllEigs ->

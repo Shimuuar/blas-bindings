@@ -24,8 +24,8 @@ module Numeric.BLAS.Bindings.Types (
     BLASSide,
     Side(..),
     withSide,
-
-    LAInt,
+    
+    CInt
     ) where
 
 import Foreign
@@ -77,6 +77,3 @@ withDiag :: Diag -> (BLASDiag -> IO a) -> IO a
 withDiag diag f = flip withCString (f . BLASDiag) $ case diag of
     NonUnit -> "N"
     Unit    -> "U"
-
-
-newtype LAInt = LAInt CInt deriving (Eq, Show, Enum, Num, Ord, Storable)
