@@ -6,7 +6,7 @@
 -- Maintainer : Patrick Perry <patperry@gmail.com>
 -- Stability  : experimental
 --
--- BLAS operations.
+-- Low level bindings to the BLAS library.
 --
 
 module Numeric.BLAS.Bindings (
