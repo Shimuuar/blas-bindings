@@ -15,7 +15,10 @@ module Numeric.BLAS.Bindings (
   , module Numeric.BLAS.Bindings.Level2
   , module Numeric.BLAS.Bindings.Level3
     -- * Enums
-  , module Numeric.BLAS.Bindings.Types,
+  , Trans(..)
+  , Uplo(..)
+  , Diag(..)
+  , Side(..)
   ) where
 
 import Numeric.BLAS.Bindings.Level1

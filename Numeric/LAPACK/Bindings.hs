@@ -21,6 +21,7 @@ import Control.Exception( assert )
 import Data.Complex( Complex )
 import Foreign
 import Numeric.BLAS.Bindings
+import Numeric.BLAS.Bindings.Types
 import Numeric.LAPACK.Bindings.Types
 import Numeric.LAPACK.Bindings.Double
 import Numeric.LAPACK.Bindings.Zomplex
