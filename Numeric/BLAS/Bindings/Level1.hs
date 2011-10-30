@@ -26,20 +26,21 @@ class (Storable a) => BLAS1 a where
   -- | Copy vector into another vector. @y <- x@
   copy :: Int   -- ^ Number of elements in vector
        -> Ptr a -- ^ Source vector /x/
-       -> Int   -- ^ Index increment between elements of /x/
+       -> Int   -- ^ Stride for /x/
        -> Ptr a -- ^ Target vector /y/
-       -> Int   -- ^ Index increment between elements of /x/
+       -> Int   -- ^ Stride for /y/
        -> IO ()
 
   -- | Swap content of two vectors. @y <-> x@
   swap :: Int   -- ^ Number of elements in vector
        -> Ptr a -- ^ Source vector /x/
-       -> Int   -- ^ Index increment between elements of /x/
+       -> Int   -- ^ Stride for /x/
        -> Ptr a -- ^ Target vector /y/
-       -> Int   -- ^ Index increment between elements of /x/
+       -> Int   -- ^ Stride for /x/
        -> IO ()
 
-  -- | Computes the hermitian dot product of vector /a/ and vector /b/. For real-valued vectors is same as dotu
+  -- | Computes the hermitian dot product of vector /a/ and vector
+  -- /b/. For real-valued vectors is same as dotu
   dotc :: Int   -- ^ Number of elements in vectors
        -> Ptr a -- ^ Vector /a/
        -> Int   -- ^ Stride for /a/
@@ -56,21 +57,31 @@ class (Storable a) => BLAS1 a where
        -> IO a
 
   -- | Computes euqlidean norm of the vector
-  nrm2 :: Int
-       -> Ptr a
-       -> Int
+  nrm2 :: Int   -- ^ Number of elements in vector
+       -> Ptr a -- ^ Vector /a/
+       -> Int   -- ^ Stride for /a/
        -> IO Double
 
   -- | Compute sums of absolute values of a vector
-  asum  :: Int -> Ptr a -> Int -> IO Double
+  asum  :: Int   -- ^ Number of elements in vector
+        -> Ptr a -- ^ Vector /a/
+        -> Int   -- ^ Stride for /a/
+        -> IO Double
 
-  -- NOT IN BLAS
-  iamax :: Int -> Ptr a -> Int -> IO Int
+  -- | Finds index of maximum absolute value in the vector
+  iamax :: Int    -- ^ Number of elements in vector
+        -> Ptr a  -- ^ Vector /a/
+        -> Int    -- ^ Stride for /a/
+        -> IO Int
 
-  -- | Scale vector
-  scal  :: Int -> a -> Ptr a -> Int -> IO ()
+  -- | Scale all vector by constant
+  scal  :: Int   -- ^ Number of elements in the vector
+        -> a     -- ^ Scale factor
+        -> Ptr a -- ^ Vector /x/
+        -> Int   -- ^ Stride for /x/
+        -> IO ()
 
-  -- | @y <- alpha * x + y@
+  -- | Adds scaled vector to another vector. @y <- alpha * x + y@
   axpy  :: Int   -- ^ Number of elements in vector
         -> a     -- ^ /alpha/ coefficient
         -> Ptr a -- ^ Vector /x/
@@ -79,15 +90,15 @@ class (Storable a) => BLAS1 a where
         -> Int   -- ^ Stride for /y/
         -> IO ()
 
-  -- | computes the elements of a Givens plane rotation matrix such
+  -- | computes the elements of a given plane rotation matrix such
   --   that:
   --
   -- > | c  s |   | a |    | r |
   -- > |-s  c | * | b | =  | 0 |
   rotg  :: Ptr a -- ^ /a/
         -> Ptr a -- ^ /b/
-        -> Ptr a -- ^ cosine of angle
-        -> Ptr a -- ^ sine of angle
+        -> Ptr a -- ^ cosine of rotation angle
+        -> Ptr a -- ^ sine of rotation angle
         -> IO ()
 
   -- | Plane rotation subroutine
