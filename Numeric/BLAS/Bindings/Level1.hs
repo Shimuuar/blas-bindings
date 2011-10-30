@@ -16,7 +16,7 @@ module Numeric.BLAS.Bindings.Level1 (
 
 import Foreign                  ( Storable, Ptr, peek, with )
 import Foreign.Storable.Complex ()
-import Data.Complex             ( Complex(..) )
+import Data.Complex             ( Complex )
 
 import Numeric.BLAS.Bindings.Types
 import Numeric.BLAS.Bindings.Double
