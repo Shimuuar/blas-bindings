@@ -9,27 +9,31 @@
 --
 
 module Numeric.BLAS.Bindings.Types (
-    BLASTrans,
-    Trans(..),
-    withTrans,
+    BLASTrans
+  , Trans(..)
+  , withTrans
 
-    BLASUplo,
-    Uplo(..),
-    withUplo,
+  , BLASUplo
+  , Uplo(..)
+  , withUplo
 
-    BLASDiag,
-    Diag(..),
-    withDiag,
+  , BLASDiag
+  , Diag(..)
+  , withDiag
 
-    BLASSide,
-    Side(..),
-    withSide,
-    
-    CInt
-    ) where
+  , BLASSide
+  , Side(..)
+  , withSide
 
-import Foreign.C.Types
-import Foreign.C.String
+  , CInt
+  , withCI
+  ) where
+
+import Foreign          (Ptr,with)
+import Foreign.C.Types  (CInt)
+import Foreign.C.String (CString,withCString)
+
+
 
 newtype BLASTrans = BLASTrans CString
 
@@ -76,3 +80,8 @@ withDiag :: Diag -> (BLASDiag -> IO a) -> IO a
 withDiag diag f = flip withCString (f . BLASDiag) $ case diag of
     NonUnit -> "N"
     Unit    -> "U"
+
+
+withCI :: Int -> (Ptr CInt -> IO b) -> IO b
+withCI = with . fromIntegral
+{-# INLINE withCI #-}

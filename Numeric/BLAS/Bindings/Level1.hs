@@ -15,10 +15,10 @@ module Numeric.BLAS.Bindings.Level1 (
     ) where
 
 import Foreign                  ( Storable, Ptr, peek, with )
-import Foreign.C.Types          ( CInt )
 import Foreign.Storable.Complex ()
 import Data.Complex             ( Complex(..) )
 
+import Numeric.BLAS.Bindings.Types
 import Numeric.BLAS.Bindings.Double
 import Numeric.BLAS.Bindings.Zomplex
 
@@ -112,10 +112,6 @@ class (Storable a) => BLAS1 a where
         -> Double -- ^ Sine of rotation angle
         -> IO ()
 
-
-withCI :: Int -> (Ptr CInt -> IO b) -> IO b
-withCI = with . fromIntegral
-{-# INLINE withCI #-}
 
 instance BLAS1 Double where
     copy n px incx py incy =

@@ -195,10 +195,6 @@ class (BLAS1 a) => BLAS2 a where
          -> IO ()
 
 
-withCI :: Int -> (Ptr CInt -> IO b) -> IO b
-withCI = with . fromIntegral
-{-# INLINE withCI #-}
-
 instance BLAS2 Double where
     gemv transa m n alpha pa lda px incx beta py incy =
         withTrans transa $ \ptransa ->
