@@ -28,7 +28,6 @@ module Numeric.BLAS.Bindings.Types (
     CInt
     ) where
 
-import Foreign
 import Foreign.C.Types
 import Foreign.C.String
 
