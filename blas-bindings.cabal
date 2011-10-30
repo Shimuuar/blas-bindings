@@ -51,8 +51,9 @@ Library
                         Numeric.LAPACK.Bindings.Zomplex
                         
     
-    includes:           cbits/config.h
     include-dirs:       cbits
+    includes:           cbits/config.h
+                        cbits/f77_func-hsc.h
 
     ghc-options:        -Wall -O2
     
