@@ -15,8 +15,8 @@ module Numeric.BLAS.Bindings.Level3 (
     ) where
      
 import Data.Complex 
-import Foreign( Ptr, Storable, with )
-
+import Foreign         ( Ptr, with )
+                        
 import Numeric.BLAS.Bindings.Types
 import Numeric.BLAS.Bindings.Level2
 import Numeric.BLAS.Bindings.Double
@@ -138,36 +138,36 @@ class (BLAS2 a) => BLAS3 a where
           -> IO ()
   
 
-withEnum :: (Enum a, Storable a) => Int -> (Ptr a -> IO b) -> IO b
-withEnum = with . toEnum
-{-# INLINE withEnum #-}
+withCI :: Int -> (Ptr CInt -> IO b) -> IO b
+withCI = with . fromIntegral
+{-# INLINE withCI #-}
   
     
 instance BLAS3 Double where
     gemm transa transb m n k alpha pa lda pb ldb beta pc ldc =
         withTrans transa $ \ptransa ->
         withTrans transb $ \ptransb ->
-        withEnum m $ \pm ->
-        withEnum n $ \pn ->
-        withEnum k $ \pk ->
+        withCI m $ \pm ->
+        withCI n $ \pn ->
+        withCI k $ \pk ->
         with alpha $ \palpha ->
-        withEnum lda $ \plda ->
-        withEnum ldb $ \pldb ->
+        withCI lda $ \plda ->
+        withCI ldb $ \pldb ->
         with beta $ \pbeta ->
-        withEnum ldc $ \pldc ->
+        withCI ldc $ \pldc ->
             dgemm ptransa ptransb pm pn pk palpha pa plda pb pldb pbeta pc pldc
     {-# INLINE gemm #-}
 
     symm side uplo m n alpha pa lda pb ldb beta pc ldc =
         withSide side $ \pside ->
         withUplo uplo $ \puplo ->
-        withEnum m $ \pm ->
-        withEnum n $ \pn ->
+        withCI m $ \pm ->
+        withCI n $ \pn ->
         with alpha $ \palpha ->
-        withEnum lda $ \plda ->
-        withEnum ldb $ \pldb ->
+        withCI lda $ \plda ->
+        withCI ldb $ \pldb ->
         with beta $ \pbeta ->
-        withEnum ldc $ \pldc ->
+        withCI ldc $ \pldc ->
             dsymm pside puplo pm pn palpha pa plda pb pldb pbeta pc pldc
     {-# INLINE symm #-}
 
@@ -179,11 +179,11 @@ instance BLAS3 Double where
         withUplo uplo $ \puplo ->
         withTrans transa $ \ptransa ->
         withDiag diag $ \pdiag ->
-        withEnum m $ \pm ->
-        withEnum n $ \pn ->
+        withCI m $ \pm ->
+        withCI n $ \pn ->
         with alpha $ \palpha ->
-        withEnum lda $ \plda ->
-        withEnum ldb $ \pldb ->
+        withCI lda $ \plda ->
+        withCI ldb $ \pldb ->
             dtrmm pside puplo ptransa pdiag pm pn palpha pa plda pb pldb
     {-# INLINE trmm #-}
 
@@ -192,36 +192,36 @@ instance BLAS3 Double where
         withUplo uplo $ \puplo ->
         withTrans transa $ \ptransa ->
         withDiag diag $ \pdiag ->
-        withEnum m $ \pm ->
-        withEnum n $ \pn ->
+        withCI m $ \pm ->
+        withCI n $ \pn ->
         with alpha $ \palpha ->
-        withEnum lda $ \plda ->
-        withEnum ldb $ \pldb ->
+        withCI lda $ \plda ->
+        withCI ldb $ \pldb ->
             dtrsm pside puplo ptransa pdiag pm pn palpha pa plda pb pldb
     {-# INLINE trsm #-}
 
     syrk uplo transa n k alpha pa lda beta pc ldc =
         withUplo uplo $ \puplo ->
         withTrans transa $ \ptransa ->
-        withEnum n $ \pn ->
-        withEnum k $ \pk ->
+        withCI n $ \pn ->
+        withCI k $ \pk ->
         with alpha $ \palpha ->
-        withEnum lda $ \plda ->
+        withCI lda $ \plda ->
         with beta $ \pbeta ->
-        withEnum ldc $ \pldc ->
+        withCI ldc $ \pldc ->
             dsyrk puplo ptransa pn pk palpha pa plda pbeta pc pldc
     {-# INLINE syrk #-}
 
     syr2k uplo transa n k alpha pa lda pb ldb beta pc ldc =
         withUplo uplo $ \puplo ->
         withTrans transa $ \ptransa ->
-        withEnum n $ \pn ->
-        withEnum k $ \pk ->
+        withCI n $ \pn ->
+        withCI k $ \pk ->
         with alpha $ \palpha ->
-        withEnum lda $ \plda ->
-        withEnum ldb $ \pldb ->
+        withCI lda $ \plda ->
+        withCI ldb $ \pldb ->
         with beta $ \pbeta ->
-        withEnum ldc $ \pldc ->
+        withCI ldc $ \pldc ->
             dsyr2k puplo ptransa pn pk palpha pa plda pb pldb pbeta pc pldc
     {-# INLINE syr2k #-}
 
@@ -236,40 +236,40 @@ instance BLAS3 (Complex Double) where
     gemm transa transb m n k alpha pa lda pb ldb beta pc ldc =
         withTrans transa $ \ptransa ->
         withTrans transb $ \ptransb ->
-        withEnum m $ \pm ->
-        withEnum n $ \pn ->
-        withEnum k $ \pk ->
+        withCI m $ \pm ->
+        withCI n $ \pn ->
+        withCI k $ \pk ->
         with alpha $ \palpha ->
-        withEnum lda $ \plda ->
-        withEnum ldb $ \pldb ->
+        withCI lda $ \plda ->
+        withCI ldb $ \pldb ->
         with beta $ \pbeta ->
-        withEnum ldc $ \pldc ->
+        withCI ldc $ \pldc ->
             zgemm ptransa ptransb pm pn pk palpha pa plda pb pldb pbeta pc pldc
     {-# INLINE gemm #-}
 
     symm side uplo m n alpha pa lda pb ldb beta pc ldc =
         withSide side $ \pside ->
         withUplo uplo $ \puplo ->
-        withEnum m $ \pm ->
-        withEnum n $ \pn ->
+        withCI m $ \pm ->
+        withCI n $ \pn ->
         with alpha $ \palpha ->
-        withEnum lda $ \plda ->
-        withEnum ldb $ \pldb ->
+        withCI lda $ \plda ->
+        withCI ldb $ \pldb ->
         with beta $ \pbeta ->
-        withEnum ldc $ \pldc ->
+        withCI ldc $ \pldc ->
             zsymm pside puplo pm pn palpha pa plda pb pldb pbeta pc pldc
     {-# INLINE symm #-}
 
     hemm side uplo m n alpha pa lda pb ldb beta pc ldc =
         withSide side $ \pside ->
         withUplo uplo $ \puplo ->
-        withEnum m $ \pm ->
-        withEnum n $ \pn ->
+        withCI m $ \pm ->
+        withCI n $ \pn ->
         with alpha $ \palpha ->
-        withEnum lda $ \plda ->
-        withEnum ldb $ \pldb ->
+        withCI lda $ \plda ->
+        withCI ldb $ \pldb ->
         with beta $ \pbeta ->
-        withEnum ldc $ \pldc ->
+        withCI ldc $ \pldc ->
             zhemm pside puplo pm pn palpha pa plda pb pldb pbeta pc pldc
     {-# INLINE hemm #-}
 
@@ -278,11 +278,11 @@ instance BLAS3 (Complex Double) where
         withUplo uplo $ \puplo ->
         withTrans transa $ \ptransa ->
         withDiag diag $ \pdiag ->
-        withEnum m $ \pm ->
-        withEnum n $ \pn ->
+        withCI m $ \pm ->
+        withCI n $ \pn ->
         with alpha $ \palpha ->
-        withEnum lda $ \plda ->
-        withEnum ldb $ \pldb ->
+        withCI lda $ \plda ->
+        withCI ldb $ \pldb ->
             ztrmm pside puplo ptransa pdiag pm pn palpha pa plda pb pldb
     {-# INLINE trmm #-}
 
@@ -291,60 +291,60 @@ instance BLAS3 (Complex Double) where
         withUplo uplo $ \puplo ->
         withTrans transa $ \ptransa ->
         withDiag diag $ \pdiag ->
-        withEnum m $ \pm ->
-        withEnum n $ \pn ->
+        withCI m $ \pm ->
+        withCI n $ \pn ->
         with alpha $ \palpha ->
-        withEnum lda $ \plda ->
-        withEnum ldb $ \pldb ->
+        withCI lda $ \plda ->
+        withCI ldb $ \pldb ->
             ztrsm pside puplo ptransa pdiag pm pn palpha pa plda pb pldb
     {-# INLINE trsm #-}
 
     syrk uplo transa n k alpha pa lda beta pc ldc =
         withUplo uplo $ \puplo ->
         withTrans transa $ \ptransa ->
-        withEnum n $ \pn ->
-        withEnum k $ \pk ->
+        withCI n $ \pn ->
+        withCI k $ \pk ->
         with alpha $ \palpha ->
-        withEnum lda $ \plda ->
+        withCI lda $ \plda ->
         with beta $ \pbeta ->
-        withEnum ldc $ \pldc ->
+        withCI ldc $ \pldc ->
             zsyrk puplo ptransa pn pk palpha pa plda pbeta pc pldc
     {-# INLINE syrk #-}
 
     syr2k uplo transa n k alpha pa lda pb ldb beta pc ldc =
         withUplo uplo $ \puplo ->
         withTrans transa $ \ptransa ->
-        withEnum n $ \pn ->
-        withEnum k $ \pk ->
+        withCI n $ \pn ->
+        withCI k $ \pk ->
         with alpha $ \palpha ->
-        withEnum lda $ \plda ->
-        withEnum ldb $ \pldb ->
+        withCI lda $ \plda ->
+        withCI ldb $ \pldb ->
         with beta $ \pbeta ->
-        withEnum ldc $ \pldc ->
+        withCI ldc $ \pldc ->
             zsyr2k puplo ptransa pn pk palpha pa plda pb pldb pbeta pc pldc
     {-# INLINE syr2k #-}
 
     herk uplo transa n k alpha pa lda beta pc ldc =
         withUplo uplo $ \puplo ->
         withTrans transa $ \ptransa ->
-        withEnum n $ \pn ->
-        withEnum k $ \pk ->
+        withCI n $ \pn ->
+        withCI k $ \pk ->
         with alpha $ \palpha ->
-        withEnum lda $ \plda ->
+        withCI lda $ \plda ->
         with beta $ \pbeta ->
-        withEnum ldc $ \pldc ->
+        withCI ldc $ \pldc ->
             zherk puplo ptransa pn pk palpha pa plda pbeta pc pldc
     {-# INLINE herk #-}
 
     her2k uplo transa n k alpha pa lda pb ldb beta pc ldc =
         withUplo uplo $ \puplo ->
         withTrans transa $ \ptransa ->
-        withEnum n $ \pn ->
-        withEnum k $ \pk ->
+        withCI n $ \pn ->
+        withCI k $ \pk ->
         with alpha $ \palpha ->
-        withEnum lda $ \plda ->
-        withEnum ldb $ \pldb ->
+        withCI lda $ \plda ->
+        withCI ldb $ \pldb ->
         with beta $ \pbeta ->
-        withEnum ldc $ \pldc ->
+        withCI ldc $ \pldc ->
             zher2k puplo ptransa pn pk palpha pa plda pb pldb pbeta pc pldc
     {-# INLINE her2k #-}
