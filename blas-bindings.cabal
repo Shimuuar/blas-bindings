@@ -1,4 +1,4 @@
-name:            linear-algebra
+name:            blas-bindings
 version:         0.8
 homepage:        http://github.com/patperry/hs-linear-algebra
 synopsis:        A linear algebra library with bindings to BLAS and LAPACK
