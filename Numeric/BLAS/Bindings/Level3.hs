@@ -24,15 +24,118 @@ import Numeric.BLAS.Bindings.Zomplex
 
 -- | Types with matrix-matrix operations.        
 class (BLAS2 a) => BLAS3 a where
-    gemm  :: Trans -> Trans -> Int -> Int -> Int -> a -> Ptr a -> Int -> Ptr a -> Int -> a -> Ptr a -> Int -> IO ()
-    symm  :: Side -> Uplo -> Int -> Int -> a -> Ptr a -> Int -> Ptr a -> Int -> a -> Ptr a -> Int -> IO ()
-    hemm  :: Side -> Uplo -> Int -> Int -> a -> Ptr a -> Int -> Ptr a -> Int -> a -> Ptr a -> Int -> IO ()
-    trmm  :: Side -> Uplo -> Trans -> Diag -> Int -> Int -> a -> Ptr a -> Int -> Ptr a -> Int -> IO ()
-    trsm  :: Side -> Uplo -> Trans -> Diag -> Int -> Int -> a -> Ptr a -> Int -> Ptr a -> Int -> IO ()
-    syrk  :: Uplo -> Trans -> Int -> Int -> a -> Ptr a -> Int -> a -> Ptr a -> Int -> IO ()
-    syr2k :: Uplo -> Trans -> Int -> Int -> a -> Ptr a -> Int -> Ptr a -> Int -> a -> Ptr a -> Int -> IO ()
-    herk  :: Uplo -> Trans -> Int -> Int -> a -> Ptr a -> Int -> a -> Ptr a -> Int -> IO ()
-    her2k :: Uplo -> Trans -> Int -> Int -> a -> Ptr a -> Int -> Ptr a -> Int -> a -> Ptr a -> Int -> IO ()
+    gemm  :: Trans
+          -> Trans
+          -> Int
+          -> Int
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> Ptr a
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> IO ()
+    symm  :: Side
+          -> Uplo
+          -> Int
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> Ptr a
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> IO ()
+    hemm  :: Side
+          -> Uplo
+          -> Int
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> Ptr a
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> IO ()
+    trmm  :: Side
+          -> Uplo
+          -> Trans
+          -> Diag
+          -> Int
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> Ptr a
+          -> Int
+          -> IO ()
+    trsm  :: Side
+          -> Uplo
+          -> Trans
+          -> Diag
+          -> Int
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> Ptr a
+          -> Int
+          -> IO ()
+    syrk  :: Uplo
+          -> Trans
+          -> Int
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> IO ()
+    syr2k :: Uplo
+          -> Trans
+          -> Int
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> Ptr a
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> IO ()
+    herk  :: Uplo
+          -> Trans
+          -> Int
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> IO ()
+    her2k :: Uplo
+          -> Trans
+          -> Int
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> Ptr a
+          -> Int
+          -> a
+          -> Ptr a
+          -> Int
+          -> IO ()
   
 
 withEnum :: (Enum a, Storable a) => Int -> (Ptr a -> IO b) -> IO b
