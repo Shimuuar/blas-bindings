@@ -14,9 +14,10 @@ module Numeric.BLAS.Bindings.Level1 (
     BLAS1(..),
     ) where
 
-import Foreign( Storable, Ptr, peek, with )
-import Foreign.Storable.Complex()
-import Data.Complex( Complex(..) )
+import Foreign                  ( Storable, Ptr, peek, with )
+import Foreign.C.Types          ( CInt )
+import Foreign.Storable.Complex ()
+import Data.Complex             ( Complex(..) )
 
 import Numeric.BLAS.Bindings.Double
 import Numeric.BLAS.Bindings.Zomplex
@@ -112,29 +113,29 @@ class (Storable a) => BLAS1 a where
         -> IO ()
 
 
-withEnum :: (Enum a, Storable a) => Int -> (Ptr a -> IO b) -> IO b
-withEnum = with . toEnum
-{-# INLINE withEnum #-}
+withCI :: Int -> (Ptr CInt -> IO b) -> IO b
+withCI = with . fromIntegral
+{-# INLINE withCI #-}
 
 instance BLAS1 Double where
     copy n px incx py incy =
-        withEnum n $ \pn ->
-        withEnum incx $ \pincx ->
-        withEnum incy $ \pincy ->
+        withCI n    $ \pn ->
+        withCI incx $ \pincx ->
+        withCI incy $ \pincy ->
             dcopy pn px pincx py pincy
     {-# INLINE copy #-}
 
     swap n px incx py incy =
-        withEnum n $ \pn ->
-        withEnum incx $ \pincx ->
-        withEnum incy $ \pincy ->
+        withCI n    $ \pn ->
+        withCI incx $ \pincx ->
+        withCI incy $ \pincy ->
             dswap pn px pincx py pincy
     {-# INLINE swap #-}
 
     dotc n px incx py incy =
-        withEnum n $ \pn ->
-        withEnum incx $ \pincx ->
-        withEnum incy $ \pincy ->
+        withCI n    $ \pn ->
+        withCI incx $ \pincx ->
+        withCI incy $ \pincy ->
             ddot pn px pincx py pincy
     {-# INLINE dotc #-}
 
@@ -142,36 +143,36 @@ instance BLAS1 Double where
     {-# INLINE dotu #-}
 
     nrm2 n px incx =
-        withEnum n $ \pn ->
-        withEnum incx $ \pincx ->
+        withCI n $ \pn ->
+        withCI incx $ \pincx ->
             dnrm2 pn px pincx
     {-# INLINE nrm2 #-}
 
     asum n px incx =
-        withEnum n $ \pn ->
-        withEnum incx $ \pincx ->
+        withCI n $ \pn ->
+        withCI incx $ \pincx ->
             dasum pn px pincx
     {-# INLINE asum #-}
 
     iamax n px incx =
-        withEnum n $ \pn ->
-        withEnum incx $ \pincx -> do
-            i <- idamax pn px pincx
-            return $! fromEnum (i - 1)
+        withCI n    $ \pn ->
+        withCI incx $ \pincx -> do
+          i <- idamax pn px pincx
+          return $! fromIntegral (i - 1)
     {-# INLINE iamax #-}
 
     axpy n alpha px incx py incy =
-        withEnum n $ \pn ->
-        with alpha $ \palpha ->
-        withEnum incx $ \pincx ->
-        withEnum incy $ \pincy ->
+        withCI n     $ \pn ->
+        with   alpha $ \palpha ->
+        withCI incx  $ \pincx ->
+        withCI incy  $ \pincy ->
             daxpy pn palpha px pincx py pincy
     {-# INLINE axpy #-}
 
     scal n alpha px incx =
-        withEnum n $ \pn ->
-        with alpha $ \palpha ->
-        withEnum incx $ \pincx ->
+        withCI n     $ \pn ->
+        with   alpha $ \palpha ->
+        withCI incx  $ \pincx ->
             dscal pn palpha px pincx
     {-# INLINE scal #-}
 
@@ -179,79 +180,79 @@ instance BLAS1 Double where
     {-# INLINE rotg #-}
 
     rot n px incx py incy c s =
-        withEnum n $ \pn ->
-        withEnum incx $ \pincx ->
-        withEnum incy $ \pincy ->
-        with c $ \pc ->
-        with s $ \ps ->
+        withCI n    $ \pn ->
+        withCI incx $ \pincx ->
+        withCI incy $ \pincy ->
+        with   c    $ \pc ->
+        with   s    $ \ps ->
             drot pn px pincx py pincy pc ps
     {-# INLINE rot #-}
 
 
 instance BLAS1 (Complex Double) where
     copy n px incx py incy =
-        withEnum n $ \pn ->
-        withEnum incx $ \pincx ->
-        withEnum incy $ \pincy ->
+        withCI n    $ \pn ->
+        withCI incx $ \pincx ->
+        withCI incy $ \pincy ->
             zcopy pn px pincx py pincy
     {-# INLINE copy #-}
 
     swap n px incx py incy =
-        withEnum n $ \pn ->
-        withEnum incx $ \pincx ->
-        withEnum incy $ \pincy ->
+        withCI n    $ \pn ->
+        withCI incx $ \pincx ->
+        withCI incy $ \pincy ->
             zswap pn px pincx py pincy
     {-# INLINE swap #-}
 
     dotc n px incx py incy =
-        withEnum n $ \pn ->
-        withEnum incx $ \pincx ->
-        withEnum incy $ \pincy ->
-        with 0 $ \pdotc -> do
-            zdotc pdotc pn px pincx py pincy
-            peek pdotc
+        withCI n    $ \pn ->
+        withCI incx $ \pincx ->
+        withCI incy $ \pincy ->
+        with   0    $ \pdotc -> do
+          zdotc pdotc pn px pincx py pincy
+          peek pdotc
     {-# INLINE dotc #-}
 
     dotu n px incx py incy =
-        withEnum n $ \pn ->
-        withEnum incx $ \pincx ->
-        withEnum incy $ \pincy ->
-        with 0 $ \pdotu -> do
-            zdotu pdotu pn px pincx py pincy
-            peek pdotu
+        withCI n    $ \pn ->
+        withCI incx $ \pincx ->
+        withCI incy $ \pincy ->
+        with   0    $ \pdotu -> do
+          zdotu pdotu pn px pincx py pincy
+          peek pdotu
     {-# INLINE dotu #-}
 
     nrm2 n px incx =
-        withEnum n $ \pn ->
-        withEnum incx $ \pincx ->
+        withCI n    $ \pn ->
+        withCI incx $ \pincx ->
             znrm2 pn px pincx
     {-# INLINE nrm2 #-}
 
     asum n px incx =
-        withEnum n $ \pn ->
-        withEnum incx $ \pincx ->
+        withCI n    $ \pn ->
+        withCI incx $ \pincx ->
             zasum pn px pincx
     {-# INLINE asum #-}
 
     iamax n px incx =
-        withEnum n $ \pn ->
-        withEnum incx $ \pincx -> do
+        withCI n    $ \pn ->
+        withCI incx $ \pincx -> do
             i <- izamax pn px pincx
-            return $! fromEnum (i - 1)
+            return $! fromIntegral (i - 1)
     {-# INLINE iamax #-}
 
     axpy n alpha px incx py incy =
-        withEnum n $ \pn ->
-        with alpha $ \palpha ->
-        withEnum incx $ \pincx ->
-        withEnum incy $ \pincy ->
+        withCI n     $ \pn ->
+        with   alpha $ \palpha ->
+        withCI incx  $ \pincx ->
+        withCI incy  $ \pincy ->
             zaxpy pn palpha px pincx py pincy
     {-# INLINE axpy #-}
 
     scal n alpha px incx =
-        withEnum n $ \pn ->
-        with alpha $ \palpha ->
-        withEnum incx $ \pincx ->
+        withCI n     $ \pn ->
+        with   alpha $ \palpha ->
+        withCI incx  $ \pincx ->
             zscal pn palpha px pincx
     {-# INLINE scal #-}
 
@@ -259,9 +260,9 @@ instance BLAS1 (Complex Double) where
     {-# INLINE rotg #-}
 
     rot n px incx py incy c s =
-        withEnum n $ \pn ->
-        withEnum incx $ \pincx ->
-        withEnum incy $ \pincy ->
+        withCI n    $ \pn ->
+        withCI incx $ \pincx ->
+        withCI incy $ \pincy ->
         with c $ \pc ->
         with s $ \ps ->
             zdrot pn px pincx py pincy pc ps
