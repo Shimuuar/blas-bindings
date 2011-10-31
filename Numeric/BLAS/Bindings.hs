@@ -11,10 +11,13 @@
 
 module Numeric.BLAS.Bindings (
     -- * BLAS typeclasses
+    -- ** Level 1
     module Numeric.BLAS.Bindings.Level1
+    -- ** Level 2
   , module Numeric.BLAS.Bindings.Level2
+    -- ** Level 3
   , module Numeric.BLAS.Bindings.Level3
-    -- * Enums
+    -- * Enumerations
   , Trans(..)
   , Uplo(..)
   , Diag(..)

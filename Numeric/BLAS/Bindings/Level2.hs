@@ -24,51 +24,59 @@ import Numeric.BLAS.Bindings.Zomplex
    
 -- | Types with matrix-vector operations.
 class (BLAS1 a) => BLAS2 a where
-    gbmv :: Trans 
-         -> Int 
-         -> Int 
-         -> Int 
-         -> Int 
-         -> a 
-         -> Ptr a 
-         -> Int 
-         -> Ptr a 
-         -> Int 
-         -> a 
-         -> Ptr a 
-         -> Int 
+    -- | Compute matrix-vector multiplication with banded matrix.
+    --   @y <- alpha*A*x + beta*y@ Matrix /A/ is transformed according to
+    --   'Trans' parameter.
+    gbmv :: Trans -- ^ Matrix transformation
+         -> Int   -- ^ /M/  number of row
+         -> Int   -- ^ /N/  number of columns
+         -> Int   -- ^ /KL/ number of sub-diagonals @KL >= 0@
+         -> Int   -- ^ /KU/ number of super-diagonals @KU >= 0@
+         -> a     -- ^ Scalar /alpha/
+         -> Ptr a -- ^ Matrix data
+         -> Int   -- ^ /LDA/ first dimension of matrix @LDA >= KL + KU + 1@
+         -> Ptr a -- ^ vector /x/
+         -> Int   -- ^ Stride of /x/
+         -> a     -- ^ Scalar /beta/
+         -> Ptr a -- ^ Vector /y/
+         -> Int   -- ^ Stride of /y/
          -> IO ()
-    gemv :: Trans 
-         -> Int 
-         -> Int 
-         -> a 
-         -> Ptr a 
-         -> Int 
-         -> Ptr a 
-         -> Int 
-         -> a 
-         -> Ptr a 
-         -> Int 
+    -- | Compute matrix-vector multiplication with dense matrix.
+    --   @y <- alpha*A*x + beta*y@. Matrix /A/ is transformed according to
+    -- 'Trans' parameter.
+    gemv :: Trans -- ^ Matrix transformation
+         -> Int   -- ^ Number of rows
+         -> Int   -- ^ Number of columns
+         -> a     -- ^ Scalar /alpha/
+         -> Ptr a -- ^ Pointer to matrix /A/
+         -> Int   -- ^ Column size of a matrix
+         -> Ptr a -- ^ Vector /x/
+         -> Int   -- ^ Stride of /x/
+         -> a     -- ^ Scalar /beta/
+         -> Ptr a -- ^ Vector /y/
+         -> Int   -- ^ Stride of /y/
          -> IO ()
-    gerc :: Int 
-         -> Int 
-         -> a 
-         -> Ptr a 
-         -> Int 
-         -> Ptr a 
-         -> Int 
-         -> Ptr a 
-         -> Int 
+    -- | Perform rank-1 operation @A <- alpha*x*conjg(y') + A@
+    gerc :: Int   -- ^ Number of rows
+         -> Int   -- ^ Number of columns
+         -> a     -- ^ Scalar /alpha/
+         -> Ptr a -- ^ Vector /x/
+         -> Int   -- ^ Stride of /x/
+         -> Ptr a -- ^ Vector /y/
+         -> Int   -- ^ Stride of /y/
+         -> Ptr a -- ^ Matrix /A/
+         -> Int   -- ^ First dimension of /A/
          -> IO ()
-    geru :: Int 
-         -> Int 
-         -> a 
-         -> Ptr a 
-         -> Int 
-         -> Ptr a 
-         -> Int 
-         -> Ptr a 
-         -> Int 
+    -- | Perform rank-1 operation @A <- alpha*x*y' + A@
+    geru :: Int   -- ^ Number of rows
+         -> Int   -- ^ Number of columns
+         -> a     -- ^ Scalar /alpha/
+         -> Ptr a -- ^ Vector /x/
+         -> Int   -- ^ Stride of /x/
+         -> Ptr a -- ^ Vector /y/
+         -> Int   -- ^ Stride of /y/
+         -> Ptr a -- ^ Matrix /A/
+         -> Int   -- ^ First dimension of /A/
          -> IO ()
 
     hbmv :: Uplo
@@ -83,6 +91,7 @@ class (BLAS1 a) => BLAS2 a where
          -> Ptr a
          -> Int
          -> IO ()
+
     hemv :: Uplo
          -> Int
          -> a
@@ -94,14 +103,19 @@ class (BLAS1 a) => BLAS2 a where
          -> Ptr a
          -> Int
          -> IO ()
-    her  :: Uplo
-         -> Int
-         -> Double
-         -> Ptr a
-         -> Int
-         -> Ptr a
-         -> Int
+    -- | Perform operation @A <- alpha * x * conjg(x') + A@. /A/ is
+    --   hermitian or symmetric matrix
+    her  :: Uplo   -- ^ Hermitian/symmetric matrix storage mode
+         -> Int    -- ^ Size of matrix
+         -> Double -- ^ Scalar /alpha/
+         -> Ptr a  -- ^ Vector /x/
+         -> Int    -- ^ Stride of /x/
+         -> Ptr a  -- ^ Matrix data
+         -> Int    -- ^ First dimension of /A/
          -> IO ()
+
+    -- | Perform operation @A := alpha*x*conjg( y' ) + conjg( alpha )*y*conjg( x' ) + A@ 
+    --   /A/ is hermitian or symmetric matrix.
     her2 :: Uplo
          -> Int
          -> a
@@ -194,6 +208,10 @@ class (BLAS1 a) => BLAS2 a where
          -> Int
          -> IO ()
 
+
+----------------------------------------------------------------
+-- Double
+----------------------------------------------------------------
 
 instance BLAS2 Double where
     gemv transa m n alpha pa lda px incx beta py incy =
@@ -364,6 +382,11 @@ instance BLAS2 Double where
             dspr2 puplo pn palpha px pincx py pincy pap
     {-# INLINE hpr2 #-}
     
+
+
+----------------------------------------------------------------
+-- Complex Double
+----------------------------------------------------------------
 
 instance BLAS2 (Complex Double) where
     gemv transa m n alpha pa lda px incx beta py incy =
