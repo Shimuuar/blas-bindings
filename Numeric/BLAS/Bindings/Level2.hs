@@ -41,6 +41,7 @@ class (BLAS1 a) => BLAS2 a where
          -> Ptr a -- ^ Vector /y/
          -> Int   -- ^ Stride of /y/
          -> IO ()
+
     -- | Compute matrix-vector multiplication with dense matrix.
     --   @y <- alpha*A*x + beta*y@. Matrix /A/ is transformed according to
     -- 'Trans' parameter.
@@ -56,6 +57,7 @@ class (BLAS1 a) => BLAS2 a where
          -> Ptr a -- ^ Vector /y/
          -> Int   -- ^ Stride of /y/
          -> IO ()
+
     -- | Perform rank-1 operation @A <- alpha*x*conjg(y') + A@
     gerc :: Int   -- ^ Number of rows
          -> Int   -- ^ Number of columns
@@ -67,6 +69,7 @@ class (BLAS1 a) => BLAS2 a where
          -> Ptr a -- ^ Matrix /A/
          -> Int   -- ^ First dimension of /A/
          -> IO ()
+
     -- | Perform rank-1 operation @A <- alpha*x*y' + A@
     geru :: Int   -- ^ Number of rows
          -> Int   -- ^ Number of columns
@@ -79,30 +82,34 @@ class (BLAS1 a) => BLAS2 a where
          -> Int   -- ^ First dimension of /A/
          -> IO ()
 
-    hbmv :: Uplo
-         -> Int
-         -> Int
-         -> a
-         -> Ptr a
-         -> Int
-         -> Ptr a
-         -> Int
-         -> a
-         -> Ptr a
-         -> Int
+    -- | Perform matrix-vector operation @y <- alpha*A*x + beta*y@
+    --   Matrix /A/ is banded hermitian/symmetric matrix
+    hbmv :: Uplo  -- ^ Hermitian/symmetric matrix storage mode
+         -> Int   -- ^ /N/ Size of matrix
+         -> Int   -- ^ /K/ Number of super-diagonals
+         -> a     -- ^ Scalar /alpha/
+         -> Ptr a -- ^ Matrix data
+         -> Int   -- ^ First dimension of /A/
+         -> Ptr a -- ^ Vector /x/
+         -> Int   -- ^ Stride for /x/
+         -> a     -- ^ Scalar /beta/
+         -> Ptr a -- ^ Vector /y/
+         -> Int   -- ^ Stride for /y/
          -> IO ()
 
-    hemv :: Uplo
-         -> Int
-         -> a
-         -> Ptr a
-         -> Int
-         -> Ptr a
-         -> Int
-         -> a
-         -> Ptr a
-         -> Int
+    -- | Perform matrix-vector operation @y <- alpha*A*x + beta*y@
+    hemv :: Uplo  -- ^ Hermitian/symmetric matrix storage mode
+         -> Int   -- ^ Matrix size
+         -> a     -- ^ Scalar /alpha/
+         -> Ptr a -- ^ Matrix data
+         -> Int   -- ^ First dimension of /A/
+         -> Ptr a -- ^ Vector /x/
+         -> Int   -- ^ Stride for /x/
+         -> a     -- ^ Scalar /beta/
+         -> Ptr a -- ^ Vector /y/
+         -> Int   -- ^ Stride for /y/
          -> IO ()
+
     -- | Perform operation @A <- alpha * x * conjg(x') + A@. /A/ is
     --   hermitian or symmetric matrix
     her  :: Uplo   -- ^ Hermitian/symmetric matrix storage mode
@@ -116,16 +123,17 @@ class (BLAS1 a) => BLAS2 a where
 
     -- | Perform operation @A := alpha*x*conjg( y' ) + conjg( alpha )*y*conjg( x' ) + A@ 
     --   /A/ is hermitian or symmetric matrix.
-    her2 :: Uplo
-         -> Int
-         -> a
-         -> Ptr a
-         -> Int
-         -> Ptr a
-         -> Int
-         -> Ptr a
-         -> Int
+    her2 :: Uplo  -- ^ Hermitian/symmetric matrix storage mode
+         -> Int   -- ^ Size of matrix
+         -> a     -- ^ Scalar /alpha/
+         -> Ptr a -- ^ Vector /x/
+         -> Int   -- ^ Stride for /x/
+         -> Ptr a -- ^ Vector /y/
+         -> Int   -- ^ Stride for /y/
+         -> Ptr a -- ^ Matrix data
+         -> Int   -- ^ First dimenstion of matrix
          -> IO ()
+
     hpmv :: Uplo
          -> Int
          -> a
@@ -136,6 +144,7 @@ class (BLAS1 a) => BLAS2 a where
          -> Ptr a
          -> Int
          -> IO ()    
+
     hpr  :: Uplo
          -> Int
          -> Double
@@ -143,6 +152,7 @@ class (BLAS1 a) => BLAS2 a where
          -> Int
          -> Ptr a
          -> IO ()
+
     hpr2 :: Uplo
          -> Int
          -> a
@@ -163,6 +173,7 @@ class (BLAS1 a) => BLAS2 a where
          -> Ptr a
          -> Int
          -> IO ()
+         
     tbsv :: Uplo
          -> Trans
          -> Diag
@@ -173,6 +184,7 @@ class (BLAS1 a) => BLAS2 a where
          -> Ptr a
          -> Int
          -> IO ()
+
     tpmv :: Uplo
          -> Trans
          -> Diag
@@ -180,7 +192,8 @@ class (BLAS1 a) => BLAS2 a where
          -> Ptr a
          -> Ptr a
          -> Int
-         -> IO ()    
+         -> IO ()   
+ 
     tpsv :: Uplo
          -> Trans
          -> Diag
@@ -188,7 +201,8 @@ class (BLAS1 a) => BLAS2 a where
          -> Ptr a
          -> Ptr a
          -> Int
-         -> IO ()        
+         -> IO ()     
+   
     trmv :: Uplo
          -> Trans
          -> Diag
@@ -198,6 +212,7 @@ class (BLAS1 a) => BLAS2 a where
          -> Ptr a
          -> Int
          -> IO ()
+
     trsv :: Uplo
          -> Trans
          -> Diag
