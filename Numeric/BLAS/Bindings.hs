@@ -29,3 +29,17 @@ import Numeric.BLAS.Bindings.Level2
 import Numeric.BLAS.Bindings.Level3
 import Numeric.BLAS.Bindings.Types
 
+-- $matrices
+--
+-- Dense matrices are stored in column major order
+--
+-- > 1 4
+-- > 2 5
+-- > 3 6
+--
+-- Packed symmetric/hermitian matrices have two variants of storage.
+--
+-- > Upper      Lower
+-- > 1 2 4      1 4 6
+-- >   3 5      2 5
+-- >     6      3
