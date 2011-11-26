@@ -133,45 +133,53 @@ class (BLAS1 a) => BLAS2 a where
          -> Ptr a -- ^ Matrix data
          -> Int   -- ^ First dimenstion of matrix
          -> IO ()
-
-    hpmv :: Uplo
-         -> Int
-         -> a
-         -> Ptr a
-         -> Ptr a
-         -> Int
-         -> a
-         -> Ptr a
-         -> Int
+    -- | Perform opration @A := alpha*A*x + beta*y@ where A is
+    --   hermitian/symmetric matrix in the packed form.
+    hpmv :: Uplo   -- ^ Hermitian/symmetric matrix storage mode
+         -> Int    -- ^ Order of the matrix
+         -> a      -- ^ Scalar /alpha/
+         -> Ptr a  -- ^ Matrix data
+         -> Ptr a  -- ^ Vector /x/
+         -> Int    -- ^ Stride for /x/
+         -> a      -- ^ Scalar /beta/
+         -> Ptr a  -- ^ Vector /y/
+         -> Int    -- ^ Stride for /y/
          -> IO ()    
 
-    hpr  :: Uplo
-         -> Int
-         -> Double
-         -> Ptr a
-         -> Int
-         -> Ptr a
+    -- | Perform operation @A := alpha*x*conjg(x) + A@ where A is
+    --   packed hermitian/symmetric matrix
+    hpr  :: Uplo   -- ^ Hermitian/symmetric matrix storage mode
+         -> Int    -- ^ Matri order
+         -> Double -- ^ Scalar /alpha/
+         -> Ptr a  -- ^ Vector /x/
+         -> Int    -- ^ Stride for /x/
+         -> Ptr a  -- ^ Matrix data
          -> IO ()
 
-    hpr2 :: Uplo
-         -> Int
-         -> a
-         -> Ptr a
-         -> Int
-         -> Ptr a
-         -> Int
-         -> Ptr a
+    -- | Perform operation @A := alpha*x*conjg( y' ) + conjg( alpha )*y*conjg( x' ) + A@ 
+    --   /A/ is packed hermitian or symmetric matrix.
+    hpr2 :: Uplo   -- ^ Hermitian/symmetric matrix storage mode
+         -> Int    -- ^ Matrix order
+         -> a      -- ^ Scalar /alpha/
+         -> Ptr a  -- ^ Vector /x/
+         -> Int    -- ^ Stride for /x/
+         -> Ptr a  -- ^ Vector /y/
+         -> Int    -- ^ Stride for /y/
+         -> Ptr a  -- ^ Matrix /A/
          -> IO ()
 
-    tbmv :: Uplo
-         -> Trans
-         -> Diag
-         -> Int
-         -> Int
-         -> Ptr a
-         -> Int
-         -> Ptr a
-         -> Int
+    -- | Perform operation @x := A*x@ or @x := A*x'@ or @x :=
+    --   A*conjg(x')@ where @A@ is n by n unit, or non-unit, upper or
+    --   lower triangular band matrix, with ( k + 1 ) diagonals.
+    tbmv :: Uplo  -- ^ Upper or low triangular
+         -> Trans -- ^ How should matrix be transformed
+         -> Diag  -- ^ Whether matrix is unit diagonal or not
+         -> Int   -- ^ Matrix order
+         -> Int   -- ^ Number of superdiagonals /k/
+         -> Ptr a -- ^ Matrix data
+         -> Int   -- ^ Leading dimension of A (at least @k+1@)
+         -> Ptr a -- ^ Vector /x/
+         -> Int   -- ^ Stride for /x/
          -> IO ()
          
     tbsv :: Uplo
