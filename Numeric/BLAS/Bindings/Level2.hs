@@ -13,15 +13,15 @@
 module Numeric.BLAS.Bindings.Level2 (
     BLAS2(..),
     ) where
-     
-import Data.Complex 
+
+import Data.Complex
 import Foreign         ( Ptr, with )
 
 import Numeric.BLAS.Bindings.Types
 import Numeric.BLAS.Bindings.Level1
 import Numeric.BLAS.Bindings.Double
 import Numeric.BLAS.Bindings.Zomplex
-   
+
 -- | Types with matrix-vector operations.
 class (BLAS1 a) => BLAS2 a where
     -- | Compute matrix-vector multiplication with banded matrix.
@@ -82,8 +82,8 @@ class (BLAS1 a) => BLAS2 a where
          -> Int   -- ^ First dimension of /A/
          -> IO ()
 
-    -- | Perform matrix-vector operation @y <- alpha*A*x + beta*y@
-    --   Matrix /A/ is banded hermitian/symmetric matrix
+    -- | Perform operation @y <- alpha * A * x + beta * y@. /A/ is
+    --   hermitian or symmetric banded matrix
     hbmv :: Uplo  -- ^ Hermitian/symmetric matrix storage mode
          -> Int   -- ^ /N/ Size of matrix
          -> Int   -- ^ /K/ Number of super-diagonals
@@ -108,6 +108,7 @@ class (BLAS1 a) => BLAS2 a where
          -> a     -- ^ Scalar /beta/
          -> Ptr a -- ^ Vector /y/
          -> Int   -- ^ Stride for /y/
+         -> Int   -- ^ Stride for /y/
          -> IO ()
 
     -- | Perform operation @A <- alpha * x * conjg(x') + A@. /A/ is
@@ -121,7 +122,7 @@ class (BLAS1 a) => BLAS2 a where
          -> Int    -- ^ First dimension of /A/
          -> IO ()
 
-    -- | Perform operation @A := alpha*x*conjg( y' ) + conjg( alpha )*y*conjg( x' ) + A@ 
+    -- | Perform operation @A := alpha*x*conjg( y' ) + conjg( alpha )*y*conjg( x' ) + A@
     --   /A/ is hermitian or symmetric matrix.
     her2 :: Uplo  -- ^ Hermitian/symmetric matrix storage mode
          -> Int   -- ^ Size of matrix
@@ -144,7 +145,8 @@ class (BLAS1 a) => BLAS2 a where
          -> a      -- ^ Scalar /beta/
          -> Ptr a  -- ^ Vector /y/
          -> Int    -- ^ Stride for /y/
-         -> IO ()    
+         -> Int    -- ^ Stride for /y/
+         -> IO ()
 
     -- | Perform operation @A := alpha*x*conjg(x) + A@ where A is
     --   packed hermitian/symmetric matrix
@@ -200,8 +202,8 @@ class (BLAS1 a) => BLAS2 a where
          -> Ptr a
          -> Ptr a
          -> Int
-         -> IO ()   
- 
+         -> IO ()
+
     tpsv :: Uplo
          -> Trans
          -> Diag
@@ -209,8 +211,8 @@ class (BLAS1 a) => BLAS2 a where
          -> Ptr a
          -> Ptr a
          -> Int
-         -> IO ()     
-   
+         -> IO ()
+
     trmv :: Uplo
          -> Trans
          -> Diag
@@ -248,7 +250,7 @@ instance BLAS2 Double where
         withCI incy $ \pincy ->
             dgemv ptransa pm pn palpha pa plda px pincx pbeta py pincy
     {-# INLINE gemv #-}
-    
+
     gbmv transa m n kl ku alpha pa lda px incx beta py incy =
         withTrans transa $ \ptransa ->
         withCI m $ \pm ->
@@ -290,7 +292,7 @@ instance BLAS2 Double where
         withCI incx $ \pincx ->
             dtpsv puplo ptrans pdiag pn pap px pincx
     {-# INLINE tpsv #-}
-     
+
     tbmv uplo trans diag n k pa lda px incx =
         withUplo uplo $ \puplo ->
         withTrans trans $ \ptrans ->
@@ -404,7 +406,7 @@ instance BLAS2 Double where
         withCI incy $ \pincy ->
             dspr2 puplo pn palpha px pincx py pincy pap
     {-# INLINE hpr2 #-}
-    
+
 
 
 ----------------------------------------------------------------
@@ -423,7 +425,7 @@ instance BLAS2 (Complex Double) where
         withCI incy $ \pincy ->
             zgemv ptransa pm pn palpha pa plda px pincx pbeta py pincy
     {-# INLINE gemv #-}
-    
+
     gbmv transa m n kl ku alpha pa lda px incx beta py incy =
         withTrans transa $ \ptransa ->
         withCI m $ \pm ->
@@ -465,7 +467,7 @@ instance BLAS2 (Complex Double) where
         withCI incx $ \pincx ->
             ztpsv puplo ptrans pdiag pn pap px pincx
     {-# INLINE tpsv #-}
-     
+
     tbmv uplo trans diag n k pa lda px incx =
         withUplo uplo $ \puplo ->
         withTrans trans $ \ptrans ->

@@ -37,9 +37,11 @@ import Foreign.C.String (CString,withCString)
 
 newtype BLASTrans = BLASTrans CString
 
-data Trans = NoTrans
-           | Trans
-           | ConjTrans
+-- ^ Describe matrix transformation in matrix-vector or matrix-matrix
+--   operation
+data Trans = NoTrans   -- ^ Do not transpose matrix
+           | Trans     -- ^ Transpose matrix
+           | ConjTrans -- ^ Transpose and complex conjugate
            deriving (Eq, Show)
 
 withTrans :: Trans -> (BLASTrans -> IO a) -> IO a
@@ -50,8 +52,9 @@ withTrans trans f = flip withCString (f . BLASTrans) $ case trans of
 
 newtype BLASUplo = BLASUplo CString
 
-data Uplo = Upper
-          | Lower
+-- | Storage mode for symmetric/hermitian/triangular matrix
+data Uplo = Upper -- ^ Upper part should be used
+          | Lower -- ^ Lower part should be used
           deriving (Eq, Show)
 
 withUplo :: Uplo -> (BLASUplo -> IO a) -> IO a
