@@ -108,7 +108,6 @@ class (BLAS1 a) => BLAS2 a where
          -> a     -- ^ Scalar /beta/
          -> Ptr a -- ^ Vector /y/
          -> Int   -- ^ Stride for /y/
-         -> Int   -- ^ Stride for /y/
          -> IO ()
 
     -- | Perform operation @A <- alpha * x * conjg(x') + A@. /A/ is
@@ -144,7 +143,6 @@ class (BLAS1 a) => BLAS2 a where
          -> Int    -- ^ Stride for /x/
          -> a      -- ^ Scalar /beta/
          -> Ptr a  -- ^ Vector /y/
-         -> Int    -- ^ Stride for /y/
          -> Int    -- ^ Stride for /y/
          -> IO ()
 
@@ -183,54 +181,94 @@ class (BLAS1 a) => BLAS2 a where
          -> Ptr a -- ^ Vector /x/
          -> Int   -- ^ Stride for /x/
          -> IO ()
-         
-    tbsv :: Uplo
-         -> Trans
-         -> Diag
-         -> Int
-         -> Int
-         -> Ptr a
-         -> Int
-         -> Ptr a
-         -> Int
+
+    -- | Solve system of equations @A*x = b@ or @A'*x = b@ or
+    --   @conjg(A')*x = b@ where A is an n by n unit, or non-unit,
+    --   upper or lower triangular band matrix, with @k+1@
+    --   diagonals.
+    --
+    --   No test for singularity or near-singularity is included in
+    --   this routine. Such tests must be performed before calling
+    --   this routine.
+    tbsv :: Uplo  -- ^ Upper or low triangular
+         -> Trans -- ^ How should matrix be transformed
+         -> Diag  -- ^ Whether matrix unit diagonal or not
+         -> Int   -- ^ Order of matrix /A/
+         -> Int   -- ^ Number of super diagonals
+         -> Ptr a -- ^ Matrix data
+         -> Int   -- ^ Leading dimension of /A/ (at least @k+1@)
+         -> Ptr a -- ^ Before call contains right side of equation
+                  --   /b/. Ater call it is ovrwritten with solution
+                  --   /x/.
+         -> Int   -- ^ Stride of /x/,/b/
          -> IO ()
 
-    tpmv :: Uplo
-         -> Trans
-         -> Diag
-         -> Int
-         -> Ptr a
-         -> Ptr a
-         -> Int
+    -- | Perform operation @x := A*x@ or @x := A*x'@ or @x :=
+    --   A*conjg(x')@ where @A@ is n by n unit, or non-unit, upper or
+    --   lower triangular band matrix in packed form.
+    tpmv :: Uplo  -- ^ Upper or low triangular
+         -> Trans -- ^ How should matrix be transformed
+         -> Diag  -- ^ Whether matrix is unit diagonal or not
+         -> Int   -- ^ Order of matrix /A/
+         -> Ptr a -- ^ Matrix /A/
+         -> Ptr a -- ^ Vector /x/ or /x'/. Before call it contains
+                  --   original vector. After call it's overwritten
+                  --   with transformed vector
+         -> Int   -- ^ Stride for /x/, /x'/
          -> IO ()
 
-    tpsv :: Uplo
-         -> Trans
-         -> Diag
-         -> Int
-         -> Ptr a
-         -> Ptr a
-         -> Int
+    -- | solves one of the systems of equations @A*x = b@, or @A'*x =
+    --   b@, or @conjg( A' )*x = b@, where b and x are n element
+    --   vectors and A is an n by n unit, or non-unit, upper or lower
+    --   triangular matrix, supplied in packed form.
+    --
+    --   No test for singularity or near-singularity is included in
+    --   this routine. Such tests must be performed before calling
+    --   this routine.
+    tpsv :: Uplo  -- ^ Upper or low triangular 
+         -> Trans -- ^ How should matrix be transformed
+         -> Diag  -- ^ Whether matrix is unit diagonal or not
+         -> Int   -- ^ Order of matrix /A/
+         -> Ptr a -- ^ Matrix /A/
+         -> Ptr a -- ^ Vector /b/ and /x/. Befor call it contains
+                  --   right side of equation after call it contains
+                  --   solution.
+         -> Int   -- ^ Stride for /b/ or /x/
          -> IO ()
 
-    trmv :: Uplo
-         -> Trans
-         -> Diag
-         -> Int
-         -> Ptr a
-         -> Int
-         -> Ptr a
-         -> Int
+    -- | Perform operation @x := A*x@ or @x := A*x'@ or @x :=
+    --   A*conjg(x')@ where @A@ is n by n unit, or non-unit, upper or
+    --   lower triangular matrix.
+    trmv :: Uplo  -- ^ Upper or low triangular
+         -> Trans -- ^ How should matrix be transformed
+         -> Diag  -- ^ Whether matrix is unit diagonal or not
+         -> Int   -- ^ Order of matrix /A/
+         -> Ptr a -- ^ Matrix /A/
+         -> Int   -- ^ Leading dimension of /A/
+         -> Ptr a -- ^ Vector /x/ or /x'/. Before call it contains
+                  --   original vector. After call it's overwritten
+                  --   with transformed vector
+         -> Int   -- ^ Stride for /x/ or /x'/
          -> IO ()
 
-    trsv :: Uplo
-         -> Trans
-         -> Diag
-         -> Int
-         -> Ptr a
-         -> Int
-         -> Ptr a
-         -> Int
+    -- | solves one of the systems of equations @A*x = b@, or @A'*x =
+    --   b@, or @conjg( A' )*x = b@, where b and x are n element
+    --   vectors and A is an n by n unit, or non-unit, upper or lower
+    --   triangular matrix.
+    --
+    --   No test for singularity or near-singularity is included in
+    --   this routine. Such tests must be performed before calling
+    --   this routine.
+    trsv :: Uplo  -- ^ Upper or low triangular
+         -> Trans -- ^ How should matrix be transformed
+         -> Diag  -- ^ Whether matrix is unit diagonal or not
+         -> Int   -- ^ Order of matrix /A/
+         -> Ptr a -- ^ Matrix /A/
+         -> Int   -- ^ Leading dimension of /A/
+         -> Ptr a -- ^ Before call contains right side of equation
+                  --   /b/. Ater call it is ovrwritten with solution
+                  --   /x/.
+         -> Int   -- ^ Stride of /x/,/b/
          -> IO ()
 
 
