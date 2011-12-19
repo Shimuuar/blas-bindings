@@ -1,7 +1,7 @@
 AC_PREREQ([2.61])
 AC_INIT([Haskell Linear Algebra], [0.8], [patperry@gmail.com])
 
-AC_CONFIG_SRCDIR([blas-bindings.cabal])
+AC_CONFIG_SRCDIR([blas-lapack-bindings.cabal])
 AC_CONFIG_MACRO_DIR([m4])
 
 AC_ARG_WITH(compiler, 
