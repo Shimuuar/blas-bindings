@@ -1,7 +1,7 @@
-name:            blas-bindings
+name:            blas-lapack-bindings
 version:         0.8
-homepage:        http://github.com/patperry/hs-linear-algebra
-synopsis:        A linear algebra library with bindings to BLAS and LAPACK
+homepage:        http://github.com/Shimuuar/blas-lapack-bindings
+synopsis:        Low level bindings to BLAS and LAPACK
 description:
     The BLAS (Basic Linear Algebra Subprograms) are routines that provide
     standard building blocks for performing basic vector and matrix operations. 
