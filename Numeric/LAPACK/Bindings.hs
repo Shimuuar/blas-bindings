@@ -29,20 +29,91 @@ import Numeric.LAPACK.Bindings.Zomplex
 
 -- | Types with LAPACK operations.
 class (BLAS3 e) => LAPACK e where
-    geqrf :: Int -> Int -> Ptr e -> Int -> Ptr e -> IO ()
-    gelqf :: Int -> Int -> Ptr e -> Int -> Ptr e -> IO ()
-    
-    heevr :: EigJob -> EigRange -> Uplo -> Int -> Ptr e -> Int -> Double
-          -> Ptr Double -> Ptr e -> Int -> Ptr Int -> IO Int
-    
-    larfg :: Int -> Ptr e -> Ptr e -> Int -> IO e
-    potrf :: Uplo -> Int -> Ptr e -> Int -> IO Int
-    potrs :: Uplo -> Int -> Int -> Ptr e -> Int -> Ptr e -> Int -> IO ()
-    pptrf :: Uplo -> Int -> Ptr e -> IO Int
-    pptrs :: Uplo -> Int -> Int -> Ptr e -> Ptr e -> Int -> IO ()
-    
-    unmqr :: Side -> Trans -> Int -> Int -> Int -> Ptr e -> Int -> Ptr e -> Ptr e -> Int -> IO ()
-    unmlq :: Side -> Trans -> Int -> Int -> Int -> Ptr e -> Int -> Ptr e -> Ptr e -> Int -> IO ()
+  -- |
+  geqrf :: Int        -- ^
+        -> Int        -- ^
+        -> Ptr e      -- ^
+        -> Int        -- ^
+        -> Ptr e      -- ^
+        -> IO ()
+  -- |
+  gelqf :: Int        -- ^
+        -> Int        -- ^
+        -> Ptr e      -- ^
+        -> Int        -- ^
+        -> Ptr e      -- ^
+        -> IO ()
+  -- |
+  heevr :: EigJob     -- ^
+        -> EigRange   -- ^
+        -> Uplo       -- ^
+        -> Int        -- ^
+        -> Ptr e      -- ^
+        -> Int        -- ^
+        -> Double     -- ^
+        -> Ptr Double -- ^
+        -> Ptr e      -- ^
+        -> Int        -- ^
+        -> Ptr Int    -- ^
+        -> IO Int
+  -- |
+  larfg :: Int        -- ^
+        -> Ptr e      -- ^
+        -> Ptr e      -- ^
+        -> Int        -- ^
+        -> IO e       -- ^
+  -- |
+  potrf :: Uplo       -- ^
+        -> Int        -- ^
+        -> Ptr e      -- ^
+        -> Int        -- ^
+        -> IO Int
+  -- |
+  potrs :: Uplo       -- ^
+        -> Int        -- ^
+        -> Int        -- ^
+        -> Ptr e      -- ^
+        -> Int        -- ^
+        -> Ptr e      -- ^
+        -> Int        -- ^
+        -> IO ()
+  -- |
+  pptrf :: Uplo       -- ^
+        -> Int        -- ^
+        -> Ptr e      -- ^
+        -> IO Int
+  -- |
+  pptrs :: Uplo       -- ^
+        -> Int        -- ^
+        -> Int        -- ^
+        -> Ptr e      -- ^
+        -> Ptr e      -- ^
+        -> Int        -- ^
+        -> IO ()
+  -- |
+  unmqr :: Side       -- ^
+        -> Trans      -- ^
+        -> Int        -- ^
+        -> Int        -- ^
+        -> Int        -- ^
+        -> Ptr e      -- ^
+        -> Int        -- ^
+        -> Ptr e      -- ^
+        -> Ptr e      -- ^
+        -> Int        -- ^
+        -> IO ()
+  -- |
+  unmlq :: Side       -- ^
+        -> Trans      -- ^
+        -> Int        -- ^
+        -> Int        -- ^
+        -> Int        -- ^
+        -> Ptr e      -- ^
+        -> Int        -- ^
+        -> Ptr e      -- ^
+        -> Ptr e      -- ^
+        -> Int        -- ^
+        -> IO ()
 
 
 callWithWork :: (Storable e) => (Ptr e -> Ptr CInt -> Ptr CInt -> IO ()) -> IO CInt
@@ -104,7 +175,7 @@ checkInfo info = assert (info == 0) $ return ()
 withEnum :: (Enum a, Storable a) => Int -> (Ptr a -> IO b) -> IO b
 withEnum = with . toEnum
 {-# INLINE withEnum #-}
-        
+
 
 instance LAPACK Double where
     geqrf m n pa lda ptau =
@@ -127,7 +198,7 @@ instance LAPACK Double where
         withEnum lda $ \plda ->
         with abstol $ \pabstol ->
         alloca $ \pm ->
-        withEnum ldz $ \pldz -> 
+        withEnum ldz $ \pldz ->
         allocaArray nsuppz $ \psuppz' -> do
             checkInfo =<<
                 (callWithWorkIWork $
@@ -162,7 +233,7 @@ instance LAPACK Double where
         withEnum ldc $ \pldc ->
             checkInfo =<< callWithWork (dormlq pside ptrans pm pn pk pa plda ptau pc pldc)
 
-    larfg n palpha px incx = 
+    larfg n palpha px incx =
         withEnum n $ \pn ->
         withEnum incx $ \pincx ->
         alloca $ \ptau -> do
@@ -176,7 +247,7 @@ instance LAPACK Double where
         alloca $ \pinfo -> do
             dpotrf puplo pn pa plda pinfo
             info <- fromEnum `fmap` peek pinfo
-            assert (info >= 0) $ return info            
+            assert (info >= 0) $ return info
 
     potrs uplo n nrhs pa lda pb ldb =
         withUplo uplo $ \puplo ->
@@ -194,7 +265,7 @@ instance LAPACK Double where
         alloca $ \pinfo -> do
             dpptrf puplo pn pa pinfo
             info <- fromEnum `fmap` peek pinfo
-            assert (info >= 0) $ return info            
+            assert (info >= 0) $ return info
 
     pptrs uplo n nrhs pa pb ldb =
         withUplo uplo $ \puplo ->
@@ -227,7 +298,7 @@ instance LAPACK (Complex Double) where
         withEnum lda $ \plda ->
         with abstol $ \pabstol ->
         alloca $ \pm ->
-        withEnum ldz $ \pldz -> 
+        withEnum ldz $ \pldz ->
         allocaArray nsuppz $ \psuppz' -> do
             checkInfo =<<
                 (callWithWorkRWorkIWork $
@@ -262,7 +333,7 @@ instance LAPACK (Complex Double) where
         withEnum ldc $ \pldc ->
             checkInfo =<< callWithWork (zunmlq pside ptrans pm pn pk pa plda ptau pc pldc)
 
-    larfg n palpha px incx = 
+    larfg n palpha px incx =
         withEnum n $ \pn ->
         withEnum incx $ \pincx ->
         alloca $ \ptau -> do
