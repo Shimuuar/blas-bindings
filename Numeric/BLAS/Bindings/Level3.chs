@@ -10,7 +10,7 @@
 --
 -- Matrix-Matrix operations.
 --
-#include <altas/cblas.h>
+#include "blas.h"
 module Numeric.BLAS.Bindings.Level3 (
     BLAS3(..),
     ) where

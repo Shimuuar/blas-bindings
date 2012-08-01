@@ -7,7 +7,7 @@
 -- Maintainer : Patrick Perry <patperry@gmail.com>
 -- Stability  : experimental
 --
-#include <atlas/cblas.h>
+#include "blas.h"
 module Numeric.BLAS.Bindings.Types where
 
 import Data.Complex     (Complex)
@@ -90,7 +90,7 @@ data Diag
 toDiag :: Diag -> CInt
 toDiag NonUnit = fromIntegral $ fromEnum CblasNonUnit
 toDiag Unit    = fromIntegral $ fromEnum CblasUnit
-{-# INLINE toDiag< #-}
+{-# INLINE toDiag #-}
 
 {#enum CBLAS_DIAG {} #}
 

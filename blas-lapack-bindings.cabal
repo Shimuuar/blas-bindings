@@ -46,6 +46,10 @@ Library
 --    Numeric.LAPACK.Bindings.Types
 --    Numeric.LAPACK.Bindings.Double
 --    Numeric.LAPACK.Bindings.Zomplex
+  include-dirs:
+    cbits
+  includes:
+    cbits/blas.h
   extra-libraries:
     lapack,
     blas

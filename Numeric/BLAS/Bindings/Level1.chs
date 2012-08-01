@@ -10,7 +10,7 @@
 --
 -- Vector operations.
 --
-#include <atlas/cblas.h>
+#include "blas.h"
 module Numeric.BLAS.Bindings.Level1 (
     BLAS1(..),
     ) where

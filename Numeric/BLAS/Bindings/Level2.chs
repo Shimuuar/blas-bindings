@@ -10,7 +10,7 @@
 --
 -- Matrix-Vector operations.
 --
-#include <atlas/cblas.h>
+#include "blas.h"
 module Numeric.BLAS.Bindings.Level2 (
     BLAS2(..),
     ) where
