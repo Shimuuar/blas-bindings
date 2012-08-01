@@ -21,43 +21,32 @@ copyright:       (c) 2010. Patrick Perry <patperry@gmail.com>
 author:          Patrick Perry
 maintainer:      Patrick Perry <patperry@gmail.com>
 cabal-version:   >= 1.2.3
-build-type:      Configure
+build-type:      Simple
 tested-with:     GHC == 6.12.3
 
-extra-source-files:     NEWS README TODO configure.ac configure
-                        aclocal.m4 m4/ax_check_blas.m4
-                        m4/ax_check_lapack.m4
-                        linear-algebra.buildinfo.in cbits/config.h.in
-                        tests/Makefile.in
-
-
-extra-tmp-files:        config.log config.status autom4te.cache
-                        linear-algebra.buildinfo cbits/config.h
-                        tests/Makefile
-
+extra-source-files:
+  NEWS README TODO
+ 
 Library
-    exposed-modules:    Numeric.BLAS.Bindings
-                        Numeric.LAPACK.Bindings
-                        
-    other-modules:      Numeric.BLAS.Bindings.Types
-                        Numeric.BLAS.Bindings.Level1
-                        Numeric.BLAS.Bindings.Level2
-                        Numeric.BLAS.Bindings.Level3
-                        Numeric.BLAS.Bindings.Double
-                        Numeric.BLAS.Bindings.Zomplex
-
-                        Numeric.LAPACK.Bindings.Types
-                        Numeric.LAPACK.Bindings.Double
-                        Numeric.LAPACK.Bindings.Zomplex
-                        
-    
-    include-dirs:       cbits
-    includes:           cbits/config.h
-                        cbits/f77_func-hsc.h
-
-    ghc-options:        -Wall -O2
-    
-    build-depends:      base >= 4 && < 5,
-                        storable-complex
-
-
+  build-depends:
+    base >= 4 && < 5,
+    storable-complex
+  build-tools:
+    c2hs
+  exposed-modules:
+    Numeric.BLAS.Bindings
+--    Numeric.LAPACK.Bindings
+  other-modules:
+    -- BLAS
+    Numeric.BLAS.Bindings.Types
+    Numeric.BLAS.Bindings.Level1
+    Numeric.BLAS.Bindings.Level2
+    Numeric.BLAS.Bindings.Level3
+    -- LAPACK
+--    Numeric.LAPACK.Bindings.Types
+--    Numeric.LAPACK.Bindings.Double
+--    Numeric.LAPACK.Bindings.Zomplex
+  extra-libraries:
+    lapack,
+    blas
+  ghc-options:        -Wall -O2

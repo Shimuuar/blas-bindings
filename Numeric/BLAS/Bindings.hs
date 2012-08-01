@@ -14,9 +14,9 @@ module Numeric.BLAS.Bindings (
     -- ** Level 1
     module Numeric.BLAS.Bindings.Level1
     -- ** Level 2
-  , module Numeric.BLAS.Bindings.Level2
+  -- , module Numeric.BLAS.Bindings.Level2
     -- ** Level 3
-  , module Numeric.BLAS.Bindings.Level3
+  -- , module Numeric.BLAS.Bindings.Level3
     -- * Enumerations
   , Trans(..)
   , Uplo(..)
@@ -25,8 +25,8 @@ module Numeric.BLAS.Bindings (
   ) where
 
 import Numeric.BLAS.Bindings.Level1
-import Numeric.BLAS.Bindings.Level2
-import Numeric.BLAS.Bindings.Level3
+-- import Numeric.BLAS.Bindings.Level2
+-- import Numeric.BLAS.Bindings.Level3
 import Numeric.BLAS.Bindings.Types
 
 -- $matrices
