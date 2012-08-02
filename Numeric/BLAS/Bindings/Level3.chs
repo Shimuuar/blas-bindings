@@ -25,66 +25,77 @@ import Numeric.BLAS.Bindings.Level2
 
 -- | Types with matrix-matrix operations.
 class (BLAS2 a) => BLAS3 a where
-  -- | Performs one of the matrix-matrix operations @C :=
-  --   alpha*op(A)*op(B) + beta*C@ where @op@ is noop, transposition
-  --   or conjugation.
+  -- | Performs one of the matrix-matrix operations on dense matrices:
+  --
+  -- > C ← α·op(A)·op(B) + β·C
+  --
+  --  where @op@ is noop, transposition or conjugation.
   gemm  :: RowOrder --
         -> Trans    -- ^ Operation for matrix /A/
         -> Trans    -- ^ Operation for matrix /B/
         -> Int      -- ^ Number of row of matrix op(/A/) and matrix /C/
         -> Int      -- ^ Number of columns of matrix @op(/B/)@ and matrix /C/
         -> Int      -- ^ Number of columns of matrix @op(/A/)@ and rows of matrix @op(/B/)@
-        -> a        -- ^ Scalar /alpha/
+        -> a        -- ^ Scalar /α/
         -> Ptr a    -- ^ Matrix /A/
         -> Int      -- ^ Leading dimension of /A/
         -> Ptr a    -- ^ Matrix /B/
         -> Int      -- ^ Leading dimension of /B/
-        -> a        -- ^ Scalar /beta/
+        -> a        -- ^ Scalar /β/
         -> Ptr a    -- ^ Matrix /C/
         -> Int      -- ^ Leading dimension of /C/
         -> IO ()
 
-  -- | Performs one of operations @C := alpha*A*B + beta*C@ or @C :=
-  --   alpha*B*A + beta*C@ where A is a symmetric matrix and B and C
-  --   are m by n matrices.
+  -- | Performs one of operations on dense matrices:
+  --
+  -- > C ← α·A·B + β·C
+  -- > C ← α·B·A + β·C
+  --
+  -- where /A/ is a symmetric matrix and /B/ and /C/ are m by n matrices.
   symm  :: RowOrder --
         -> Side     -- ^ Whether symmetric matrix appears on the left or on the right
         -> Uplo     -- ^ Upper or lower triangular part of matix should be used
         -> Int      -- ^ Number of row of matrix /B/ and /C/
         -> Int      -- ^ Number of columns of matrix /B/ and /C/
-        -> a        -- ^ Scalar /alpha/
+        -> a        -- ^ Scalar /α/
         -> Ptr a    -- ^ Matrix /A/
         -> Int      -- ^ Leading dimension of /A/
         -> Ptr a    -- ^ Matrix /B/
         -> Int      -- ^ Leading dimension of /B/
-        -> a        -- ^ Scalar /beta/
+        -> a        -- ^ Scalar /β/
         -> Ptr a    -- ^ Matrix /C/
         -> Int      -- ^ Leading dimension of /C/
         -> IO ()
 
-  -- | Performs one of operations @C := alpha*A*B + beta*C@ or @C :=
-  --   alpha*B*A + beta*C@ where A is a hermitian matrix and B and C
-  --   are m by n matrices.
+  -- | Performs one of operations 
+  --
+  -- > C ← α·A·B + β·C
+  -- > C ← α·B·A + β·C
+  --
+  --   where A is a hermitian matrix (or symmetric for real /a/) and B
+  --   and C are m by n matrices.
   hemm  :: RowOrder --
         -> Side     -- ^ Whether symmetric matrix appears on the left or on the right
         -> Uplo     -- ^ Upper or lower triangular part of matix should be used
         -> Int      -- ^ Number of row of matrix /B/ and /C/
         -> Int      -- ^ Number of columns of matrix /B/ and /C/
-        -> a        -- ^ Scalar /alpha/
+        -> a        -- ^ Scalar /α/
         -> Ptr a    -- ^ Matrix /A/
         -> Int      -- ^ Leading dimension of /A/
         -> Ptr a    -- ^ Matrix /B/
         -> Int      -- ^ Leading dimension of /B/
-        -> a        -- ^ Scalar /beta/
+        -> a        -- ^ Scalar /β/
         -> Ptr a    -- ^ Matrix /C/
         -> Int      -- ^ Leading dimension of /C/
         -> IO ()
 
-  -- | Performs one of the matrix-matrix operations B := alpha*op( A
-  -- )*B, or B := alpha*B*op( A ) where alpha is a scalar, B is an m
-  -- by n matrix, A is a unit, or non-unit, upper or lower
-  -- triangular matrix and op( A ) is one of op( A ) = A or op( A )
-  -- = A' or op( A ) = conjg( A' )
+  -- | Performs one of the matrix-matrix operations 
+  --
+  -- > B ← α·op(A)·B
+  -- > B ← α·B·op(A) 
+  --
+  --   where /α/ is a scalar, /B/ is an /m/ by /n/ matrix, /A/ is a
+  --   unit, or non-unit, upper or lower triangular matrix.
   trmm  :: RowOrder --
         -> Side     -- ^ Whether symmetric matrix appears on the left or on the right
         -> Uplo     -- ^ Upper or lower triangular part of matix should be used
@@ -92,78 +103,87 @@ class (BLAS2 a) => BLAS3 a where
         -> Diag     -- ^ Whether matrix is unit diagonal or not.
         -> Int      -- ^ Number of rows of matrix /B/
         -> Int      -- ^ Number of columns of matrix /B/
-        -> a        -- ^ Scalar /alpha/
+        -> a        -- ^ Scalar /α/
         -> Ptr a    -- ^ Matrix /A/
         -> Int      -- ^ Leading dimension of /A/
         -> Ptr a    -- ^ Matrix /B/
         -> Int      -- ^ Leading dimension of /B/
         -> IO ()
 
-  -- | Solves one of the matrix equations op( A )*X = alpha*B, or
-  --   X*op( A ) = alpha*B where alpha is scalar, X and B are n by m
-  --   matrices A is a unit, or non-unit, upper or lower triangular
-  --   matrix and op is noop, transpose or Hermit conjugation
+  -- | Solves one of the matrix equations 
+  --
+  -- > op(A)·X = α·B
+  -- > X·op(A) = α·B 
+  --
+  --   where /α/ is scalar, /X/ and /B/ are /n/ by /m/ matrices, /A/
+  --   is a unit, or non-unit, upper or lower triangular matrix.
   trsm  :: RowOrder --
         -> Side     -- ^ Whether A appears on the left or right side of
-                    --   X. 'L' : op(A)X = alpha*B, 'R' : Xop(A) = alpha*B
+                    --   X. 'L' : op(A)X = α·B, 'R' : Xop(A) = α·B
         -> Uplo     -- ^ Upper or lower triangular part of matix should
                     --   be used
         -> Trans    -- ^ Transformation applied to A
         -> Diag     -- ^ Whether A is unit triangular or not
         -> Int      -- ^ Number of rows of B
         -> Int      -- ^ Number of columns of B
-        -> a        -- ^ Scalar alpha
+        -> a        -- ^ Scalar α
         -> Ptr a    -- ^ Matrix A data
         -> Int      -- ^ Leading dimension of A
         -> Ptr a    -- ^ Matrix B. Will be overwritten by solution
         -> Int      -- ^ Leading dimension of B
         -> IO ()
 
-  -- | performs one of the symmetric rank k operations C :=
-  --   alpha*A*A' + beta*C, or C := alpha*A'*A + beta*C.
+  -- | performs one of the symmetric rank k operations 
+  --
+  -- > C <- α·A·A' + β·C 
+  -- > C <- α·A'·A + β·C
   syrk  :: RowOrder --
         -> Uplo     -- ^ Whether upper or lower triangular array of C is referneced.
         -> Trans    -- ^ Choses operation to perform:
-                    --   TRANS = 'N' or 'n' C := alpha*A*A' + beta*C
-                    --   TRANS = 'T' or 't' C := alpha*A'*A + beta*C.
+                    --   TRANS = 'N' or 'n' C := α·A·A' + β·C
+                    --   TRANS = 'T' or 't' C := α·A'·A + β·C.
         -> Int      -- ^ Order of matrix C
         -> Int      -- ^ If Trans is N number of columns of matrix A,
                     --   if Trans is T number of rows in matrix A.
-        -> a        -- ^ Scalar alpha
+        -> a        -- ^ Scalar α
         -> Ptr a    -- ^ Matrix A
         -> Int      -- ^ Leading dimension of A
-        -> a        -- ^ Scalar beta
+        -> a        -- ^ Scalar β
         -> Ptr a    -- ^ Matrix C
         -> Int      -- ^ Leading dimension of C
         -> IO ()
 
-  -- | performs one of the symmetric rank 2k operations C :=
-  -- alpha*A*B' + alpha*B*A' + beta*C or C := alpha*A'*B +
-  -- alpha*B'*A + beta*C,
+  -- | performs one of the symmetric rank 2k operations] 
+  --
+  -- > C ← α·A·B' + α·B·A' + β·C 
+  -- > C ← α·A'·B + α·B'·A + β·C
   syr2k :: RowOrder --
         -> Uplo     -- ^ Whether upper or lower triangular part of C is
                     --   referenced
         -> Trans    -- ^ On entry, TRANS specifies the operation to be performed as follows:
-                    -- TRANS = 'N' or 'n' C := alpha*A*B' + alpha*B*A' + beta*C.
-                    -- TRANS = 'T' or 't' C := alpha*A'*B + alpha*B'*A + beta*C.
+                    -- TRANS = 'N' or 'n' C := α·A·B' + α·B·A' + β·C.
+                    -- TRANS = 'T' or 't' C := α·A'·B + α·B'·A + β·C.
         -> Int      -- ^ Order of matrix C
         -> Int      -- ^ If Trans is 'N' number of columns of matrices
                     --   A and B it's number of rows otherwise
-        -> a        -- ^ Scalar alpha
+        -> a        -- ^ Scalar α
         -> Ptr a    -- ^ Matrix A
         -> Int      -- ^ Leading dimension of A
         -> Ptr a    -- ^ Matrix B
         -> Int      -- ^ Leading dimension of B
-        -> a        -- ^ Scalar beta
+        -> a        -- ^ Scalar β
         -> Ptr a    -- ^ Matrix C
         -> Int      -- ^ Leading dimension of C
         -> IO ()
 
-  -- | Performs one of the hermitian rank k operations C :=
-  --   alpha*A*conjg( A' ) + beta*C, or C := alpha*conjg( A' )*A +
-  --   beta*C, where alpha and beta are real scalars, C is an n by n
-  --   hermitian matrix and A is an n by k matrix in the first case
-  --   and a k by n matrix in the second case.
+  -- | Performs one of the hermitian rank k operations 
+  --
+  -- > C ← α·A·conjg(A') + β·C
+  -- > C ← α·conjg(A')·A + β·C
+  --
+  --   where /α/ and /β/ are real scalars, /C/ is an /n/ by /n/
+  --   hermitian matrix and /A/ is an /n/ by /k/ matrix in the first
+  --   case and a /k/ by /n/ matrix in the second case.
   herk  :: RowOrder --
         -> Uplo     -- ^ On entry, UPLO specifies whether the upper or
                     --   lower triangular part of the array C is to be
@@ -173,40 +193,42 @@ class (BLAS2 a) => BLAS3 a where
                     --   triangular part of C is to be referenced.
         -> Trans    -- ^ On entry, TRANS specifies the operation to be
                     --   performed as follows: TRANS = 'N' or 'n' C :=
-                    --   alpha*A*conjg( A' ) + beta*C. TRANS = 'C' or
-                    --   'c' C := alpha*conjg( A' )*A + beta*C.
+                    --   α·A·conjg( A' ) + β·C. TRANS = 'C' or
+                    --   'c' C := α·conjg( A' )·A + β·C.
         -> Int      -- ^ Order of matrix C
         -> Int      -- ^ If Trans is N number of columns of matrix A,
                     --   if Trans is C number of rows in matrix A.
-        -> Double   -- ^ Scalar alpha
+        -> Double   -- ^ Scalar α
         -> Ptr a    -- ^ Matrix A
         -> Int      -- ^ Leading dimension of A
-        -> Double   -- ^ Scalar beta
+        -> Double   -- ^ Scalar β
         -> Ptr a    -- ^ Matrix C
         -> Int      -- ^ Leading dimension of C
         -> IO ()
 
-  -- | performs one of the hermitian rank 2k operations C :=
-  --   alpha*A*conjg( B' ) + conjg( alpha )*B*conjg( A' ) + beta*C,
-  --   or C := alpha*conjg( A' )*B + conjg( alpha )*conjg( B' )*A +
-  --   beta*C, where alpha and beta are scalars with beta real, C is
-  --   an n by n hermitian matrix and A and B are n by k matrices in
-  --   the first case and k by n matrices in the second case.
+  -- | performs one of the hermitian rank 2k operations 
+  --
+  -- > C ← α·A·conjg(B') + conjg(α)·B·conjg(A') + β·C
+  -- > C ← α·conjg(A')·B + conjg(α)·conjg(B')·A + β·C
+  --
+  --   where /α/ and /β/ are scalars with /β/ real, /C/ is an /n/ by
+  --   /n/ hermitian matrix and /A/ and /B/ are /n/ by /k/ matrices in
+  --   the first case and /k/ by /n/ matrices in the second case.
   her2k :: RowOrder --
         -> Uplo     -- ^ Whether upper or lower triangular part of C is
                     --   referenced
         -> Trans    -- ^ On entry, TRANS specifies the operation to be performed as follows:
-                    -- TRANS = 'N' or 'n' C := alpha*A*conjg(B) + alpha*B*conjg(A) + beta*C.
-                    -- TRANS = 'C' or 'c' C := alpha*conjg(A)*B + alpha*conjg(B)*A + beta*C.
+                    -- TRANS = 'N' or 'n' C := α·A·conjg(B) + α·B·conjg(A) + β·C.
+                    -- TRANS = 'C' or 'c' C := α·conjg(A)·B + α·conjg(B)·A + β·C.
         -> Int      -- ^ Order of matrix C
         -> Int      -- ^ If Trans is 'N' number of columns of matrices
                     --   A and B it's number of rows otherwise
-        -> a        -- ^ Scalar alpha
+        -> a        -- ^ Scalar α
         -> Ptr a    -- ^ Matrix A
         -> Int      -- ^ Leading dimension of A
         -> Ptr a    -- ^ Matrix B
         -> Int      -- ^ Leading dimension of B
-        -> Double   -- ^ Scalar beta
+        -> Double   -- ^ Scalar β
         -> Ptr a    -- ^ Matrix C
         -> Int      -- ^ Leading dimension of C
         -> IO ()
