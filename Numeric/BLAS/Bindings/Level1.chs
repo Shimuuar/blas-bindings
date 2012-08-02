@@ -25,7 +25,9 @@ import Numeric.BLAS.Bindings.Types
 
 -- | Level 1 BLAS. Vector-vector operations.
 class (Storable a) => BLAS1 a where
-  -- | Copy vector into another vector: @y &#8592; x@.
+  -- | Copy vector into another vector:
+  --
+  -- > y ← x
   copy :: Int   -- ^ Number of elements in vectors /x/ and /y/.
        -> Ptr a -- ^ Source vector /x/.
        -> Int   -- ^ Stride for /x/.
@@ -33,7 +35,9 @@ class (Storable a) => BLAS1 a where
        -> Int   -- ^ Stride for /y/.
        -> IO ()
 
-  -- | Swap content of two vectors: @y &#8596; x@.
+  -- | Swap content of two vectors:
+  --
+  -- > y ↔ x
   swap :: Int   -- ^ Number of elements in vectors /x/ and /y/.
        -> Ptr a -- ^ Vector /x/
        -> Int   -- ^ Stride for /x/
@@ -42,54 +46,58 @@ class (Storable a) => BLAS1 a where
        -> IO ()
 
   -- | Computes the hermitian dot product of vector /a/ and vector
-  -- /b/. For real-valued vectors is same as dotu.
+  -- /b/. For real-valued vectors is same as 'dotu'.
   dotc :: Int   -- ^ Number of elements in vectors /a/ and /b/.
-       -> Ptr a -- ^ Vector /a/.
-       -> Int   -- ^ Stride for /a/.
-       -> Ptr a -- ^ Vector /b/.
-       -> Int   -- ^ Stride for /b/.
+       -> Ptr a -- ^ Vector /a/
+       -> Int   -- ^ Stride for /a/
+       -> Ptr a -- ^ Vector /b/
+       -> Int   -- ^ Stride for /b/
        -> IO a
 
   -- | Computes the dot product of vector /a/ and vector /b/.
   dotu :: Int   -- ^ Number of elements in vectors /a/ and /b/.
-       -> Ptr a -- ^ Vector /a/.
-       -> Int   -- ^ Stride for /a/.
-       -> Ptr a -- ^ Vector /b/.
-       -> Int   -- ^ Stride for /b/.
+       -> Ptr a -- ^ Vector /a/
+       -> Int   -- ^ Stride for /a/
+       -> Ptr a -- ^ Vector /b/
+       -> Int   -- ^ Stride for /b/
        -> IO a
 
   -- | Computes Euclidean norm of the vector.
   nrm2 :: Int   -- ^ Number of elements in vector.
-       -> Ptr a -- ^ Vector /a/.
-       -> Int   -- ^ Stride for /a/.
+       -> Ptr a -- ^ Vector /a/
+       -> Int   -- ^ Stride for /a/
        -> IO Double
 
   -- | Compute sums of absolute values of a vector.
   asum  :: Int   -- ^ Number of elements in vector.
-        -> Ptr a -- ^ Vector /a/.
-        -> Int   -- ^ Stride for /a/.
+        -> Ptr a -- ^ Vector /a/
+        -> Int   -- ^ Stride for /a/
         -> IO Double
 
   -- | Finds index of maximum absolute value in the vector.
   iamax :: Int    -- ^ Number of elements in vector.
-        -> Ptr a  -- ^ Vector /a/.
-        -> Int    -- ^ Stride for /a/.
+        -> Ptr a  -- ^ Vector /a/
+        -> Int    -- ^ Stride for /a/
         -> IO Int
 
-  -- | Scale all vector by constant: @x &#8592; &#945;x@.
+  -- | Scale all vector by constant:
+  --
+  -- > x ← αx
   scal  :: Int   -- ^ Number of elements in the vector.
-        -> a     -- ^ Scalar /&#945;/.
-        -> Ptr a -- ^ Vector /x/.
-        -> Int   -- ^ Stride for /x/.
+        -> a     -- ^ Scalar /α/
+        -> Ptr a -- ^ Vector /x/
+        -> Int   -- ^ Stride for /x/
         -> IO ()
 
-  -- | Adds scaled vector to another vector: @y &#8592; &#945;x + y@.
+  -- | Adds scaled vector to another vector:
+  --
+  -- > y ← αx + y
   axpy  :: Int   -- ^ Number of elements in vector.
-        -> a     -- ^ Scalar /&#945;/.
-        -> Ptr a -- ^ Vector /x/.
-        -> Int   -- ^ Stride for /x/.
-        -> Ptr a -- ^ Vector /y/.
-        -> Int   -- ^ Stride for /y/.
+        -> a     -- ^ Scalar /α /
+        -> Ptr a -- ^ Vector /x/
+        -> Int   -- ^ Stride for /x/
+        -> Ptr a -- ^ Vector /y/
+        -> Int   -- ^ Stride for /y/
         -> IO ()
 
   -- | computes the elements of a given plane rotation matrix such
@@ -103,7 +111,8 @@ class (Storable a) => BLAS1 a where
         -> Ptr a -- ^ sine of rotation angle
         -> IO ()
 
-  -- | Plane rotation subroutine
+  -- | Rotates number of points on two dimensional plane. Coordinates
+  --   are modified in place.
   rot   :: Int    -- ^ Number of ordered pairs.
         -> Ptr a  -- ^ Vector of /x/ coordinates.
         -> Int    -- ^ Stride for /x/.
