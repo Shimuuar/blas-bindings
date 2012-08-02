@@ -28,147 +28,152 @@ import Numeric.BLAS.Bindings.Level1
 class (BLAS1 a) => BLAS2 a where
   -- OPERATION: aMV + bV
 
-  -- | Compute matrix-vector multiplication with dense matrix.
-  --   @y <- alpha*A*x + beta*y@. Matrix /A/ is transformed according to
-  -- 'Trans' parameter.
+  -- | Compute matrix-vector multiplication with dense matrix:
+  --
+  --  > y ← α·A·x + β·y
+  --
+  --   Matrix /A/ is transformed according to 'Trans' parameter.
   gemv :: RowOrder --
        -> Trans    -- ^ Matrix transformation
-       -> Int      -- ^ Number of rows
-       -> Int      -- ^ Number of columns
-       -> a        -- ^ Scalar /alpha/
+       -> Int      -- ^ /M/ number of rows
+       -> Int      -- ^ /N/ number of columns
+       -> a        -- ^ Scalar /α/
        -> Ptr a    -- ^ Pointer to matrix /A/
-       -> Int      -- ^ Column size of a matrix
+       -> Int      -- ^ /LDA/ Leading dimension size of /A/
        -> Ptr a    -- ^ Vector /x/
        -> Int      -- ^ Stride of /x/
-       -> a        -- ^ Scalar /beta/
+       -> a        -- ^ Scalar /β/
        -> Ptr a    -- ^ Vector /y/
        -> Int      -- ^ Stride of /y/
        -> IO ()
 
-  -- | Perform matrix-vector operation @y <- alpha*A*x + beta*y@
+  -- | Perform matrix-vector operation with dense hermitian/symmetric
+  --   matrix:
+  --
+  --   > y ← α·A·x + β·y
   hemv :: RowOrder --
        -> Uplo     -- ^ Hermitian/symmetric matrix storage mode
-       -> Int      -- ^ Matrix size
-       -> a        -- ^ Scalar /alpha/
+       -> Int      -- ^ /N/ order of the matrix
+       -> a        -- ^ Scalar /α/
        -> Ptr a    -- ^ Matrix data
-       -> Int      -- ^ First dimension of /A/
+       -> Int      -- ^ /LDA/ Leading dimension size of /A/
        -> Ptr a    -- ^ Vector /x/
        -> Int      -- ^ Stride for /x/
-       -> a        -- ^ Scalar /beta/
+       -> a        -- ^ Scalar /β/
        -> Ptr a    -- ^ Vector /y/
        -> Int      -- ^ Stride for /y/
        -> IO ()
 
-  -- | Perform opration @A := alpha*A*x + beta*y@ where A is
-  --   hermitian/symmetric matrix in the packed form.
+  -- | Perform matrix-vector operation with packed hermitian/symmetric
+  --   matrix:
+  --
+  --   > y ← α·A·x + β·y
   hpmv :: RowOrder --
        -> Uplo   -- ^ Hermitian/symmetric matrix storage mode
-       -> Int    -- ^ Order of the matrix
-       -> a      -- ^ Scalar /alpha/
+       -> Int    -- ^ /N/ order of the matrix
+       -> a      -- ^ Scalar /α/
        -> Ptr a  -- ^ Matrix data
        -> Ptr a  -- ^ Vector /x/
        -> Int    -- ^ Stride for /x/
-       -> a      -- ^ Scalar /beta/
+       -> a      -- ^ Scalar /β/
        -> Ptr a  -- ^ Vector /y/
        -> Int    -- ^ Stride for /y/
        -> IO ()
 
-  -- | Compute matrix-vector multiplication with banded matrix.
-  --   @y <- alpha*A*x + beta*y@ Matrix /A/ is transformed according to
-  --   'Trans' parameter.
+  -- | Perform matrix-vector operation with banded matrix:
+  --
+  --   > y ← α·A·x + β·y
   gbmv :: RowOrder --
        -> Trans    -- ^ Matrix transformation
        -> Int      -- ^ /M/  number of row
        -> Int      -- ^ /N/  number of columns
        -> Int      -- ^ /KL/ number of sub-diagonals @KL >= 0@
        -> Int      -- ^ /KU/ number of super-diagonals @KU >= 0@
-       -> a        -- ^ Scalar /alpha/
+       -> a        -- ^ Scalar /α/
        -> Ptr a    -- ^ Matrix data
-       -> Int      -- ^ /LDA/ first dimension of matrix @LDA >= KL + KU + 1@
-       -> Ptr a    -- ^ vector /x/
+       -> Int      -- ^ /LDA/ leading dimension of matrix /A/, @LDA >= KL + KU + 1@
+       -> Ptr a    -- ^ Vector /x/
        -> Int      -- ^ Stride of /x/
-       -> a        -- ^ Scalar /beta/
+       -> a        -- ^ Scalar /β/
        -> Ptr a    -- ^ Vector /y/
        -> Int      -- ^ Stride of /y/
        -> IO ()
 
-  -- | Perform operation @y <- alpha * A * x + beta * y@. /A/ is
-  --   hermitian or symmetric banded matrix
+
+  -- | Perform matrix-vector operation with hermitian/symmetric banded
+  --   matrix with /K/ superdiagonals:
+  --
+  --   > y ← α·A·x + β·y
   hbmv :: RowOrder --
        -> Uplo     -- ^ Hermitian/symmetric matrix storage mode
        -> Int      -- ^ /N/ Size of matrix
        -> Int      -- ^ /K/ Number of super-diagonals
-       -> a        -- ^ Scalar /alpha/
+       -> a        -- ^ Scalar /α/
        -> Ptr a    -- ^ Matrix data
-       -> Int      -- ^ First dimension of /A/
+       -> Int      -- ^ /LDA/ Leading dimension size of /A/
        -> Ptr a    -- ^ Vector /x/
        -> Int      -- ^ Stride for /x/
-       -> a        -- ^ Scalar /beta/
+       -> a        -- ^ Scalar /β/
        -> Ptr a    -- ^ Vector /y/
        -> Int      -- ^ Stride for /y/
        -> IO ()
 
-  -- | Perform operation @x := A*x@ or @x := A*x'@ or @x :=
-  --   A*conjg(x')@ where @A@ is n by n unit, or non-unit, upper or
-  --   lower triangular band matrix, with ( k + 1 ) diagonals.
-  tbmv :: RowOrder --
-       -> Uplo     -- ^ Upper or low triangular
-       -> Trans    -- ^ How should matrix be transformed
-       -> Diag     -- ^ Whether matrix is unit diagonal or not
-       -> Int      -- ^ Matrix order
-       -> Int      -- ^ Number of superdiagonals /k/
-       -> Ptr a    -- ^ Matrix data
-       -> Int      -- ^ Leading dimension of A (at least @k+1@)
-       -> Ptr a    -- ^ Vector /x/
-       -> Int      -- ^ Stride for /x/
-       -> IO ()
-
   -- RANK 1 operations
 
-  -- | Perform rank-1 operation @A <- alpha*x*conjg(y') + A@
+  -- | Perform rank-1 operation:
+  --
+  -- > A ← α·x·conjg(y') + A
   gerc :: RowOrder --
        -> Int      -- ^ Number of rows
        -> Int      -- ^ Number of columns
-       -> a        -- ^ Scalar /alpha/
+       -> a        -- ^ Scalar /α/
        -> Ptr a    -- ^ Vector /x/
        -> Int      -- ^ Stride of /x/
        -> Ptr a    -- ^ Vector /y/
        -> Int      -- ^ Stride of /y/
        -> Ptr a    -- ^ Matrix /A/
-       -> Int      -- ^ First dimension of /A/
+       -> Int      -- ^ /LDA/ leading dimension of /A/
        -> IO ()
 
-  -- | Perform rank-1 operation @A <- alpha*x*y' + A@
+  -- | Perform rank-1 operation:
+  --
+  -- > A ← α·x·y' + A
   geru :: RowOrder --
        -> Int      -- ^ Number of rows
        -> Int      -- ^ Number of columns
-       -> a        -- ^ Scalar /alpha/
+       -> a        -- ^ Scalar /α/
        -> Ptr a    -- ^ Vector /x/
        -> Int      -- ^ Stride of /x/
        -> Ptr a    -- ^ Vector /y/
        -> Int      -- ^ Stride of /y/
        -> Ptr a    -- ^ Matrix /A/
-       -> Int      -- ^ First dimension of /A/
+       -> Int      -- ^ /LDA/ leading dimension of /A/
        -> IO ()
 
-  -- | Perform operation @A <- alpha * x * conjg(x') + A@. /A/ is
-  --   hermitian or symmetric matrix
+  -- | Perform operation
+  --
+  -- > A ← α·x·conjg(x') + A
+  --
+  --   /A/ is hermitian or symmetric matrix
   her  :: RowOrder --
        -> Uplo     -- ^ Hermitian/symmetric matrix storage mode
        -> Int      -- ^ Size of matrix
-       -> Double   -- ^ Scalar /alpha/
+       -> Double   -- ^ Scalar /α/
        -> Ptr a    -- ^ Vector /x/
        -> Int      -- ^ Stride of /x/
        -> Ptr a    -- ^ Matrix data
-       -> Int      -- ^ First dimension of /A/
+       -> Int      -- ^ /LDA/ leading dimension of /A/
        -> IO ()
 
-  -- | Perform operation @A := alpha*x*conjg( y' ) + conjg( alpha )*y*conjg( x' ) + A@
+  -- | Perform operation
+  --
+  -- > A ← α·x·conjg(y') + conjg(α)·y·conjg(x') + A
+  --
   --   /A/ is hermitian or symmetric matrix.
   her2 :: RowOrder --
        -> Uplo     -- ^ Hermitian/symmetric matrix storage mode
        -> Int      -- ^ Size of matrix
-       -> a        -- ^ Scalar /alpha/
+       -> a        -- ^ Scalar /α/
        -> Ptr a    -- ^ Vector /x/
        -> Int      -- ^ Stride for /x/
        -> Ptr a    -- ^ Vector /y/
@@ -177,23 +182,29 @@ class (BLAS1 a) => BLAS2 a where
        -> Int      -- ^ First dimenstion of matrix
        -> IO ()
 
-  -- | Perform operation @A := alpha*x*conjg(x) + A@ where A is
-  --   packed hermitian/symmetric matrix
+  -- | Perform operation
+  --
+  -- > A ← α·x·conjg(x) + A
+  --
+  --   where /A/ is packed hermitian/symmetric matrix
   hpr  :: RowOrder --
        -> Uplo     -- ^ Hermitian/symmetric matrix storage mode
        -> Int      -- ^ Matri order
-       -> Double   -- ^ Scalar /alpha/
+       -> Double   -- ^ Scalar /α/
        -> Ptr a    -- ^ Vector /x/
        -> Int      -- ^ Stride for /x/
        -> Ptr a    -- ^ Matrix data
        -> IO ()
 
-  -- | Perform operation @A := alpha*x*conjg( y' ) + conjg( alpha )*y*conjg( x' ) + A@
+  -- | Perform operation
+  --
+  -- > A ← α·x·conjg(y') + conjg(α)·y·conjg(x') + A
+  --
   --   /A/ is packed hermitian or symmetric matrix.
   hpr2 :: RowOrder --
        -> Uplo     -- ^ Hermitian/symmetric matrix storage mode
        -> Int      -- ^ Matrix order
-       -> a        -- ^ Scalar /alpha/
+       -> a        -- ^ Scalar /α/
        -> Ptr a    -- ^ Vector /x/
        -> Int      -- ^ Stride for /x/
        -> Ptr a    -- ^ Vector /y/
@@ -203,24 +214,15 @@ class (BLAS1 a) => BLAS2 a where
 
   -- Vector transformations
 
-  -- | Perform operation @x := A*x@ or @x := A*x'@ or @x :=
-  --   A*conjg(x')@ where @A@ is n by n unit, or non-unit, upper or
-  --   lower triangular band matrix in packed form.
-  tpmv :: RowOrder --
-       -> Uplo     -- ^ Upper or low triangular
-       -> Trans    -- ^ How should matrix be transformed
-       -> Diag     -- ^ Whether matrix is unit diagonal or not
-       -> Int      -- ^ Order of matrix /A/
-       -> Ptr a    -- ^ Matrix /A/
-       -> Ptr a    -- ^ Vector /x/ or /x'/. Before call it contains
-                   --   original vector. After call it's overwritten
-                   --   with transformed vector
-       -> Int      -- ^ Stride for /x/, /x'/
-       -> IO ()
-
-  -- | Perform operation @x := A*x@ or @x := A*x'@ or @x :=
-  --   A*conjg(x')@ where @A@ is n by n unit, or non-unit, upper or
-  --   lower triangular matrix.
+  -- | Perform one of the operations which are selected by 'Trans'
+  --   parameter:
+  --
+  -- > x ← A·x
+  -- > x ← A'·x
+  -- > x ← conjg(A)·x
+  --
+  --   where /A/ is /n/ by /n/ unit, or non-unit, upper or lower
+  --   triangular matrix.
   trmv :: RowOrder --
        -> Uplo     -- ^ Upper or low triangular
        -> Trans    -- ^ How should matrix be transformed
@@ -234,34 +236,85 @@ class (BLAS1 a) => BLAS2 a where
        -> Int      -- ^ Stride for /x/ or /x'/
        -> IO ()
 
+  -- | Perform one of the operations which are selected by 'Trans'
+  --   parameter:
+  --
+  -- > x ← A·x
+  -- > x ← A'·x
+  -- > x ← conjg(A)·x
+  --
+  --   where /A/ is /n/ by /n/ unit, or non-unit, upper or lower
+  --   triangular matrix in packed form.
+  tpmv :: RowOrder --
+       -> Uplo     -- ^ Upper or low triangular
+       -> Trans    -- ^ How should matrix be transformed
+       -> Diag     -- ^ Whether matrix is unit diagonal or not
+       -> Int      -- ^ Order of matrix /A/
+       -> Ptr a    -- ^ Matrix /A/
+       -> Ptr a    -- ^ Vector /x/ or /x'/. Before call it contains
+                   --   original vector. After call it's overwritten
+                   --   with transformed vector
+       -> Int      -- ^ Stride for /x/, /x'/
+       -> IO ()
+
+  -- | Perform one of the operations which are selected by 'Trans'
+  --   parameter:
+  --
+  -- > x ← A·x
+  -- > x ← A'·x
+  -- > x ← conjg(A)·x
+  --
+  --   where /A/ is n by n unit, or non-unit, upper or lower
+  --   triangular band matrix, with @k + 1@ diagonals.
+  tbmv :: RowOrder --
+       -> Uplo     -- ^ Upper or low triangular
+       -> Trans    -- ^ How should matrix be transformed
+       -> Diag     -- ^ Whether matrix is unit diagonal or not
+       -> Int      -- ^ Matrix order
+       -> Int      -- ^ Number of superdiagonals /k/
+       -> Ptr a    -- ^ Matrix data
+       -> Int      -- ^ /LDA/ Leading dimension of A (at least @k+1@)
+       -> Ptr a    -- ^ Vector /x/
+       -> Int      -- ^ Stride for /x/
+       -> IO ()
+
+
   -- Equation solving
 
-  -- | Solve system of equations @A*x = b@ or @A'*x = b@ or
-  --   @conjg(A')*x = b@ where A is an n by n unit, or non-unit,
-  --   upper or lower triangular band matrix, with @k+1@
-  --   diagonals.
+  -- | Solve one of the systems of equations
+  --
+  -- > A·x = b
+  -- > A'·x = b
+  -- > conjg(A')·x = b
+  --
+  --   where /b/ and /x/ are /n/ element vectors and A is an n by n
+  --   unit, or non-unit, upper or lower triangular matrix.
   --
   --   No test for singularity or near-singularity is included in
   --   this routine. Such tests must be performed before calling
   --   this routine.
-  tbsv :: RowOrder --
+  trsv :: RowOrder --
        -> Uplo     -- ^ Upper or low triangular
        -> Trans    -- ^ How should matrix be transformed
-       -> Diag     -- ^ Whether matrix unit diagonal or not
+       -> Diag     -- ^ Whether matrix is unit diagonal or not
        -> Int      -- ^ Order of matrix /A/
-       -> Int      -- ^ Number of super diagonals
-       -> Ptr a    -- ^ Matrix data
-       -> Int      -- ^ Leading dimension of /A/ (at least @k+1@)
+       -> Ptr a    -- ^ Matrix /A/
+       -> Int      -- ^ Leading dimension of /A/
        -> Ptr a    -- ^ Before call contains right side of equation
                    --   /b/. Ater call it is ovrwritten with solution
                    --   /x/.
        -> Int      -- ^ Stride of /x/,/b/
        -> IO ()
 
-  -- | solves one of the systems of equations @A*x = b@, or @A'*x =
-  --   b@, or @conjg( A' )*x = b@, where b and x are n element
-  --   vectors and A is an n by n unit, or non-unit, upper or lower
-  --   triangular matrix, supplied in packed form.
+  -- | Solve one of the systems of equations
+  --
+  -- > A·x = b
+  -- > A'·x = b
+  -- > conjg(A')·x = b
+  --
+  --   where /b/ and /x/ are /n/ element vectors and A is an n by n
+  --   unit, or non-unit, upper or lower triangular matrix in packed
+  --   form.
   --
   --   No test for singularity or near-singularity is included in
   --   this routine. Such tests must be performed before calling
@@ -278,21 +331,27 @@ class (BLAS1 a) => BLAS2 a where
        -> Int      -- ^ Stride for /b/ or /x/
        -> IO ()
 
-  -- | solves one of the systems of equations @A*x = b@, or @A'*x =
-  --   b@, or @conjg( A' )*x = b@, where b and x are n element
-  --   vectors and A is an n by n unit, or non-unit, upper or lower
-  --   triangular matrix.
+  -- | Solve one of the systems of equations
+  --
+  -- > A·x = b
+  -- > A'·x = b
+  -- > conjg(A')·x = b
+  --
+  --   where /b/ and /x/ are /n/ element vectors and A is an n by n
+  --   unit, or non-unit, upper or lower triangular band matrix, with
+  --   @k+1@ diagonals.
   --
   --   No test for singularity or near-singularity is included in
   --   this routine. Such tests must be performed before calling
   --   this routine.
-  trsv :: RowOrder --
+  tbsv :: RowOrder --
        -> Uplo     -- ^ Upper or low triangular
        -> Trans    -- ^ How should matrix be transformed
-       -> Diag     -- ^ Whether matrix is unit diagonal or not
+       -> Diag     -- ^ Whether matrix unit diagonal or not
        -> Int      -- ^ Order of matrix /A/
-       -> Ptr a    -- ^ Matrix /A/
-       -> Int      -- ^ Leading dimension of /A/
+       -> Int      -- ^ Number of super diagonals
+       -> Ptr a    -- ^ Matrix data
+       -> Int      -- ^ Leading dimension of /A/ (at least @k+1@)
        -> Ptr a    -- ^ Before call contains right side of equation
                    --   /b/. Ater call it is ovrwritten with solution
                    --   /x/.
