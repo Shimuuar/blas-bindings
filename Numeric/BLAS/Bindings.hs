@@ -11,7 +11,7 @@
 
 module Numeric.BLAS.Bindings (
     -- * BLAS typeclasses
-    -- $matrices
+    -- $memory
     -- ** Level 1
     module Numeric.BLAS.Bindings.Level1
     -- ** Level 2
@@ -31,7 +31,12 @@ import Numeric.BLAS.Bindings.Level2
 import Numeric.BLAS.Bindings.Level3
 import Numeric.BLAS.Bindings.Types
 
--- $matrices
+-- $memory
+--
+-- Vectors in the BLAS are strided
+--
+--
+-- BLAS can work with several kinds of matrices.
 --
 -- Dense matrices are stored in column major order
 --
