@@ -11,9 +11,8 @@
 module Numeric.BLAS.Bindings.Types where
 
 import Data.Complex     (Complex)
-import Foreign          (Ptr,with,castPtr)
+import Foreign          (Ptr,castPtr)
 import Foreign.C.Types  (CInt,CDouble)
-import Foreign.C.String (CString,withCString)
 import Unsafe.Coerce
 
 
