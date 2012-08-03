@@ -24,7 +24,20 @@ import Numeric.BLAS.Bindings.Level1
 
 
 
--- | Types with matrix-vector operations.
+-- | Types with matrix-vector operations. This type class contain a
+--   lot of operations. Here is summary:
+--
+--  > y ← α·A·x + β·y
+--
+--  [@Generic dense matrices@] 'gemv'
+--
+--  [@Hermitian/symmetric matrices@] 'hemv'
+--
+--  [@Packed hermitian/symmetric matrices@] 'hpmv'
+--
+--  [@Banded matrices@] 'gbmv'
+--
+--  [@Hermitian/symmetric banded matrices@] 'hbmv'
 class (BLAS1 a) => BLAS2 a where
   -- OPERATION: aMV + bV
 
