@@ -20,7 +20,9 @@ import Foreign         ( Ptr, with )
 import Foreign.C.Types ( CInt(..), CDouble(..))
 
 import Numeric.BLAS.Bindings.Types
-import Numeric.BLAS.Bindings.Level2
+import Numeric.BLAS.Bindings.Level1 (RealType)
+import Numeric.BLAS.Bindings.Level2 (BLAS2   )
+
 
 
 -- | Types with matrix-matrix operations.
@@ -184,26 +186,26 @@ class (BLAS2 a) => BLAS3 a where
   --   where /α/ and /β/ are real scalars, /C/ is an /n/ by /n/
   --   hermitian matrix and /A/ is an /n/ by /k/ matrix in the first
   --   case and a /k/ by /n/ matrix in the second case.
-  herk  :: RowOrder --
-        -> Uplo     -- ^ On entry, UPLO specifies whether the upper or
-                    --   lower triangular part of the array C is to be
-                    --   referenced as follows: UPLO = 'U' or 'u' Only
-                    --   the upper triangular part of C is to be
-                    --   referenced. UPLO = 'L' or 'l' Only the lower
-                    --   triangular part of C is to be referenced.
-        -> Trans    -- ^ On entry, TRANS specifies the operation to be
-                    --   performed as follows: TRANS = 'N' or 'n' C :=
-                    --   α·A·conjg( A' ) + β·C. TRANS = 'C' or
-                    --   'c' C := α·conjg( A' )·A + β·C.
-        -> Int      -- ^ Order of matrix C
-        -> Int      -- ^ If Trans is N number of columns of matrix A,
-                    --   if Trans is C number of rows in matrix A.
-        -> Double   -- ^ Scalar α
-        -> Ptr a    -- ^ Matrix A
-        -> Int      -- ^ Leading dimension of A
-        -> Double   -- ^ Scalar β
-        -> Ptr a    -- ^ Matrix C
-        -> Int      -- ^ Leading dimension of C
+  herk  :: RowOrder   --
+        -> Uplo       -- ^ On entry, UPLO specifies whether the upper or
+                      --   lower triangular part of the array C is to be
+                      --   referenced as follows: UPLO = 'U' or 'u' Only
+                      --   the upper triangular part of C is to be
+                      --   referenced. UPLO = 'L' or 'l' Only the lower
+                      --   triangular part of C is to be referenced.
+        -> Trans      -- ^ On entry, TRANS specifies the operation to be
+                      --   performed as follows: TRANS = 'N' or 'n' C :=
+                      --   α·A·conjg( A' ) + β·C. TRANS = 'C' or
+                      --   'c' C := α·conjg( A' )·A + β·C.
+        -> Int        -- ^ Order of matrix C
+        -> Int        -- ^ If Trans is N number of columns of matrix A,
+                      --   if Trans is C number of rows in matrix A.
+        -> RealType a -- ^ Scalar α
+        -> Ptr a      -- ^ Matrix A
+        -> Int        -- ^ Leading dimension of A
+        -> RealType a -- ^ Scalar β
+        -> Ptr a      -- ^ Matrix C
+        -> Int        -- ^ Leading dimension of C
         -> IO ()
 
   -- | performs one of the hermitian rank 2k operations 
@@ -214,23 +216,23 @@ class (BLAS2 a) => BLAS3 a where
   --   where /α/ and /β/ are scalars with /β/ real, /C/ is an /n/ by
   --   /n/ hermitian matrix and /A/ and /B/ are /n/ by /k/ matrices in
   --   the first case and /k/ by /n/ matrices in the second case.
-  her2k :: RowOrder --
-        -> Uplo     -- ^ Whether upper or lower triangular part of C is
-                    --   referenced
-        -> Trans    -- ^ On entry, TRANS specifies the operation to be performed as follows:
-                    -- TRANS = 'N' or 'n' C := α·A·conjg(B) + α·B·conjg(A) + β·C.
-                    -- TRANS = 'C' or 'c' C := α·conjg(A)·B + α·conjg(B)·A + β·C.
-        -> Int      -- ^ Order of matrix C
-        -> Int      -- ^ If Trans is 'N' number of columns of matrices
-                    --   A and B it's number of rows otherwise
-        -> a        -- ^ Scalar α
-        -> Ptr a    -- ^ Matrix A
-        -> Int      -- ^ Leading dimension of A
-        -> Ptr a    -- ^ Matrix B
-        -> Int      -- ^ Leading dimension of B
-        -> Double   -- ^ Scalar β
-        -> Ptr a    -- ^ Matrix C
-        -> Int      -- ^ Leading dimension of C
+  her2k :: RowOrder   --
+        -> Uplo       -- ^ Whether upper or lower triangular part of C is
+                      --   referenced
+        -> Trans      -- ^ On entry, TRANS specifies the operation to be performed as follows:
+                      -- TRANS = 'N' or 'n' C := α·A·conjg(B) + α·B·conjg(A) + β·C.
+                      -- TRANS = 'C' or 'c' C := α·conjg(A)·B + α·conjg(B)·A + β·C.
+        -> Int        -- ^ Order of matrix C
+        -> Int        -- ^ If Trans is 'N' number of columns of matrices
+                      --   A and B it's number of rows otherwise
+        -> a          -- ^ Scalar α
+        -> Ptr a      -- ^ Matrix A
+        -> Int        -- ^ Leading dimension of A
+        -> Ptr a      -- ^ Matrix B
+        -> Int        -- ^ Leading dimension of B
+        -> RealType a -- ^ Scalar β
+        -> Ptr a      -- ^ Matrix C
+        -> Int        -- ^ Leading dimension of C
         -> IO ()
 
 

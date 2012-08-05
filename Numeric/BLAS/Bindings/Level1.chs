@@ -1,5 +1,6 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 {-# LANGUAGE FlexibleInstances        #-}
+{-# LANGUAGE TypeFamilies             #-}
 -----------------------------------------------------------------------------
 -- |
 -- Module     : Numeric.BLAS.Bindings.Level1
@@ -25,6 +26,8 @@ import Numeric.BLAS.Bindings.Types
 
 -- | Level 1 BLAS. Vector-vector operations.
 class (Storable a) => BLAS1 a where
+  -- | Type of real value which corresponds to type @a@.
+  type RealType a :: *
   -- | Copy vector into another vector:
   --
   -- > y ← x
@@ -66,13 +69,13 @@ class (Storable a) => BLAS1 a where
   nrm2 :: Int   -- ^ Number of elements in vector.
        -> Ptr a -- ^ Vector /a/
        -> Int   -- ^ Stride for /a/
-       -> IO Double
+       -> IO (RealType a)
 
   -- | Compute sums of absolute values of a vector.
   asum  :: Int   -- ^ Number of elements in vector.
         -> Ptr a -- ^ Vector /a/
         -> Int   -- ^ Stride for /a/
-        -> IO Double
+        -> IO (RealType a)
 
   -- | Finds index of maximum absolute value in the vector.
   iamax :: Int    -- ^ Number of elements in vector.
@@ -113,17 +116,18 @@ class (Storable a) => BLAS1 a where
 
   -- | Rotates number of points on two dimensional plane. Coordinates
   --   are modified in place.
-  rot   :: Int    -- ^ Number of ordered pairs.
-        -> Ptr a  -- ^ Vector of /x/ coordinates.
-        -> Int    -- ^ Stride for /x/.
-        -> Ptr a  -- ^ Vector of /y/ coordinates.
-        -> Int    -- ^ Stride for /y/.
-        -> Double -- ^ Cosine of rotation angle.
-        -> Double -- ^ Sine of rotation angle.
+  rot   :: Int        -- ^ Number of ordered pairs.
+        -> Ptr a      -- ^ Vector of /x/ coordinates.
+        -> Int        -- ^ Stride for /x/.
+        -> Ptr a      -- ^ Vector of /y/ coordinates.
+        -> Int        -- ^ Stride for /y/.
+        -> RealType a -- ^ Cosine of rotation angle.
+        -> RealType a -- ^ Sine of rotation angle.
         -> IO ()
 
 
 instance BLAS1 Double where
+  type RealType Double = Double
   copy n px incx py incy =
     {#call cblas_dcopy #} (toI n) (ptr px) (toI incx) (ptr py) (toI incy)
   {-# INLINE copy #-}
@@ -163,6 +167,7 @@ instance BLAS1 Double where
 
 
 instance BLAS1 (Complex Double) where
+  type RealType (Complex Double) = Double
   copy n px incx py incy =
     {#call cblas_zcopy #} (toI n) (ptrC px) (toI incx) (ptrC py) (toI incy)
   {-# INLINE copy #-}

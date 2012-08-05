@@ -168,14 +168,14 @@ class (BLAS1 a) => BLAS2 a where
   -- > A ← α·x·conjg(x') + A
   --
   --   /A/ is hermitian or symmetric matrix
-  her  :: RowOrder --
-       -> Uplo     -- ^ Hermitian/symmetric matrix storage mode
-       -> Int      -- ^ Size of matrix
-       -> Double   -- ^ Scalar /α/
-       -> Ptr a    -- ^ Vector /x/
-       -> Int      -- ^ Stride of /x/
-       -> Ptr a    -- ^ Matrix data
-       -> Int      -- ^ /LDA/ leading dimension of /A/
+  her  :: RowOrder   --
+       -> Uplo       -- ^ Hermitian/symmetric matrix storage mode
+       -> Int        -- ^ Size of matrix
+       -> RealType a -- ^ Scalar /α/
+       -> Ptr a      -- ^ Vector /x/
+       -> Int        -- ^ Stride of /x/
+       -> Ptr a      -- ^ Matrix data
+       -> Int        -- ^ /LDA/ leading dimension of /A/
        -> IO ()
 
   -- | Perform operation
@@ -200,13 +200,13 @@ class (BLAS1 a) => BLAS2 a where
   -- > A ← α·x·conjg(x) + A
   --
   --   where /A/ is packed hermitian/symmetric matrix
-  hpr  :: RowOrder --
-       -> Uplo     -- ^ Hermitian/symmetric matrix storage mode
-       -> Int      -- ^ Matri order
-       -> Double   -- ^ Scalar /α/
-       -> Ptr a    -- ^ Vector /x/
-       -> Int      -- ^ Stride for /x/
-       -> Ptr a    -- ^ Matrix data
+  hpr  :: RowOrder   --
+       -> Uplo       -- ^ Hermitian/symmetric matrix storage mode
+       -> Int        -- ^ Matri order
+       -> RealType a -- ^ Scalar /α/
+       -> Ptr a      -- ^ Vector /x/
+       -> Int        -- ^ Stride for /x/
+       -> Ptr a      -- ^ Matrix data
        -> IO ()
 
   -- | Perform operation
