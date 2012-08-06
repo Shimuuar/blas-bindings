@@ -241,18 +241,18 @@ instance BLAS3 Double where
     {#call cblas_dgemm #} (toOrder ord)
       (toTrans transa) (toTrans transb)
       (toI m) (toI n) (toI k)
-      (toD alpha) (ptr pa) (toI lda)
-                  (ptr pb) (toI ldb)
-      (toD beta)  (ptr pc) (toI ldc)
+      (toD alpha) (ptrD pa) (toI lda)
+                  (ptrD pb) (toI ldb)
+      (toD beta)  (ptrD pc) (toI ldc)
   {-# INLINE gemm #-}
 
   symm ord side uplo m n alpha pa lda pb ldb beta pc ldc =
     {#call cblas_dsymm #} (toOrder ord)
        (toSide side) (toUplo uplo)
        (toI m) (toI n)
-       (toD alpha) (ptr pa) (toI lda)
-                   (ptr pb) (toI ldb)
-       (toD beta)  (ptr pc) (toI ldc)
+       (toD alpha) (ptrD pa) (toI lda)
+                   (ptrD pb) (toI ldb)
+       (toD beta)  (ptrD pc) (toI ldc)
   {-# INLINE symm #-}
 
   hemm = symm
@@ -262,33 +262,33 @@ instance BLAS3 Double where
     {#call cblas_dtrmm #} (toOrder ord)
       (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
       (toI m) (toI n)
-      (toD alpha) (ptr pa) (toI lda)
-                  (ptr pb) (toI ldb)
+      (toD alpha) (ptrD pa) (toI lda)
+                  (ptrD pb) (toI ldb)
   {-# INLINE trmm #-}
 
   trsm ord side uplo transa diag m n alpha pa lda pb ldb =
     {#call cblas_dtrsm #} (toOrder ord)
       (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
       (toI m) (toI n)
-      (toD alpha) (ptr pa) (toI lda)
-                  (ptr pb) (toI ldb)
+      (toD alpha) (ptrD pa) (toI lda)
+                  (ptrD pb) (toI ldb)
   {-# INLINE trsm #-}
 
   syrk ord uplo transa n k alpha pa lda beta pc ldc =
     {#call cblas_dsyrk #} (toOrder ord)
     (toUplo uplo) (toTrans transa)
     (toI n) (toI k)
-    (toD alpha) (ptr pa)  (toI lda)
-    (toD beta)  (ptr pc)  (toI ldc)
+    (toD alpha) (ptrD pa)  (toI lda)
+    (toD beta)  (ptrD pc)  (toI ldc)
   {-# INLINE syrk #-}
 
   syr2k ord uplo transa n k alpha pa lda pb ldb beta pc ldc =
     {#call cblas_dsyr2k #} (toOrder ord)
       (toUplo uplo) (toTrans transa)
       (toI n) (toI k)
-      (toD alpha) (ptr pa) (toI lda)
-                  (ptr pb) (toI ldb)
-      (toD beta)  (ptr pc) (toI ldc)
+      (toD alpha) (ptrD pa) (toI lda)
+                  (ptrD pb) (toI ldb)
+      (toD beta)  (ptrD pc) (toI ldc)
   {-# INLINE syr2k #-}
 
   herk  = syrk
@@ -304,9 +304,9 @@ instance BLAS3 (Complex Double) where
     {#call cblas_zgemm #} (toOrder ord)
       (toTrans transa) (toTrans transb)
       (toI m) (toI n) (toI k)
-      (ptrC palpha) (ptrC pa) (toI lda)
-                    (ptrC pb) (toI ldb)
-      (ptrC pbeta)  (ptrC pc) (toI ldc)
+      (ptrZ palpha) (ptrZ pa) (toI lda)
+                    (ptrZ pb) (toI ldb)
+      (ptrZ pbeta)  (ptrZ pc) (toI ldc)
   {-# INLINE gemm #-}
 
   symm ord side uplo m n alpha pa lda pb ldb beta pc ldc =
@@ -315,9 +315,9 @@ instance BLAS3 (Complex Double) where
       {#call cblas_zsymm #} (toOrder ord)
         (toSide side) (toUplo uplo)
         (toI m) (toI n)
-        (ptrC palpha) (ptrC pa) (toI lda)
-                      (ptrC pb) (toI ldb)
-        (ptrC pbeta ) (ptrC pc) (toI ldc)
+        (ptrZ palpha) (ptrZ pa) (toI lda)
+                      (ptrZ pb) (toI ldb)
+        (ptrZ pbeta ) (ptrZ pc) (toI ldc)
   {-# INLINE symm #-}
 
   hemm ord side uplo m n alpha pa lda pb ldb beta pc ldc =
@@ -326,9 +326,9 @@ instance BLAS3 (Complex Double) where
       {#call cblas_zhemm #} (toOrder ord)
         (toSide side) (toUplo uplo)
         (toI m) (toI n)
-        (ptrC palpha) (ptrC pa) (toI lda)
-                      (ptrC pb) (toI ldb)
-        (ptrC pbeta ) (ptrC pc) (toI ldc)
+        (ptrZ palpha) (ptrZ pa) (toI lda)
+                      (ptrZ pb) (toI ldb)
+        (ptrZ pbeta ) (ptrZ pc) (toI ldc)
   {-# INLINE hemm #-}
 
   trmm ord side uplo transa diag m n alpha pa lda pb ldb =
@@ -336,8 +336,8 @@ instance BLAS3 (Complex Double) where
       {#call cblas_ztrmm #} (toOrder ord)
         (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
         (toI m) (toI n)
-        (ptrC palpha) (ptrC pa) (toI lda)
-                      (ptrC pb) (toI ldb)
+        (ptrZ palpha) (ptrZ pa) (toI lda)
+                      (ptrZ pb) (toI ldb)
   {-# INLINE trmm #-}
 
   trsm ord side uplo transa diag m n alpha pa lda pb ldb =
@@ -345,8 +345,8 @@ instance BLAS3 (Complex Double) where
       {#call cblas_ztrsm #} (toOrder ord)
         (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
         (toI m) (toI n)
-        (ptrC palpha) (ptrC pa) (toI lda)
-                      (ptrC pb) (toI ldb)
+        (ptrZ palpha) (ptrZ pa) (toI lda)
+                      (ptrZ pb) (toI ldb)
   {-# INLINE trsm #-}
 
   syrk ord uplo transa n k alpha pa lda beta pc ldc =
@@ -355,8 +355,8 @@ instance BLAS3 (Complex Double) where
      {#call cblas_zsyrk #} (toOrder ord)
        (toUplo uplo) (toTrans transa)
        (toI n) (toI k)
-       (ptrC palpha) (ptrC pa) (toI lda)
-       (ptrC pbeta)  (ptrC pc) (toI ldc)
+       (ptrZ palpha) (ptrZ pa) (toI lda)
+       (ptrZ pbeta)  (ptrZ pc) (toI ldc)
   {-# INLINE syrk #-}
 
   syr2k ord uplo transa n k alpha pa lda pb ldb beta pc ldc =
@@ -365,17 +365,17 @@ instance BLAS3 (Complex Double) where
       {#call cblas_zsyr2k #} (toOrder ord)
         (toUplo uplo) (toTrans transa)
         (toI n) (toI k)
-        (ptrC palpha) (ptrC pa) (toI lda)
-                      (ptrC pb) (toI ldb)
-        (ptrC pbeta ) (ptrC pc) (toI ldc)
+        (ptrZ palpha) (ptrZ pa) (toI lda)
+                      (ptrZ pb) (toI ldb)
+        (ptrZ pbeta ) (ptrZ pc) (toI ldc)
   {-# INLINE syr2k #-}
 
   herk ord uplo transa n k alpha pa lda beta pc ldc =
     {#call cblas_zherk #} (toOrder ord)
       (toUplo uplo) (toTrans transa)
       (toI n) (toI k)
-      (toD alpha) (ptrC pa) (toI lda)
-      (toD beta ) (ptrC pc) (toI ldc)
+      (toD alpha) (ptrZ pa) (toI lda)
+      (toD beta ) (ptrZ pc) (toI ldc)
   {-# INLINE herk #-}
 
   her2k ord uplo transa n k alpha pa lda pb ldb beta pc ldc =
@@ -383,7 +383,7 @@ instance BLAS3 (Complex Double) where
       {#call cblas_zher2k #} (toOrder ord)
         (toUplo uplo) (toTrans transa)
         (toI n) (toI k)
-        (ptrC palpha) (ptrC pa) (toI lda)
-                      (ptrC pb) (toI ldb)
-        (toD  beta  ) (ptrC pc) (toI ldc)
+        (ptrZ palpha) (ptrZ pa) (toI lda)
+                      (ptrZ pb) (toI ldb)
+        (toD  beta  ) (ptrZ pc) (toI ldc)
   {-# INLINE her2k #-}

@@ -12,7 +12,7 @@ module Numeric.BLAS.Bindings.Types where
 
 import Data.Complex     (Complex)
 import Foreign          (Ptr,castPtr)
-import Foreign.C.Types  (CInt,CDouble)
+import Foreign.C.Types  (CInt,CDouble,CFloat)
 import Unsafe.Coerce
 
 
@@ -103,9 +103,17 @@ toI :: Int -> CInt
 toI = fromIntegral
 {-# INLINE toI #-}
 
+toF :: Float -> CFloat
+toF = unsafeCoerce
+{-# INLINE toF #-}
+
 toD :: Double -> CDouble
 toD = unsafeCoerce
 {-# INLINE toD #-}
+
+fromF :: CFloat -> Float
+fromF = unsafeCoerce
+{-# INLINE fromF #-}
 
 fromD :: CDouble -> Double
 fromD = unsafeCoerce
@@ -113,10 +121,18 @@ fromD = unsafeCoerce
 
 
 
-ptr :: Ptr Double -> Ptr CDouble
-ptr = castPtr
-{-# INLINE ptr #-}
+ptrF :: Ptr Float -> Ptr CFloat
+ptrF = castPtr
+{-# INLINE ptrF #-}
 
-ptrC :: Ptr (Complex Double) -> Ptr ()
+ptrD :: Ptr Double -> Ptr CDouble
+ptrD = castPtr
+{-# INLINE ptrD #-}
+
+ptrC :: Ptr (Complex Float) -> Ptr ()
 ptrC = castPtr
 {-# INLINE ptrC #-}
+
+ptrZ :: Ptr (Complex Double) -> Ptr ()
+ptrZ = castPtr
+{-# INLINE ptrZ #-}

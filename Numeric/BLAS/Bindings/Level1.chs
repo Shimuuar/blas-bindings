@@ -129,84 +129,84 @@ class (Storable a) => BLAS1 a where
 instance BLAS1 Double where
   type RealType Double = Double
   copy n px incx py incy =
-    {#call cblas_dcopy #} (toI n) (ptr px) (toI incx) (ptr py) (toI incy)
+    {#call cblas_dcopy #} (toI n) (ptrD px) (toI incx) (ptrD py) (toI incy)
   {-# INLINE copy #-}
   swap n px incx py incy =
-    {#call cblas_dswap #} (toI n) (ptr px) (toI incx) (ptr py) (toI incy)
+    {#call cblas_dswap #} (toI n) (ptrD px) (toI incx) (ptrD py) (toI incy)
   {-# INLINE swap #-}
   dotc n px incx py incy = do
-    x <- {#call cblas_ddot #} (toI n) (ptr px) (toI incx) (ptr py) (toI incy)
+    x <- {#call cblas_ddot #} (toI n) (ptrD px) (toI incx) (ptrD py) (toI incy)
     return $! fromD x
   {-# INLINE dotc #-}
   dotu = dotc
   {-# INLINE dotu #-}
   nrm2 n px incx = do
-    x <- {#call cblas_dnrm2 #} (toI n) (ptr px) (toI incx)
+    x <- {#call cblas_dnrm2 #} (toI n) (ptrD px) (toI incx)
     return $! fromD x
   {-# INLINE nrm2 #-}
   asum n px incx = do
-    x <- {#call cblas_dasum #} (toI n) (ptr px) (toI incx)
+    x <- {#call cblas_dasum #} (toI n) (ptrD px) (toI incx)
     return $! fromD x
   {-# INLINE asum #-}
   iamax n px incx = do
-    x <- {#call cblas_idamax #} (toI n) (ptr px) (toI incx)
+    x <- {#call cblas_idamax #} (toI n) (ptrD px) (toI incx)
     return $! fromIntegral x
   {-# INLINE iamax #-}
   axpy n alpha px incx py incy =
-    {#call cblas_daxpy #} (toI n) (toD alpha) (ptr px) (toI incx) (ptr py) (toI incy)
+    {#call cblas_daxpy #} (toI n) (toD alpha) (ptrD px) (toI incx) (ptrD py) (toI incy)
   {-# INLINE axpy #-}
   scal n alpha px incx =
-    {#call cblas_dscal #} (toI n) (toD alpha) (ptr px) (toI incx)
+    {#call cblas_dscal #} (toI n) (toD alpha) (ptrD px) (toI incx)
   {-# INLINE scal #-}
   rotg a b c d =
-    {#call cblas_drotg #} (ptr a) (ptr b) (ptr c) (ptr d)
+    {#call cblas_drotg #} (ptrD a) (ptrD b) (ptrD c) (ptrD d)
   {-# INLINE rotg #-}
   rot n px incx py incy c s =
-    {#call cblas_drot #} (toI n) (ptr px) (toI incx) (ptr py) (toI incy) (toD c) (toD s)
+    {#call cblas_drot #} (toI n) (ptrD px) (toI incx) (ptrD py) (toI incy) (toD c) (toD s)
   {-# INLINE rot #-}
 
 
 instance BLAS1 (Complex Double) where
   type RealType (Complex Double) = Double
   copy n px incx py incy =
-    {#call cblas_zcopy #} (toI n) (ptrC px) (toI incx) (ptrC py) (toI incy)
+    {#call cblas_zcopy #} (toI n) (ptrZ px) (toI incx) (ptrZ py) (toI incy)
   {-# INLINE copy #-}
   swap n px incx py incy =
-    {#call cblas_zswap #} (toI n) (ptrC px) (toI incx) (ptrC py) (toI incy)
+    {#call cblas_zswap #} (toI n) (ptrZ px) (toI incx) (ptrZ py) (toI incy)
   {-# INLINE swap #-}
   dotc n px incx py incy =
     alloca $ \res -> do
-      {#call cblas_zdotc_sub #} (toI n) (ptrC px) (toI incx) (ptrC py) (toI incy) (ptrC res)
+      {#call cblas_zdotc_sub #} (toI n) (ptrZ px) (toI incx) (ptrZ py) (toI incy) (ptrZ res)
       peek res
   {-# INLINE dotc #-}
   dotu n px incx py incy =
     alloca $ \res -> do
-      {#call cblas_zdotu_sub #} (toI n) (ptrC px) (toI incx) (ptrC py) (toI incy) (ptrC res)
+      {#call cblas_zdotu_sub #} (toI n) (ptrZ px) (toI incx) (ptrZ py) (toI incy) (ptrZ res)
       peek res
   {-# INLINE dotu #-}
   nrm2 n px incx = do
-    x <- {#call cblas_dznrm2 #} (toI n) (ptrC px) (toI incx)
+    x <- {#call cblas_dznrm2 #} (toI n) (ptrZ px) (toI incx)
     return $! fromD x
   {-# INLINE nrm2 #-}
   asum n px incx = do
-    x <- {#call cblas_dzasum #} (toI n) (ptrC px) (toI incx)
+    x <- {#call cblas_dzasum #} (toI n) (ptrZ px) (toI incx)
     return $! fromD x
   {-# INLINE asum #-}
   iamax n px incx = do
-    i <- {#call cblas_izamax #} (toI n) (ptrC px) (toI incx)
+    i <- {#call cblas_izamax #} (toI n) (ptrZ px) (toI incx)
     return $! fromIntegral i
   {-# INLINE iamax #-}
   axpy n alpha px incx py incy =
     with alpha $ \palpha ->
-      {#call cblas_zaxpy #} (toI n) (ptrC palpha) (ptrC px) (toI incx) (ptrC py) (toI incy)
+      {#call cblas_zaxpy #} (toI n) (ptrZ palpha) (ptrZ px) (toI incx) (ptrZ py) (toI incy)
   {-# INLINE axpy #-}
   scal n alpha px incx =
     with   alpha $ \palpha ->
-    {#call cblas_zscal #} (toI n) (ptrC palpha) (ptrC px) (toI incx)
+    {#call cblas_zscal #} (toI n) (ptrZ palpha) (ptrZ px) (toI incx)
   {-# INLINE scal #-}
   rotg a b c d =
-    {#call cblas_zrotg #} (ptrC a) (ptrC b) (ptrC c) (ptrC d)
+    {#call cblas_zrotg #} (ptrZ a) (ptrZ b) (ptrZ c) (ptrZ d)
   {-# INLINE rotg #-}
   rot n px incx py incy c s =
-    {#call cblas_zdrot #} (toI n) (ptrC px) (toI incx) (ptrC py) (toI incy) (toD c) (toD s)
+    {#call cblas_zdrot #} (toI n) (ptrZ px) (toI incx) (ptrZ py) (toI incy) (toD c) (toD s)
   {-# INLINE rot #-}
