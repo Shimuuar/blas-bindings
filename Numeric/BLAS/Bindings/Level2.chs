@@ -133,7 +133,7 @@ class (BLAS1 a) => BLAS2 a where
 
   -- RANK 1 operations
 
-  -- | Perform rank-1 operation:
+  -- | Perform rank-1 operation. It's same as 'geru' for real valued vector.
   --
   -- > A ← α·x·conjg(y') + A
   gerc :: RowOrder --
@@ -148,7 +148,7 @@ class (BLAS1 a) => BLAS2 a where
        -> Int      -- ^ /LDA/ leading dimension of /A/
        -> IO ()
 
-  -- | Perform rank-1 operation:
+  -- | Perform rank-1 operation. It's same as 'gerc' for real values vectors.
   --
   -- > A ← α·x·y' + A
   geru :: RowOrder --
