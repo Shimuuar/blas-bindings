@@ -126,6 +126,50 @@ class (Storable a) => BLAS1 a where
         -> IO ()
 
 
+
+----------------------------------------------------------------
+-- Instances
+----------------------------------------------------------------
+
+instance BLAS1 Float where
+  type RealType Float = Float
+  copy n px incx py incy =
+    {#call cblas_scopy #} (toI n) (ptrF px) (toI incx) (ptrF py) (toI incy)
+  {-# INLINE copy #-}
+  swap n px incx py incy =
+    {#call cblas_sswap #} (toI n) (ptrF px) (toI incx) (ptrF py) (toI incy)
+  {-# INLINE swap #-}
+  dotc n px incx py incy = do
+    x <- {#call cblas_sdot #} (toI n) (ptrF px) (toI incx) (ptrF py) (toI incy)
+    return $! fromF x
+  {-# INLINE dotc #-}
+  dotu = dotc
+  {-# INLINE dotu #-}
+  nrm2 n px incx = do
+    x <- {#call cblas_snrm2 #} (toI n) (ptrF px) (toI incx)
+    return $! fromF x
+  {-# INLINE nrm2 #-}
+  asum n px incx = do
+    x <- {#call cblas_sasum #} (toI n) (ptrF px) (toI incx)
+    return $! fromF x
+  {-# INLINE asum #-}
+  iamax n px incx = do
+    x <- {#call cblas_isamax #} (toI n) (ptrF px) (toI incx)
+    return $! fromIntegral x
+  {-# INLINE iamax #-}
+  axpy n alpha px incx py incy =
+    {#call cblas_saxpy #} (toI n) (toF alpha) (ptrF px) (toI incx) (ptrF py) (toI incy)
+  {-# INLINE axpy #-}
+  scal n alpha px incx =
+    {#call cblas_sscal #} (toI n) (toF alpha) (ptrF px) (toI incx)
+  {-# INLINE scal #-}
+  rotg a b c d =
+    {#call cblas_srotg #} (ptrF a) (ptrF b) (ptrF c) (ptrF d)
+  {-# INLINE rotg #-}
+  rot n px incx py incy c s =
+    {#call cblas_srot #} (toI n) (ptrF px) (toI incx) (ptrF py) (toI incy) (toF c) (toF s)
+  {-# INLINE rot #-}
+
 instance BLAS1 Double where
   type RealType Double = Double
   copy n px incx py incy =
@@ -163,6 +207,52 @@ instance BLAS1 Double where
   {-# INLINE rotg #-}
   rot n px incx py incy c s =
     {#call cblas_drot #} (toI n) (ptrD px) (toI incx) (ptrD py) (toI incy) (toD c) (toD s)
+  {-# INLINE rot #-}
+
+
+instance BLAS1 (Complex Float) where
+  type RealType (Complex Float) = Float
+  copy n px incx py incy =
+    {#call cblas_ccopy #} (toI n) (ptrC px) (toI incx) (ptrC py) (toI incy)
+  {-# INLINE copy #-}
+  swap n px incx py incy =
+    {#call cblas_cswap #} (toI n) (ptrC px) (toI incx) (ptrC py) (toI incy)
+  {-# INLINE swap #-}
+  dotc n px incx py incy =
+    alloca $ \res -> do
+      {#call cblas_cdotc_sub #} (toI n) (ptrC px) (toI incx) (ptrC py) (toI incy) (ptrC res)
+      peek res
+  {-# INLINE dotc #-}
+  dotu n px incx py incy =
+    alloca $ \res -> do
+      {#call cblas_cdotu_sub #} (toI n) (ptrC px) (toI incx) (ptrC py) (toI incy) (ptrC res)
+      peek res
+  {-# INLINE dotu #-}
+  nrm2 n px incx = do
+    x <- {#call cblas_scnrm2 #} (toI n) (ptrC px) (toI incx)
+    return $! fromF x
+  {-# INLINE nrm2 #-}
+  asum n px incx = do
+    x <- {#call cblas_scasum #} (toI n) (ptrC px) (toI incx)
+    return $! fromF x
+  {-# INLINE asum #-}
+  iamax n px incx = do
+    i <- {#call cblas_icamax #} (toI n) (ptrC px) (toI incx)
+    return $! fromIntegral i
+  {-# INLINE iamax #-}
+  axpy n alpha px incx py incy =
+    with alpha $ \palpha ->
+      {#call cblas_caxpy #} (toI n) (ptrC palpha) (ptrC px) (toI incx) (ptrC py) (toI incy)
+  {-# INLINE axpy #-}
+  scal n alpha px incx =
+    with   alpha $ \palpha ->
+    {#call cblas_cscal #} (toI n) (ptrC palpha) (ptrC px) (toI incx)
+  {-# INLINE scal #-}
+  rotg a b c d =
+    {#call cblas_crotg #} (ptrC a) (ptrC b) (ptrC c) (ptrC d)
+  {-# INLINE rotg #-}
+  rot n px incx py incy c s =
+    {#call cblas_csrot #} (toI n) (ptrC px) (toI incx) (ptrC py) (toI incy) (toF c) (toF s)
   {-# INLINE rot #-}
 
 

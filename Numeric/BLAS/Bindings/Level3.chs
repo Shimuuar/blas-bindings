@@ -17,7 +17,7 @@ module Numeric.BLAS.Bindings.Level3 (
 
 import Data.Complex
 import Foreign         ( Ptr, with )
-import Foreign.C.Types ( CInt(..), CDouble(..))
+import Foreign.C.Types ( CInt(..), CDouble(..), CFloat(..) )
 
 import Numeric.BLAS.Bindings.Types
 import Numeric.BLAS.Bindings.Level1 (RealType)
@@ -236,6 +236,11 @@ class (BLAS2 a) => BLAS3 a where
         -> IO ()
 
 
+
+----------------------------------------------------------------
+-- Instances
+----------------------------------------------------------------
+
 instance BLAS3 Double where
   gemm ord transa transb m n k alpha pa lda pb ldb beta pc ldc =
     {#call cblas_dgemm #} (toOrder ord)
@@ -295,6 +300,162 @@ instance BLAS3 Double where
   {-# INLINE herk #-}
   her2k = syr2k
   {-# INLINE her2k #-}
+
+
+
+instance BLAS3 Float where
+  gemm ord transa transb m n k alpha pa lda pb ldb beta pc ldc =
+    {#call cblas_sgemm #} (toOrder ord)
+      (toTrans transa) (toTrans transb)
+      (toI m) (toI n) (toI k)
+      (toF alpha) (ptrF pa) (toI lda)
+                  (ptrF pb) (toI ldb)
+      (toF beta)  (ptrF pc) (toI ldc)
+  {-# INLINE gemm #-}
+
+  symm ord side uplo m n alpha pa lda pb ldb beta pc ldc =
+    {#call cblas_ssymm #} (toOrder ord)
+       (toSide side) (toUplo uplo)
+       (toI m) (toI n)
+       (toF alpha) (ptrF pa) (toI lda)
+                   (ptrF pb) (toI ldb)
+       (toF beta)  (ptrF pc) (toI ldc)
+  {-# INLINE symm #-}
+
+  hemm = symm
+  {-# INLINE hemm #-}
+
+  trmm ord side uplo transa diag m n alpha pa lda pb ldb =
+    {#call cblas_strmm #} (toOrder ord)
+      (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
+      (toI m) (toI n)
+      (toF alpha) (ptrF pa) (toI lda)
+                  (ptrF pb) (toI ldb)
+  {-# INLINE trmm #-}
+
+  trsm ord side uplo transa diag m n alpha pa lda pb ldb =
+    {#call cblas_strsm #} (toOrder ord)
+      (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
+      (toI m) (toI n)
+      (toF alpha) (ptrF pa) (toI lda)
+                  (ptrF pb) (toI ldb)
+  {-# INLINE trsm #-}
+
+  syrk ord uplo transa n k alpha pa lda beta pc ldc =
+    {#call cblas_ssyrk #} (toOrder ord)
+    (toUplo uplo) (toTrans transa)
+    (toI n) (toI k)
+    (toF alpha) (ptrF pa)  (toI lda)
+    (toF beta)  (ptrF pc)  (toI ldc)
+  {-# INLINE syrk #-}
+
+  syr2k ord uplo transa n k alpha pa lda pb ldb beta pc ldc =
+    {#call cblas_ssyr2k #} (toOrder ord)
+      (toUplo uplo) (toTrans transa)
+      (toI n) (toI k)
+      (toF alpha) (ptrF pa) (toI lda)
+                  (ptrF pb) (toI ldb)
+      (toF beta)  (ptrF pc) (toI ldc)
+  {-# INLINE syr2k #-}
+
+  herk  = syrk
+  {-# INLINE herk #-}
+  her2k = syr2k
+  {-# INLINE her2k #-}
+
+
+
+instance BLAS3 (Complex Float) where
+  gemm ord transa transb m n k alpha pa lda pb ldb beta pc ldc =
+    with alpha $ \palpha ->
+    with beta  $ \pbeta  ->
+    {#call cblas_cgemm #} (toOrder ord)
+      (toTrans transa) (toTrans transb)
+      (toI m) (toI n) (toI k)
+      (ptrC palpha) (ptrC pa) (toI lda)
+                    (ptrC pb) (toI ldb)
+      (ptrC pbeta)  (ptrC pc) (toI ldc)
+  {-# INLINE gemm #-}
+
+  symm ord side uplo m n alpha pa lda pb ldb beta pc ldc =
+    with alpha $ \palpha ->
+    with beta  $ \pbeta  ->
+      {#call cblas_csymm #} (toOrder ord)
+        (toSide side) (toUplo uplo)
+        (toI m) (toI n)
+        (ptrC palpha) (ptrC pa) (toI lda)
+                      (ptrC pb) (toI ldb)
+        (ptrC pbeta ) (ptrC pc) (toI ldc)
+  {-# INLINE symm #-}
+
+  hemm ord side uplo m n alpha pa lda pb ldb beta pc ldc =
+    with alpha $ \palpha ->
+    with beta  $ \pbeta  ->
+      {#call cblas_chemm #} (toOrder ord)
+        (toSide side) (toUplo uplo)
+        (toI m) (toI n)
+        (ptrC palpha) (ptrC pa) (toI lda)
+                      (ptrC pb) (toI ldb)
+        (ptrC pbeta ) (ptrC pc) (toI ldc)
+  {-# INLINE hemm #-}
+
+  trmm ord side uplo transa diag m n alpha pa lda pb ldb =
+    with alpha $ \palpha ->
+      {#call cblas_ctrmm #} (toOrder ord)
+        (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
+        (toI m) (toI n)
+        (ptrC palpha) (ptrC pa) (toI lda)
+                      (ptrC pb) (toI ldb)
+  {-# INLINE trmm #-}
+
+  trsm ord side uplo transa diag m n alpha pa lda pb ldb =
+    with alpha $ \palpha ->
+      {#call cblas_ctrsm #} (toOrder ord)
+        (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
+        (toI m) (toI n)
+        (ptrC palpha) (ptrC pa) (toI lda)
+                      (ptrC pb) (toI ldb)
+  {-# INLINE trsm #-}
+
+  syrk ord uplo transa n k alpha pa lda beta pc ldc =
+    with alpha $ \palpha ->
+    with beta  $ \pbeta  ->
+     {#call cblas_csyrk #} (toOrder ord)
+       (toUplo uplo) (toTrans transa)
+       (toI n) (toI k)
+       (ptrC palpha) (ptrC pa) (toI lda)
+       (ptrC pbeta)  (ptrC pc) (toI ldc)
+  {-# INLINE syrk #-}
+
+  syr2k ord uplo transa n k alpha pa lda pb ldb beta pc ldc =
+    with alpha $ \palpha ->
+    with beta  $ \pbeta  ->
+      {#call cblas_csyr2k #} (toOrder ord)
+        (toUplo uplo) (toTrans transa)
+        (toI n) (toI k)
+        (ptrC palpha) (ptrC pa) (toI lda)
+                      (ptrC pb) (toI ldb)
+        (ptrC pbeta ) (ptrC pc) (toI ldc)
+  {-# INLINE syr2k #-}
+
+  herk ord uplo transa n k alpha pa lda beta pc ldc =
+    {#call cblas_cherk #} (toOrder ord)
+      (toUplo uplo) (toTrans transa)
+      (toI n) (toI k)
+      (toF alpha) (ptrC pa) (toI lda)
+      (toF beta ) (ptrC pc) (toI ldc)
+  {-# INLINE herk #-}
+
+  her2k ord uplo transa n k alpha pa lda pb ldb beta pc ldc =
+    with alpha $ \palpha ->
+      {#call cblas_cher2k #} (toOrder ord)
+        (toUplo uplo) (toTrans transa)
+        (toI n) (toI k)
+        (ptrC palpha) (ptrC pa) (toI lda)
+                      (ptrC pb) (toI ldb)
+        (toF  beta  ) (ptrC pc) (toI ldc)
+  {-# INLINE her2k #-}
+
 
 
 instance BLAS3 (Complex Double) where

@@ -17,7 +17,7 @@ module Numeric.BLAS.Bindings.Level2 (
 
 import Data.Complex
 import Foreign         ( Ptr, with )
-import Foreign.C.Types ( CInt(..), CDouble(..) )
+import Foreign.C.Types ( CInt(..), CDouble(..), CFloat(..) )
 
 import Numeric.BLAS.Bindings.Types
 import Numeric.BLAS.Bindings.Level1
@@ -375,6 +375,108 @@ class (BLAS1 a) => BLAS2 a where
 
 
 ----------------------------------------------------------------
+-- Float
+----------------------------------------------------------------
+
+instance BLAS2 Float where
+  gemv ord trans m n alpha pa lda px incx beta py incy =
+    {#call cblas_sgemv #} (toOrder ord) (toTrans trans)
+      (toI m) (toI n) (toF alpha) (ptrF pa) (toI lda)
+                 (ptrF px) (toI incx)
+      (toF beta) (ptrF py) (toI incy)
+  {-# INLINE gemv #-}
+
+  hemv ord uplo n alpha pa lda px incx beta py incy =
+    {#call cblas_ssymv #} (toOrder ord) (toUplo uplo)
+      (toI n) (toF alpha) (ptrF pa) (toI lda)
+                 (ptrF px) (toI incx)
+      (toF beta) (ptrF py) (toI incy)
+  {-# INLINE hemv #-}
+
+  hpmv ord uplo n alpha pap px incx beta py incy =
+    {#call cblas_sspmv #} (toOrder ord) (toUplo uplo) (toI n)
+      (toF alpha) (ptrF pap)
+                  (ptrF px) (toI incx)
+      (toF beta)  (ptrF py) (toI incy)
+  {-# INLINE hpmv #-}
+
+  gbmv ord trans m n kl ku alpha pa lda px incx beta py incy =
+    {#call cblas_sgbmv #} (toOrder ord) (toTrans trans)
+      (toI m) (toI n) (toI kl) (toI ku)
+      (toF alpha) (ptrF pa) (toI lda )
+                  (ptrF px) (toI incx)
+      (toF beta)  (ptrF py) (toI incy)
+  {-# INLINE gbmv #-}
+
+  hbmv ord uplo n k alpha pa lda px incx beta py incy =
+    {#call cblas_ssbmv #} (toOrder ord) (toUplo uplo) (toI n) (toI k)
+      (toF alpha) (ptrF pa) (toI lda)
+      (ptrF px) (toI incx)
+      (toF beta) (ptrF py) (toI incy)
+  {-# INLINE hbmv #-}
+
+  gerc ord m n alpha px incx py incy pa lda =
+    {#call cblas_sger #} (toOrder ord)
+      (toI m) (toI n) (toF alpha) (ptrF px) (toI incx) (ptrF py) (toI incy) (ptrF pa) (toI lda)
+  {-# INLINE gerc #-}
+
+  geru = gerc
+  {-# INLINE geru #-}
+
+  her ord uplo n alpha px incx pa lda =
+    {#call cblas_ssyr #} (toOrder ord)
+      (toUplo uplo) (toI n) (toF alpha) (ptrF px) (toI incx) (ptrF pa) (toI lda)
+  {-# INLINE her #-}
+
+  her2 ord uplo n alpha px incx py incy pa lda =
+    {#call cblas_ssyr2 #} (toOrder ord)
+      (toUplo uplo) (toI n) (toF alpha) (ptrF px) (toI incx) (ptrF py) (toI incy) (ptrF pa) (toI lda)
+  {-# INLINE her2 #-}
+
+  hpr ord uplo n alpha px incx pap =
+    {#call cblas_sspr#} (toOrder ord)
+     (toUplo uplo) (toI n) (toF alpha) (ptrF px) (toI incx) (ptrF pap)
+  {-# INLINE hpr #-}
+
+  hpr2 ord uplo n alpha px incx py incy pap =
+    {#call cblas_sspr2 #} (toOrder ord)
+      (toUplo uplo) (toI n) (toF alpha) (ptrF px) (toI incx) (ptrF py) (toI incy) (ptrF pap)
+  {-# INLINE hpr2 #-}
+
+  tpmv ord uplo trans diag n pap px incx =
+    {#call cblas_stpmv #} (toOrder ord)
+    (toUplo uplo) (toTrans trans) (toDiag diag) (toI n) (ptrF pap) (ptrF px) (toI incx)
+  {-# INLINE tpmv #-}
+
+  tpsv ord uplo trans diag n pap px incx =
+    {#call cblas_stpsv #} (toOrder ord)
+      (toUplo uplo) (toTrans trans) (toDiag diag) (toI n) (ptrF pap) (ptrF px) (toI incx)
+  {-# INLINE tpsv #-}
+
+  trmv ord uplo trans diag n pa lda px incx =
+    {#call cblas_strmv #} (toOrder ord) (toUplo uplo) (toTrans trans) (toDiag diag)
+      (toI n) (ptrF pa) (toI lda) (ptrF px) (toI incx)
+  {-# INLINE trmv #-}
+
+  tbsv ord uplo trans diag n k pa lda px incx =
+    {#call cblas_stbsv #} (toOrder ord)
+      (toUplo uplo) (toTrans trans) (toDiag diag) (toI n) (toI k) (ptrF pa) (toI lda) (ptrF px) (toI incx)
+  {-# INLINE tbsv #-}
+
+
+  tbmv ord uplo trans diag n k pa lda px incx =
+    {# call cblas_stbmv #} (toOrder ord)
+      (toUplo uplo) (toTrans trans) (toDiag diag) (toI n) (toI k) (ptrF pa) (toI lda) (ptrF px) (toI incx)
+  {-# INLINE tbmv #-}
+
+  trsv ord uplo trans diag n pa lda px incx =
+    {# call cblas_strsv #} (toOrder ord)
+      (toUplo uplo) (toTrans trans) (toDiag diag) (toI n) (ptrF pa) (toI lda) (ptrF px) (toI incx)
+  {-# INLINE trsv #-}
+
+
+
+----------------------------------------------------------------
 -- Double
 ----------------------------------------------------------------
 
@@ -472,6 +574,126 @@ instance BLAS2 Double where
   trsv ord uplo trans diag n pa lda px incx =
     {# call cblas_dtrsv #} (toOrder ord)
       (toUplo uplo) (toTrans trans) (toDiag diag) (toI n) (ptrD pa) (toI lda) (ptrD px) (toI incx)
+  {-# INLINE trsv #-}
+
+
+
+----------------------------------------------------------------
+-- Complex Float
+----------------------------------------------------------------
+
+instance BLAS2 (Complex Float) where
+  gemv ord trans m n alpha pa lda px incx beta py incy =
+    with alpha $ \palpha ->
+    with beta  $ \pbeta  ->
+      {#call cblas_cgemv #} (toOrder ord) (toTrans trans)
+        (toI m) (toI n)
+        (ptrC palpha) (ptrC pa) (toI lda)
+                      (ptrC px) (toI incx)
+        (ptrC pbeta)  (ptrC py) (toI incy)
+  {-# INLINE gemv #-}
+
+  hemv ord uplo n alpha pa lda px incx beta py incy =
+    with alpha $ \palpha ->
+    with beta  $ \pbeta  ->
+    {#call cblas_chemv #} (toOrder ord) (toUplo uplo)
+      (toI n)
+      (ptrC palpha) (ptrC pa) (toI lda)
+                    (ptrC px) (toI incx)
+      (ptrC pbeta)  (ptrC py) (toI incy)
+  {-# INLINE hemv #-}
+
+  hpmv ord uplo n alpha pap px incx beta py incy =
+    with alpha $ \palpha ->
+    with beta  $ \pbeta  ->
+    {#call cblas_chpmv #} (toOrder ord) (toUplo uplo) (toI n)
+      (ptrC palpha) (ptrC pap)
+                    (ptrC px) (toI incx)
+      (ptrC pbeta)  (ptrC py) (toI incy)
+  {-# INLINE hpmv #-}
+
+  gbmv ord trans m n kl ku alpha pa lda px incx beta py incy =
+    with alpha $ \palpha ->
+    with beta  $ \pbeta  ->
+      {#call cblas_cgbmv #} (toOrder ord) (toTrans trans)
+        (toI m) (toI n) (toI kl) (toI ku)
+        (ptrC palpha) (ptrC pa) (toI lda )
+                      (ptrC px) (toI incx)
+        (ptrC pbeta)  (ptrC py) (toI incy)
+  {-# INLINE gbmv #-}
+
+  hbmv ord uplo n k alpha pa lda px incx beta py incy =
+    with alpha $ \palpha ->
+    with beta  $ \pbeta  ->
+      {#call cblas_chbmv #} (toOrder ord) (toUplo uplo) (toI n) (toI k)
+        (ptrC palpha) (ptrC pa) (toI lda)
+                      (ptrC px) (toI incx)
+        (ptrC pbeta)  (ptrC py) (toI incy)
+  {-# INLINE hbmv #-}
+
+  gerc ord m n alpha px incx py incy pa lda =
+    with alpha $ \palpha ->
+      {#call cblas_cgerc #} (toOrder ord)
+        (toI m) (toI n) (ptrC palpha) (ptrC px) (toI incx) (ptrC py) (toI incy) (ptrC pa) (toI lda)
+  {-# INLINE gerc #-}
+
+  geru ord m n alpha px incx py incy pa lda =
+    with alpha $ \palpha ->
+      {#call cblas_cgeru #} (toOrder ord)
+        (toI m) (toI n) (ptrC palpha) (ptrC px) (toI incx) (ptrC py) (toI incy) (ptrC pa) (toI lda)
+  {-# INLINE geru #-}
+
+  her ord uplo n alpha px incx pa lda =
+    {#call cblas_cher #} (toOrder ord)
+      (toUplo uplo) (toI n) (toF alpha) (ptrC px) (toI incx) (ptrC pa) (toI lda)
+  {-# INLINE her #-}
+
+  her2 ord uplo n alpha px incx py incy pa lda =
+    with alpha $ \palpha ->
+      {#call cblas_cher2 #} (toOrder ord)
+        (toUplo uplo) (toI n) (ptrC palpha) (ptrC px) (toI incx) (ptrC py) (toI incy) (ptrC pa) (toI lda)
+  {-# INLINE her2 #-}
+
+  hpr ord uplo n alpha px incx pap =
+    {#call cblas_chpr#} (toOrder ord)
+      (toUplo uplo) (toI n) (toF alpha) (ptrC px) (toI incx) (ptrC pap)
+  {-# INLINE hpr #-}
+
+  hpr2 ord uplo n alpha px incx py incy pap =
+    with alpha $ \palpha ->
+      {#call cblas_chpr2 #} (toOrder ord)
+        (toUplo uplo) (toI n) (ptrC palpha) (ptrC px) (toI incx) (ptrC py) (toI incy) (ptrC pap)
+  {-# INLINE hpr2 #-}
+
+  tpmv ord uplo trans diag n pap px incx =
+    {#call cblas_ctpmv #} (toOrder ord)
+    (toUplo uplo) (toTrans trans) (toDiag diag) (toI n) (ptrC pap) (ptrC px) (toI incx)
+  {-# INLINE tpmv #-}
+
+  tpsv ord uplo trans diag n pap px incx =
+    {#call cblas_ctpsv #} (toOrder ord)
+      (toUplo uplo) (toTrans trans) (toDiag diag) (toI n) (ptrC pap) (ptrC px) (toI incx)
+  {-# INLINE tpsv #-}
+
+  trmv ord uplo trans diag n pa lda px incx =
+    {#call cblas_ctrmv #} (toOrder ord) (toUplo uplo) (toTrans trans) (toDiag diag)
+      (toI n) (ptrC pa) (toI lda) (ptrC px) (toI incx)
+  {-# INLINE trmv #-}
+
+  tbsv ord uplo trans diag n k pa lda px incx =
+    {#call cblas_ctbsv #} (toOrder ord)
+      (toUplo uplo) (toTrans trans) (toDiag diag) (toI n) (toI k) (ptrC pa) (toI lda) (ptrC px) (toI incx)
+  {-# INLINE tbsv #-}
+
+
+  tbmv ord uplo trans diag n k pa lda px incx =
+    {# call cblas_ctbmv #} (toOrder ord)
+      (toUplo uplo) (toTrans trans) (toDiag diag) (toI n) (toI k) (ptrC pa) (toI lda) (ptrC px) (toI incx)
+  {-# INLINE tbmv #-}
+
+  trsv ord uplo trans diag n pa lda px incx =
+    {# call cblas_ctrsv #} (toOrder ord)
+      (toUplo uplo) (toTrans trans) (toDiag diag) (toI n) (ptrC pa) (toI lda) (ptrC px) (toI incx)
   {-# INLINE trsv #-}
 
 
