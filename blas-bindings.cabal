@@ -1,4 +1,4 @@
-name:            blas-lapack-bindings
+name:            blas-bindings
 version:         0.8
 homepage:        http://github.com/Shimuuar/blas-lapack-bindings
 synopsis:        Low level bindings to BLAS and LAPACK
@@ -35,22 +35,17 @@ Library
     c2hs
   exposed-modules:
     Numeric.BLAS.Bindings
---    Numeric.LAPACK.Bindings
   other-modules:
     -- BLAS
     Numeric.BLAS.Bindings.Types
     Numeric.BLAS.Bindings.Level1
     Numeric.BLAS.Bindings.Level2
     Numeric.BLAS.Bindings.Level3
-    -- LAPACK
---    Numeric.LAPACK.Bindings.Types
---    Numeric.LAPACK.Bindings.Double
---    Numeric.LAPACK.Bindings.Zomplex
   include-dirs:
     cbits
   includes:
     cbits/blas.h
   extra-libraries:
-    lapack,
     blas
-  ghc-options:        -Wall -O2
+  ghc-options:
+    -Wall -O2
