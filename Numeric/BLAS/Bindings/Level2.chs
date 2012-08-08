@@ -43,7 +43,7 @@ class (BLAS1 a) => BLAS2 a where
 
   -- | Compute matrix-vector multiplication with dense matrix:
   --
-  --  > y ← α·A·x + β·y
+  --  > y ← α·op(A)·x + β·y
   --
   --   Matrix /A/ is transformed according to 'Trans' parameter.
   gemv :: RowOrder --
@@ -95,7 +95,7 @@ class (BLAS1 a) => BLAS2 a where
 
   -- | Perform matrix-vector operation with banded matrix:
   --
-  --   > y ← α·A·x + β·y
+  --   > y ← α·op(A)·x + β·y
   gbmv :: RowOrder --
        -> Trans    -- ^ Matrix transformation
        -> Int      -- ^ /M/  number of row
