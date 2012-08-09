@@ -25,7 +25,7 @@ import Numeric.BLAS.Bindings.Types
 
 
 -- | Level 1 BLAS. Vector-vector operations.
-class (Storable a) => BLAS1 a where
+class (Storable a, Num a) => BLAS1 a where
   -- | Type of real value which corresponds to type @a@.
   type RealType a :: *
   -- | Copy vector into another vector:
