@@ -1,32 +1,35 @@
 name:            blas-bindings
-version:         0.8
+version:         0.1
 homepage:        http://github.com/Shimuuar/blas-lapack-bindings
 synopsis:        Low level bindings to BLAS and LAPACK
 description:
-    The BLAS (Basic Linear Algebra Subprograms) are routines that provide
-    standard building blocks for performing basic vector and matrix operations. 
-    The Level 1 BLAS perform scalar, vector and vector-vector operations, the 
-    Level 2 BLAS perform matrix-vector operations, and the Level 3 BLAS perform
-    matrix-matrix operations. Because the BLAS are efficient, portable, and
-    widely available, they are commonly used in the development of high quality
-    linear algebra software, LAPACK for example.
-    .
-    For more information, see the Netlib BLAS webpage:
-    <http://www.netlib.org/blas/> 
-    .
-category:        Math
+  This package provide low level bindings to CBLAS routines. CBLAS is
+  standard C API for BLAS.
+  .
+  The BLAS (Basic Linear Algebra Subprograms) are routines that provide
+  standard building blocks for performing basic vector and matrix operations.
+  The Level 1 BLAS perform scalar, vector and vector-vector operations, the
+  Level 2 BLAS perform matrix-vector operations, and the Level 3 BLAS perform
+  matrix-matrix operations. Because the BLAS are efficient, portable, and
+  widely available, they are commonly used in the development of high quality
+  linear algebra software, LAPACK for example.
+  .
+  For more information, see the Netlib BLAS webpage:
+  <http://www.netlib.org/blas/>
+  .
+  For now it's hardcoded to use ATLAS headers.
+
+category:        Math, Numeric
 license:         BSD3
 license-file:    COPYING
-copyright:       (c) 2010. Patrick Perry <patperry@gmail.com>
-author:          Patrick Perry
-maintainer:      Patrick Perry <patperry@gmail.com>
-cabal-version:   >= 1.2.3
+copyright:       2010 Patrick Perry <patperry@gmail.com>, 2012 Aleksey Khudyakov <alexey.skladnoy@gmail.com>
+maintainer:      Aleksey Khudyakov <alexey.skladnoy@gmail.com>
+cabal-version:   >= 1.4
 build-type:      Simple
-tested-with:     GHC == 6.12.3
 
 extra-source-files:
-  NEWS README TODO
- 
+  README
+
 Library
   build-depends:
     base >= 4 && < 5,
