@@ -3,9 +3,10 @@
 -----------------------------------------------------------------------------
 -- |
 -- Module     : Numeric.BLAS.Bindings.Level2
--- Copyright  : Copyright (c) 2010, Patrick Perry <patperry@gmail.com>
+-- Copyright  : Copyright (c) 2010, Patrick Perry <patperry@gmail.com>,
+--              2012 Aleksey Khudyakov <alexey.skladnoy@gmail.com>
 -- License    : BSD3
--- Maintainer : Patrick Perry <patperry@gmail.com>
+-- Maintainer : Aleksey Khudyakov <alexey.skladnoy@gmail.com>
 -- Stability  : experimental
 --
 -- Matrix-Vector operations.
