@@ -21,6 +21,7 @@ import Foreign         ( Ptr, with )
 import Foreign.C.Types ( CInt(..), CDouble(..), CFloat(..) )
 
 import Numeric.BLAS.Bindings.Types
+import Numeric.BLAS.Bindings.Trace
 import Numeric.BLAS.Bindings.Level1 (RealType)
 import Numeric.BLAS.Bindings.Level2 (BLAS2   )
 
@@ -70,7 +71,7 @@ class (BLAS2 a) => BLAS3 a where
         -> Int      -- ^ Leading dimension of /C/
         -> IO ()
 
-  -- | Performs one of operations 
+  -- | Performs one of operations
   --
   -- > C ← α·A·B + β·C
   -- > C ← α·B·A + β·C
@@ -92,10 +93,10 @@ class (BLAS2 a) => BLAS3 a where
         -> Int      -- ^ Leading dimension of /C/
         -> IO ()
 
-  -- | Performs one of the matrix-matrix operations 
+  -- | Performs one of the matrix-matrix operations
   --
   -- > B ← α·op(A)·B
-  -- > B ← α·B·op(A) 
+  -- > B ← α·B·op(A)
   --
   --   where /α/ is a scalar, /B/ is an /m/ by /n/ matrix, /A/ is a
   --   unit, or non-unit, upper or lower triangular matrix.
@@ -113,10 +114,10 @@ class (BLAS2 a) => BLAS3 a where
         -> Int      -- ^ Leading dimension of /B/
         -> IO ()
 
-  -- | Solves one of the matrix equations 
+  -- | Solves one of the matrix equations
   --
   -- > op(A)·X = α·B
-  -- > X·op(A) = α·B 
+  -- > X·op(A) = α·B
   --
   --   where /α/ is scalar, /X/ and /B/ are /n/ by /m/ matrices, /A/
   --   is a unit, or non-unit, upper or lower triangular matrix.
@@ -136,9 +137,9 @@ class (BLAS2 a) => BLAS3 a where
         -> Int      -- ^ Leading dimension of B
         -> IO ()
 
-  -- | performs one of the symmetric rank k operations 
+  -- | performs one of the symmetric rank k operations
   --
-  -- > C <- α·A·A' + β·C 
+  -- > C <- α·A·A' + β·C
   -- > C <- α·A'·A + β·C
   syrk  :: RowOrder --
         -> Uplo     -- ^ Whether upper or lower triangular array of C is referneced.
@@ -156,9 +157,9 @@ class (BLAS2 a) => BLAS3 a where
         -> Int      -- ^ Leading dimension of C
         -> IO ()
 
-  -- | performs one of the symmetric rank 2k operations] 
+  -- | performs one of the symmetric rank 2k operations]
   --
-  -- > C ← α·A·B' + α·B·A' + β·C 
+  -- > C ← α·A·B' + α·B·A' + β·C
   -- > C ← α·A'·B + α·B'·A + β·C
   syr2k :: RowOrder --
         -> Uplo     -- ^ Whether upper or lower triangular part of C is
@@ -179,7 +180,7 @@ class (BLAS2 a) => BLAS3 a where
         -> Int      -- ^ Leading dimension of C
         -> IO ()
 
-  -- | Performs one of the hermitian rank k operations 
+  -- | Performs one of the hermitian rank k operations
   --
   -- > C ← α·A·conjg(A') + β·C
   -- > C ← α·conjg(A')·A + β·C
@@ -209,7 +210,7 @@ class (BLAS2 a) => BLAS3 a where
         -> Int        -- ^ Leading dimension of C
         -> IO ()
 
-  -- | performs one of the hermitian rank 2k operations 
+  -- | performs one of the hermitian rank 2k operations
   --
   -- > C ← α·A·conjg(B') + conjg(α)·B·conjg(A') + β·C
   -- > C ← α·conjg(A')·B + conjg(α)·conjg(B')·A + β·C
@@ -244,6 +245,7 @@ class (BLAS2 a) => BLAS3 a where
 
 instance BLAS3 Double where
   gemm ord transa transb m n k alpha pa lda pb ldb beta pc ldc =
+    traceBLAS "gemm"
     {#call cblas_dgemm #} (toOrder ord)
       (toTrans transa) (toTrans transb)
       (toI m) (toI n) (toI k)
@@ -253,6 +255,7 @@ instance BLAS3 Double where
   {-# INLINE gemm #-}
 
   symm ord side uplo m n alpha pa lda pb ldb beta pc ldc =
+    traceBLAS "symm"
     {#call cblas_dsymm #} (toOrder ord)
        (toSide side) (toUplo uplo)
        (toI m) (toI n)
@@ -265,6 +268,7 @@ instance BLAS3 Double where
   {-# INLINE hemm #-}
 
   trmm ord side uplo transa diag m n alpha pa lda pb ldb =
+    traceBLAS "trmm"
     {#call cblas_dtrmm #} (toOrder ord)
       (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
       (toI m) (toI n)
@@ -273,6 +277,7 @@ instance BLAS3 Double where
   {-# INLINE trmm #-}
 
   trsm ord side uplo transa diag m n alpha pa lda pb ldb =
+    traceBLAS "trsm"
     {#call cblas_dtrsm #} (toOrder ord)
       (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
       (toI m) (toI n)
@@ -281,6 +286,7 @@ instance BLAS3 Double where
   {-# INLINE trsm #-}
 
   syrk ord uplo transa n k alpha pa lda beta pc ldc =
+    traceBLAS "syrk"
     {#call cblas_dsyrk #} (toOrder ord)
     (toUplo uplo) (toTrans transa)
     (toI n) (toI k)
@@ -289,6 +295,7 @@ instance BLAS3 Double where
   {-# INLINE syrk #-}
 
   syr2k ord uplo transa n k alpha pa lda pb ldb beta pc ldc =
+    traceBLAS "syr2k"
     {#call cblas_dsyr2k #} (toOrder ord)
       (toUplo uplo) (toTrans transa)
       (toI n) (toI k)
@@ -306,6 +313,7 @@ instance BLAS3 Double where
 
 instance BLAS3 Float where
   gemm ord transa transb m n k alpha pa lda pb ldb beta pc ldc =
+    traceBLAS "gemm"
     {#call cblas_sgemm #} (toOrder ord)
       (toTrans transa) (toTrans transb)
       (toI m) (toI n) (toI k)
@@ -315,6 +323,7 @@ instance BLAS3 Float where
   {-# INLINE gemm #-}
 
   symm ord side uplo m n alpha pa lda pb ldb beta pc ldc =
+    traceBLAS "symm"
     {#call cblas_ssymm #} (toOrder ord)
        (toSide side) (toUplo uplo)
        (toI m) (toI n)
@@ -327,6 +336,7 @@ instance BLAS3 Float where
   {-# INLINE hemm #-}
 
   trmm ord side uplo transa diag m n alpha pa lda pb ldb =
+    traceBLAS "trmm"
     {#call cblas_strmm #} (toOrder ord)
       (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
       (toI m) (toI n)
@@ -335,6 +345,7 @@ instance BLAS3 Float where
   {-# INLINE trmm #-}
 
   trsm ord side uplo transa diag m n alpha pa lda pb ldb =
+    traceBLAS "trsm"
     {#call cblas_strsm #} (toOrder ord)
       (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
       (toI m) (toI n)
@@ -343,6 +354,7 @@ instance BLAS3 Float where
   {-# INLINE trsm #-}
 
   syrk ord uplo transa n k alpha pa lda beta pc ldc =
+    traceBLAS "syrk"
     {#call cblas_ssyrk #} (toOrder ord)
     (toUplo uplo) (toTrans transa)
     (toI n) (toI k)
@@ -351,6 +363,7 @@ instance BLAS3 Float where
   {-# INLINE syrk #-}
 
   syr2k ord uplo transa n k alpha pa lda pb ldb beta pc ldc =
+    traceBLAS "syr2k"
     {#call cblas_ssyr2k #} (toOrder ord)
       (toUplo uplo) (toTrans transa)
       (toI n) (toI k)
@@ -370,6 +383,7 @@ instance BLAS3 (Complex Float) where
   gemm ord transa transb m n k alpha pa lda pb ldb beta pc ldc =
     with alpha $ \palpha ->
     with beta  $ \pbeta  ->
+    traceBLAS "gemm"
     {#call cblas_cgemm #} (toOrder ord)
       (toTrans transa) (toTrans transb)
       (toI m) (toI n) (toI k)
@@ -381,6 +395,7 @@ instance BLAS3 (Complex Float) where
   symm ord side uplo m n alpha pa lda pb ldb beta pc ldc =
     with alpha $ \palpha ->
     with beta  $ \pbeta  ->
+      traceBLAS "symm"
       {#call cblas_csymm #} (toOrder ord)
         (toSide side) (toUplo uplo)
         (toI m) (toI n)
@@ -392,6 +407,7 @@ instance BLAS3 (Complex Float) where
   hemm ord side uplo m n alpha pa lda pb ldb beta pc ldc =
     with alpha $ \palpha ->
     with beta  $ \pbeta  ->
+      traceBLAS "hemm"
       {#call cblas_chemm #} (toOrder ord)
         (toSide side) (toUplo uplo)
         (toI m) (toI n)
@@ -402,6 +418,7 @@ instance BLAS3 (Complex Float) where
 
   trmm ord side uplo transa diag m n alpha pa lda pb ldb =
     with alpha $ \palpha ->
+      traceBLAS "trmm"
       {#call cblas_ctrmm #} (toOrder ord)
         (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
         (toI m) (toI n)
@@ -411,6 +428,7 @@ instance BLAS3 (Complex Float) where
 
   trsm ord side uplo transa diag m n alpha pa lda pb ldb =
     with alpha $ \palpha ->
+      traceBLAS "trsm"
       {#call cblas_ctrsm #} (toOrder ord)
         (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
         (toI m) (toI n)
@@ -421,6 +439,7 @@ instance BLAS3 (Complex Float) where
   syrk ord uplo transa n k alpha pa lda beta pc ldc =
     with alpha $ \palpha ->
     with beta  $ \pbeta  ->
+     traceBLAS "syrk"
      {#call cblas_csyrk #} (toOrder ord)
        (toUplo uplo) (toTrans transa)
        (toI n) (toI k)
@@ -431,6 +450,7 @@ instance BLAS3 (Complex Float) where
   syr2k ord uplo transa n k alpha pa lda pb ldb beta pc ldc =
     with alpha $ \palpha ->
     with beta  $ \pbeta  ->
+      traceBLAS "syr2k"
       {#call cblas_csyr2k #} (toOrder ord)
         (toUplo uplo) (toTrans transa)
         (toI n) (toI k)
@@ -440,6 +460,7 @@ instance BLAS3 (Complex Float) where
   {-# INLINE syr2k #-}
 
   herk ord uplo transa n k alpha pa lda beta pc ldc =
+    traceBLAS "herk"
     {#call cblas_cherk #} (toOrder ord)
       (toUplo uplo) (toTrans transa)
       (toI n) (toI k)
@@ -449,6 +470,7 @@ instance BLAS3 (Complex Float) where
 
   her2k ord uplo transa n k alpha pa lda pb ldb beta pc ldc =
     with alpha $ \palpha ->
+      traceBLAS "her2k"
       {#call cblas_cher2k #} (toOrder ord)
         (toUplo uplo) (toTrans transa)
         (toI n) (toI k)
@@ -463,6 +485,7 @@ instance BLAS3 (Complex Double) where
   gemm ord transa transb m n k alpha pa lda pb ldb beta pc ldc =
     with alpha $ \palpha ->
     with beta  $ \pbeta  ->
+    traceBLAS "gemm"
     {#call cblas_zgemm #} (toOrder ord)
       (toTrans transa) (toTrans transb)
       (toI m) (toI n) (toI k)
@@ -474,6 +497,7 @@ instance BLAS3 (Complex Double) where
   symm ord side uplo m n alpha pa lda pb ldb beta pc ldc =
     with alpha $ \palpha ->
     with beta  $ \pbeta  ->
+      traceBLAS "symm"
       {#call cblas_zsymm #} (toOrder ord)
         (toSide side) (toUplo uplo)
         (toI m) (toI n)
@@ -485,6 +509,7 @@ instance BLAS3 (Complex Double) where
   hemm ord side uplo m n alpha pa lda pb ldb beta pc ldc =
     with alpha $ \palpha ->
     with beta  $ \pbeta  ->
+      traceBLAS "hemm"
       {#call cblas_zhemm #} (toOrder ord)
         (toSide side) (toUplo uplo)
         (toI m) (toI n)
@@ -495,6 +520,7 @@ instance BLAS3 (Complex Double) where
 
   trmm ord side uplo transa diag m n alpha pa lda pb ldb =
     with alpha $ \palpha ->
+      traceBLAS "trmm"
       {#call cblas_ztrmm #} (toOrder ord)
         (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
         (toI m) (toI n)
@@ -504,6 +530,7 @@ instance BLAS3 (Complex Double) where
 
   trsm ord side uplo transa diag m n alpha pa lda pb ldb =
     with alpha $ \palpha ->
+      traceBLAS "trsm"
       {#call cblas_ztrsm #} (toOrder ord)
         (toSide side) (toUplo uplo) (toTrans transa) (toDiag diag)
         (toI m) (toI n)
@@ -514,6 +541,7 @@ instance BLAS3 (Complex Double) where
   syrk ord uplo transa n k alpha pa lda beta pc ldc =
     with alpha $ \palpha ->
     with beta  $ \pbeta  ->
+     traceBLAS "syrk"
      {#call cblas_zsyrk #} (toOrder ord)
        (toUplo uplo) (toTrans transa)
        (toI n) (toI k)
@@ -524,6 +552,7 @@ instance BLAS3 (Complex Double) where
   syr2k ord uplo transa n k alpha pa lda pb ldb beta pc ldc =
     with alpha $ \palpha ->
     with beta  $ \pbeta  ->
+      traceBLAS "syr2k"
       {#call cblas_zsyr2k #} (toOrder ord)
         (toUplo uplo) (toTrans transa)
         (toI n) (toI k)
@@ -533,6 +562,7 @@ instance BLAS3 (Complex Double) where
   {-# INLINE syr2k #-}
 
   herk ord uplo transa n k alpha pa lda beta pc ldc =
+    traceBLAS "herk"
     {#call cblas_zherk #} (toOrder ord)
       (toUplo uplo) (toTrans transa)
       (toI n) (toI k)
@@ -542,6 +572,7 @@ instance BLAS3 (Complex Double) where
 
   her2k ord uplo transa n k alpha pa lda pb ldb beta pc ldc =
     with alpha $ \palpha ->
+      traceBLAS "her2k"
       {#call cblas_zher2k #} (toOrder ord)
         (toUplo uplo) (toTrans transa)
         (toI n) (toI k)
