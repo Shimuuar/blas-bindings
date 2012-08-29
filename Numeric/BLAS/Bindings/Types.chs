@@ -35,7 +35,7 @@ toOrder ColMajor = fromIntegral $ fromEnum CblasColMajor
 
 
 
--- ^ Describe matrix transformation in matrix-vector or matrix-matrix
+-- | Describe matrix transformation in matrix-vector or matrix-matrix
 --   operation
 data Trans
   = NoTrans   -- ^ Do not transpose matrix

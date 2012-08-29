@@ -16,6 +16,7 @@ module Numeric.BLAS.Bindings (
     -- $memory
     module Numeric.BLAS.Bindings.Level1
     -- ** Level 2
+    -- $summary_2
   , module Numeric.BLAS.Bindings.Level2
     -- ** Level 3
   , module Numeric.BLAS.Bindings.Level3
@@ -88,3 +89,19 @@ import Numeric.BLAS.Bindings.Types
 -- > 1 _ _      1 2 3
 -- > 2 5 _   ⇒  2 5 6      Lower
 -- > 3 6 9      3 6 9
+
+-- $summary_2
+--
+-- Level 2 BLAS contain a lot of routines. Here is incomplete summary:
+--
+--  > y ← α·A·x + β·y
+--
+--  [@Generic dense matrices@] 'gemv'
+--
+--  [@Hermitian/symmetric matrices@] 'hemv'
+--
+--  [@Packed hermitian/symmetric matrices@] 'hpmv'
+--
+--  [@Banded matrices@] 'gbmv'
+--
+--  [@Hermitian/symmetric banded matrices@] 'hbmv'
