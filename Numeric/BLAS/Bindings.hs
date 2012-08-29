@@ -34,7 +34,8 @@ import Numeric.BLAS.Bindings.Types
 
 -- $memory
 --
--- Here memory layout of vectors and matrices is described.
+-- Here is incomplete description of memory layout of vectors and
+-- matrices.
 --
 --
 -- [@Vectors@]
