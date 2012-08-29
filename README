@@ -12,5 +12,7 @@ linear algebra software, LAPACK for example.
 For more information, see the Netlib BLAS webpage:
 <http://www.netlib.org/blas/>
 
-For now it's hardcoded to use ATLAS headers.
+Optional cabal flags
+
+* -fTraceCalls trace every BLAS call. Useful for debugging.
 

@@ -1,7 +1,7 @@
 name:            blas-bindings
 version:         0.1
 homepage:        http://github.com/Shimuuar/blas-lapack-bindings
-synopsis:        Low level bindings to BLAS and LAPACK
+synopsis:        Low level bindings to BLAS.
 description:
   This package provide low level bindings to CBLAS routines. CBLAS is
   standard C API for BLAS.
@@ -17,15 +17,26 @@ description:
   For more information, see the Netlib BLAS webpage:
   <http://www.netlib.org/blas/>
   .
-  For now it's hardcoded to use ATLAS headers.
+  Optional cabal flags
+  .
+  * -fTraceCalls trace every BLAS call. Useful for debugging.
 
 category:        Math, Numeric
+bug-reports:     https://github.com/Shimuuar/blas-bindings/issues
 license:         BSD3
 license-file:    COPYING
 copyright:       2010 Patrick Perry <patperry@gmail.com>, 2012 Aleksey Khudyakov <alexey.skladnoy@gmail.com>
 maintainer:      Aleksey Khudyakov <alexey.skladnoy@gmail.com>
-cabal-version:   >= 1.4
+cabal-version:   >= 1.8
 build-type:      Simple
+
+source-repository head
+  type:     hg
+  location: http://bitbucket.org/Shimuuar/histogram-fill
+source-repository head
+  type:     git
+  location: http://github.com/Shimuuar/histogram-fill
+
 
 extra-source-files:
   README
