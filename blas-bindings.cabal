@@ -30,14 +30,6 @@ maintainer:      Aleksey Khudyakov <alexey.skladnoy@gmail.com>
 cabal-version:   >= 1.8
 build-type:      Simple
 
-source-repository head
-  type:     hg
-  location: http://bitbucket.org/Shimuuar/histogram-fill
-source-repository head
-  type:     git
-  location: http://github.com/Shimuuar/histogram-fill
-
-
 extra-source-files:
   README
 
@@ -71,3 +63,7 @@ Library
     -Wall -O2
   if flag(TraceCalls)
     cpp-options: -DTRACE_BLAS_CALLS
+
+source-repository head
+  type:     git
+  location: http://github.com/Shimuuar/blas-bindings
